@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
 import { UserRepository } from './user.repository';
 import { APP_PIPE } from '@nestjs/core';
+import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity, AvatarEntiry])],
   controllers: [UserController],
   providers: [
     {
