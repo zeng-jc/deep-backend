@@ -2,11 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ArticleEntity } from '@app/deep-orm/entities/article.entity';
 
 @Entity({ name: 'tbl_user' })
 export class UserEntity {

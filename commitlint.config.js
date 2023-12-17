@@ -2,7 +2,6 @@
   规范commit日志
   https://commitlint.js.org
 */
-
 const types = [
     'build', // 主要目的是修改项目构建系统（例如glup，webpack，rollup的配置等）的提交
     'ci', // 修改项目的持续集成流程（Kenkins、Travis等）的提交
