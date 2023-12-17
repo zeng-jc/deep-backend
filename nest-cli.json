@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/deep-backend/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/deep-backend/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/deep-backend",
+  "projects": {
+    "deep-backend": {
+      "type": "application",
+      "root": "apps/deep-backend",
+      "entryFile": "main",
+      "sourceRoot": "apps/deep-backend/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/deep-backend/tsconfig.app.json"
+      }
+    },
+    "deep-cms": {
+      "type": "application",
+      "root": "apps/deep-cms",
+      "entryFile": "main",
+      "sourceRoot": "apps/deep-cms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/deep-cms/tsconfig.app.json"
+      }
+    },
+    "deep-orm": {
+      "type": "library",
+      "root": "libs/deep-orm",
+      "entryFile": "index",
+      "sourceRoot": "libs/deep-orm/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/deep-orm/tsconfig.lib.json"
+      }
+    },
+    "deep-auth": {
+      "type": "application",
+      "root": "apps/deep-auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/deep-auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/deep-auth/tsconfig.app.json"
+      }
+    }
+  }
+}
