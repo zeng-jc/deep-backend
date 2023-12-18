@@ -13,7 +13,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
-import { UserQueryPipe } from '../pipe/user-query.pipe';
+import { PaginationPipe } from '../pipe/pagination.pipe';
+import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
 
 @Controller('user')
 export class UserController {
@@ -26,7 +27,7 @@ export class UserController {
 
   @Get()
   findMultiUser(
-    @Query(new UserQueryPipe())
+    @Query(new PaginationPipe())
     query: QueryUserDto,
   ) {
     return this.userService.findMultiUser(query);
@@ -45,5 +46,10 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.removeUser(+id);
+  }
+
+  @Post('/lockUser')
+  lockUser(@Body(new GetBodyIdPipe()) id: string) {
+    return this.userService.lockUser(id);
   }
 }

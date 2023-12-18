@@ -100,4 +100,14 @@ export class UserService {
   removeUser(id: number) {
     return this.repoUser.delete(id);
   }
+
+  async lockUser(id: string) {
+    const user = await this.repoUser.findOne({ where: { id: +id } });
+    if (user) {
+      user.status === 0 ? 1 : 0;
+      return this.repoUser.save(user);
+    } else {
+      return 'operator failed';
+    }
+  }
 }

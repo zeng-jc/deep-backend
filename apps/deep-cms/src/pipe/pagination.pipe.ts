@@ -7,7 +7,7 @@ import {
 import { QueryUserDto } from '../user/dto/query-user.dto';
 
 @Injectable()
-export class UserQueryPipe implements PipeTransform {
+export class PaginationPipe implements PipeTransform {
   transform(value: QueryUserDto, _metadata: ArgumentMetadata): QueryUserDto {
     if (Object.is(Number.parseInt(value.curpage), NaN))
       throw new BadRequestException('curpage cannot be converted to a number');
