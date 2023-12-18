@@ -1,9 +1,10 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
+import { SetMetadata } from '@nestjs/common';
 
-@EntityRepository(UserEntity)
+@SetMetadata('tetsa', UserEntity)
 export class UserRepository extends Repository<UserEntity> {
   findUserByName(): string {
-    return '---';
+    return '123';
   }
 }

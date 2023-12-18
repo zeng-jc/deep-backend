@@ -12,6 +12,8 @@ import { UserEntity } from '@app/deep-orm/entities/user.entity';
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column({ type: 'enum', enum: [0, 1], default: 0 })
+  status!: number;
   @Column({ length: 30 })
   name: string;
   @Column()

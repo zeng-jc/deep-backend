@@ -10,7 +10,7 @@ import { QueryUserDto } from './dto/query-user.dto';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserRepository)
+    // @InjectRepository(UserRepository)
     private readonly repoUserCustom: UserRepository,
     @InjectRepository(UserEntity)
     private readonly repoUser: Repository<UserEntity>,
@@ -73,8 +73,9 @@ export class UserService {
     };
   }
 
-  findOneUser(id: number) {
-    return this.repoUser.findOne({ relations: ['avatar'], where: { id } });
+  findOneUser(_id: number) {
+    // return this.repoUser.findOne({ relations: ['avatar'], where: { id } });
+    return this.repoUserCustom.find();
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {
