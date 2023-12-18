@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
 
@@ -23,9 +25,9 @@ export class AvatarEntiry {
   size: string;
   @Column()
   path: string;
-  @Column()
+  @CreateDateColumn()
   createAt: Date;
-  @Column()
+  @UpdateDateColumn()
   updateAt: Date;
   @OneToOne(() => UserEntity, {
     onDelete: 'CASCADE',

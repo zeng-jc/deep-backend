@@ -74,7 +74,7 @@ export class UserService {
   }
 
   findOneUser(id: number) {
-    return this.repoUser.findOne({ where: { id } });
+    return this.repoUser.findOne({ relations: ['avatar'], where: { id } });
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {

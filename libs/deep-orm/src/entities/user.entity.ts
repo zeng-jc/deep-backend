@@ -2,9 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
+import { ArticleEntity } from '@app/deep-orm/entities/article.entity';
 
 @Entity({ name: 'tbl_user' })
 export class UserEntity {
@@ -43,7 +47,9 @@ export class UserEntity {
   createAt: Date;
   @UpdateDateColumn({ type: 'timestamp' })
   updateAt: Date;
-  // 设置关联关系和反向关联关系
-  // @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.user)
-  // articles: ArticleEntity[];
+  // 设置双向（反向）关系(设置后可以通过主表联系附表查询)
+  @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.user)
+  articles: ArticleEntity[];
+  @OneToOne(() => AvatarEntiry, (avatarEntity) => avatarEntity.user)
+  avatar: AvatarEntiry;
 }
