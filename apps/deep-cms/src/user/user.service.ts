@@ -104,7 +104,7 @@ export class UserService {
   async lockUser(id: string) {
     const user = await this.repoUser.findOne({ where: { id: +id } });
     if (user) {
-      user.status === 0 ? 1 : 0;
+      user.status = user.status === 0 ? 1 : 0;
       return this.repoUser.save(user);
     } else {
       return 'operator failed';
