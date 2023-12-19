@@ -3,12 +3,12 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
-import { UserRepository } from './user.repository';
 import { APP_PIPE } from '@nestjs/core';
 import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
+import { CacheModule } from '@app/cache';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, AvatarEntiry])],
+  imports: [TypeOrmModule.forFeature([UserEntity, AvatarEntiry]), CacheModule],
   controllers: [UserController],
   providers: [
     {
@@ -16,7 +16,6 @@ import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
-    UserRepository,
     UserService,
   ],
 })

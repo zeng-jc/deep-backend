@@ -5,12 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
+import { CacheService } from '@app/cache';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    private readonly cacheService: CacheService,
   ) {}
 
   async emailExist(email: string): Promise<number> {
@@ -70,8 +72,15 @@ export class UserService {
     };
   }
 
-  findOneUser(id: number) {
-    return this.userRepo.findOne({ relations: ['avatar'], where: { id } });
+  async findOneUser(id: number) {
+    const cacheUser = await this.cacheService.get('user.findOneUser');
+    if (cacheUser) return cacheUser;
+    const user = await this.userRepo.findOne({
+      relations: ['avatar'],
+      where: { id },
+    });
+    this.cacheService.set('user.findOneUser', user, 1000 * 60);
+    return user;
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {

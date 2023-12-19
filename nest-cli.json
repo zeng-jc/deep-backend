@@ -28,6 +28,15 @@
         "tsConfigPath": "apps/deep-cms/tsconfig.app.json"
       }
     },
+    "deep-auth": {
+      "type": "application",
+      "root": "apps/deep-auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/deep-auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/deep-auth/tsconfig.app.json"
+      }
+    },
     "deep-orm": {
       "type": "library",
       "root": "libs/deep-orm",
@@ -37,13 +46,13 @@
         "tsConfigPath": "libs/deep-orm/tsconfig.lib.json"
       }
     },
-    "deep-auth": {
-      "type": "application",
-      "root": "apps/deep-auth",
-      "entryFile": "main",
-      "sourceRoot": "apps/deep-auth/src",
+    "cache": {
+      "type": "library",
+      "root": "libs/cache",
+      "entryFile": "index",
+      "sourceRoot": "libs/cache/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/deep-auth/tsconfig.app.json"
+        "tsConfigPath": "libs/cache/tsconfig.lib.json"
       }
     }
   }

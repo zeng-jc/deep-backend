@@ -23,7 +23,13 @@
       ],
       "@app/deep-orm/*": [
         "libs/deep-orm/src/*"
-      ]
+      ],
+      "@app/cache": [
+        "libs/cache/src"
+      ],
+      "@app/cache/*": [
+        "libs/cache/src/*"
+      ],
     }
   }
 }

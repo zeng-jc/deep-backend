@@ -9,7 +9,11 @@ import {
 } from 'typeorm';
 import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
 import { ArticleEntity } from '@app/deep-orm/entities/article.entity';
-
+// enum UserStatus {
+//   lock = 0,
+//   unLock = 1,
+// }
+// UserStatus.lock;
 @Entity({ name: 'tbl_user' })
 export class UserEntity {
   @PrimaryGeneratedColumn()

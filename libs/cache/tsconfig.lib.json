@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/deep-orm"
+    "outDir": "../../dist/libs/cache"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
