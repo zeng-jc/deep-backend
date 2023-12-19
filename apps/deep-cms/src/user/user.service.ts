@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from './user.repository';
 import { UserEntity } from '@app/deep-orm/entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
@@ -10,18 +9,16 @@ import { QueryUserDto } from './dto/query-user.dto';
 @Injectable()
 export class UserService {
   constructor(
-    // @InjectRepository(UserRepository)
-    private readonly repoUserCustom: UserRepository,
     @InjectRepository(UserEntity)
-    private readonly repoUser: Repository<UserEntity>,
+    private readonly userRepo: Repository<UserEntity>,
   ) {}
 
   async emailExist(email: string): Promise<number> {
-    return await this.repoUser.count({ where: { email } });
+    return await this.userRepo.count({ where: { email } });
   }
 
   async userExist(username: string): Promise<number> {
-    return await this.repoUser.count({ where: { username } });
+    return await this.userRepo.count({ where: { username } });
   }
 
   async createUser(createUserDto: CreateUserDto) {
@@ -44,14 +41,14 @@ export class UserService {
     user.major = createUserDto.major;
     user.position = createUserDto.position;
     user.github = createUserDto.github;
-    return this.repoUser.save(user);
+    return this.userRepo.save(user);
   }
 
   async findMultiUser(query: QueryUserDto) {
     const { keyword } = query;
     const curpage = Number.parseInt(query.curpage);
     const pagesize = Number.parseInt(query.pagesize);
-    const [data, total] = await this.repoUser.findAndCount({
+    const [data, total] = await this.userRepo.findAndCount({
       where: [
         {
           nickname: Like(`%${keyword}%`),
@@ -73,9 +70,8 @@ export class UserService {
     };
   }
 
-  findOneUser(_id: number) {
-    // return this.repoUser.findOne({ relations: ['avatar'], where: { id } });
-    return this.repoUserCustom.find();
+  findOneUser(id: number) {
+    return this.userRepo.findOne({ relations: ['avatar'], where: { id } });
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {
@@ -94,18 +90,18 @@ export class UserService {
     user.major = updateUserDto.major;
     user.position = updateUserDto.position;
     user.github = updateUserDto.github;
-    return this.repoUser.update(id, user);
+    return this.userRepo.update(id, user);
   }
 
   removeUser(id: number) {
-    return this.repoUser.delete(id);
+    return this.userRepo.delete(id);
   }
 
   async lockUser(id: string) {
-    const user = await this.repoUser.findOne({ where: { id: +id } });
+    const user = await this.userRepo.findOne({ where: { id: +id } });
     if (user) {
       user.status = user.status === 0 ? 1 : 0;
-      return this.repoUser.save(user);
+      return this.userRepo.save(user);
     } else {
       return 'operator failed';
     }
