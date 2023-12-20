@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CacheService } from './cache.service';
 import { createClient } from 'redis';
 import { REDIS_CLIENT } from './constant';
-
+@Global()
 @Module({
   providers: [
     CacheService,
