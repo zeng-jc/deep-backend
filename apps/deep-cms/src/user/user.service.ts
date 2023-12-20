@@ -73,13 +73,13 @@ export class UserService {
   }
 
   async findOneUser(id: number) {
-    const cacheUser = await this.cacheService.get('user.findOneUser');
+    const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
     const user = await this.userRepo.findOne({
       relations: ['avatar'],
       where: { id },
     });
-    this.cacheService.set('user.findOneUser', user, 1000 * 60);
+    this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;
   }
 
