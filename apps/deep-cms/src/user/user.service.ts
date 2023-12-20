@@ -6,6 +6,8 @@ import { UserEntity } from '@app/deep-orm/entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CacheService } from '@app/cache';
+import { HttpExceptionCustom } from '@app/common';
+import { ResStatusCode } from '@app/common/response.statusCode';
 
 @Injectable()
 export class UserService {
@@ -79,6 +81,12 @@ export class UserService {
       relations: ['avatar'],
       where: { id },
     });
+    if (!user) {
+      throw new HttpExceptionCustom(
+        '用户不存在',
+        ResStatusCode.USER_ID_INVALID,
+      );
+    }
     this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;
   }

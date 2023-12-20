@@ -11,7 +11,6 @@ import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
   controllers: [UserController],
   providers: [
     {
-      // 开启管道验证DTO
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
