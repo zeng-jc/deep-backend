@@ -10,8 +10,11 @@ import {
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('article')
+@ApiTags('article 接口')
+@ApiBearerAuth()
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 

@@ -15,8 +15,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { PaginationPipe } from '../pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags('user接口')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
