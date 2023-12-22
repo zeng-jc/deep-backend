@@ -54,6 +54,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/cache/tsconfig.lib.json"
       }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "deep-amqp": {
+      "type": "library",
+      "root": "libs/deep-amqp",
+      "entryFile": "index",
+      "sourceRoot": "libs/deep-amqp/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/deep-amqp/tsconfig.lib.json"
+      }
     }
   }
 }

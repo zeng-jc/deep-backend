@@ -21,7 +21,7 @@ export class CacheService {
    * @param second 过期时间 秒
    * @returns Promise<any>
    */
-  async set<T>(key: string, value: T, second?: number) {
+  async set<T = any>(key: string, value: T, second?: number) {
     const strValue = JSON.stringify(value);
     return await this.redisClient.set(key, strValue, { EX: second });
   }

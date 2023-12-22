@@ -35,6 +35,12 @@
       ],
       "@app/common/*": [
         "libs/common/src/*"
+      ],
+      "@app/deep-amqp": [
+        "libs/deep-amqp/src"
+      ],
+      "@app/deep-amqp/*": [
+        "libs/deep-amqp/src/*"
       ]
     }
   }

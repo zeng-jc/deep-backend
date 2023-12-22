@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { CacheModule } from '@app/cache';
+import { DeepAmqpModule } from '@app/deep-amqp';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CacheModule } from '@app/cache';
     UserModule,
     ArticleModule,
     CacheModule,
+    DeepAmqpModule,
   ],
   controllers: [AppController],
   providers: [AppService],
