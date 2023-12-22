@@ -49,19 +49,19 @@ export class UserService {
   }
 
   async findMultiUser(query: QueryUserDto) {
-    const { keyword } = query;
+    const { keywords } = query;
     const curpage = Number.parseInt(query.curpage);
     const pagesize = Number.parseInt(query.pagesize);
     const [data, total] = await this.userRepo.findAndCount({
       where: [
         {
-          nickname: Like(`%${keyword}%`),
+          nickname: Like(`%${keywords}%`),
         },
         {
-          username: Like(`%${keyword}%`),
+          username: Like(`%${keywords}%`),
         },
         {
-          email: Like(`%${keyword}%`),
+          email: Like(`%${keywords}%`),
         },
       ],
       order: { id: 'DESC' },
