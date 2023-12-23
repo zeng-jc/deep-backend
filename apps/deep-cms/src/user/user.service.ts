@@ -126,8 +126,11 @@ export class UserService {
     return this.userRepo.update(id, user);
   }
 
-  removeUser(id: number) {
-    return this.userRepo.delete(id);
+  async removeUser(id: number) {
+    const data = await this.userRepo.delete(id);
+    if (data.affected !== 0)
+      await this.cacheService.del(`user.findOneUser.${id}`);
+    return data;
   }
 
   async lockUser(id: string) {
