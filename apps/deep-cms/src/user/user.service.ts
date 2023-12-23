@@ -7,7 +7,7 @@ import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CacheService } from '@app/cache';
 import { DeepHttpException } from '@app/common';
-import { ResStatusCode } from '@app/common/response.statusCode';
+import { cmsStatusCode } from '@app/common/ResStatusCode/cms.statusCode';
 
 @Injectable()
 export class UserService {
@@ -49,10 +49,12 @@ export class UserService {
   }
 
   async findMultiUser(query: QueryUserDto) {
-    const { keywords } = query;
+    let { keywords } = query;
+    keywords = keywords ?? '';
     const curpage = Number.parseInt(query.curpage);
     const pagesize = Number.parseInt(query.pagesize);
     const [data, total] = await this.userRepo.findAndCount({
+      relations: ['avatar'],
       where: [
         {
           nickname: Like(`%${keywords}%`),
@@ -82,7 +84,7 @@ export class UserService {
       where: { id },
     });
     if (!user) {
-      throw new DeepHttpException('用户不存在', ResStatusCode.USER_ID_INVALID);
+      throw new DeepHttpException('用户不存在', cmsStatusCode.USER_ID_INVALID);
     }
     this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;
