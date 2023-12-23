@@ -2,21 +2,48 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoleEntity } from '@app/deep-orm';
-import { Repository } from 'typeorm';
+import { PermissionEntity, RoleEntity } from '@app/deep-orm';
+import { In, Repository } from 'typeorm';
+import { DeepHttpException, cmsStatusCode } from '@app/common';
+import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(RoleEntity)
     private readonly roleRepo: Repository<RoleEntity>,
+    @InjectRepository(PermissionEntity)
+    private readonly permissionRepo: Repository<PermissionEntity>,
   ) {}
 
-  createRole(createRoleDto: CreateRoleDto) {
+  async createRole(createRoleDto: CreateRoleDto) {
+    const res = await this.roleRepo.findOne({
+      where: { name: createRoleDto.name },
+    });
+    if (res)
+      throw new DeepHttpException('角色已存在', cmsStatusCode.ROLE_EXIST);
     const role = new RoleEntity();
     role.name = createRoleDto.name;
     role.desc = createRoleDto.desc;
     return this.roleRepo.save(role);
+  }
+
+  async assignPermissions(assignPermissionRoleDto: AssignPermissionRoleDto) {
+    const permissions = await this.permissionRepo.find({
+      where: {
+        id: In(assignPermissionRoleDto.permissionIds),
+      },
+    });
+    if (permissions.length === 0)
+      throw new DeepHttpException(
+        '分配的权限不存在',
+        cmsStatusCode.PERMISSION_NOT_EXIST,
+      );
+    // DOTO：判断权限是否已经分配
+    return this.roleRepo.save({
+      permissions,
+      id: assignPermissionRoleDto.roleId,
+    });
   }
 
   findAllRole() {

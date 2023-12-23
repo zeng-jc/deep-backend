@@ -18,7 +18,7 @@ import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
-@ApiTags('user接口')
+@ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

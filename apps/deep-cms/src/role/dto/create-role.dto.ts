@@ -5,4 +5,5 @@ export class CreateRoleDto {
   name!: string;
   @MaxLength(255)
   desc?: string;
+  permissionIds?: number[];
 }

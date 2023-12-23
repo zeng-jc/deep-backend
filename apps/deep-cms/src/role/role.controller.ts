@@ -10,14 +10,22 @@ import {
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 
 @Controller('role')
+@ApiTags('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
   createRole(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.createRole(createRoleDto);
+  }
+
+  @Post('/assignPermission')
+  assignPermissions(@Body() assignPermissionRoleDto: AssignPermissionRoleDto) {
+    return this.roleService.assignPermissions(assignPermissionRoleDto);
   }
 
   @Get()
