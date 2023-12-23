@@ -23,7 +23,7 @@ export class RoleController {
     return this.roleService.createRole(createRoleDto);
   }
 
-  @Post('/assignPermission')
+  @Post('/assignPermissions')
   assignPermissions(@Body() assignPermissionRoleDto: AssignPermissionRoleDto) {
     return this.roleService.assignPermissions(assignPermissionRoleDto);
   }

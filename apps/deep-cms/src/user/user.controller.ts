@@ -16,6 +16,7 @@ import { QueryUserDto } from './dto/query-user.dto';
 import { PaginationPipe } from '../pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
+import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 
 @Controller('user')
 @ApiTags('user')
@@ -25,6 +26,11 @@ export class UserController {
   @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
+  }
+
+  @Post('/assginRole')
+  assginRole(@Body() assignRoleUserDto: AssignRoleUserDto) {
+    return this.userService.assginRole(assignRoleUserDto);
   }
 
   @Get()

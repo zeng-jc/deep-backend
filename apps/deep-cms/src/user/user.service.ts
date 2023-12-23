@@ -2,20 +2,37 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '@app/deep-orm/entities';
+import { RoleEntity, UserEntity } from '@app/deep-orm/entities';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CacheService } from '@app/cache';
 import { DeepHttpException } from '@app/common';
 import { cmsStatusCode } from '@app/common/ResStatusCode/cms.statusCode';
+import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(RoleEntity)
+    private readonly roleRepo: Repository<RoleEntity>,
     private readonly cacheService: CacheService,
   ) {}
+
+  async assginRole(assignRoleUserDto: AssignRoleUserDto) {
+    const role = await this.roleRepo.findOne({
+      where: { id: assignRoleUserDto.roleId },
+    });
+    if (!role)
+      throw new DeepHttpException('角色不存在', cmsStatusCode.ROLE_NOT_EXIST);
+    assignRoleUserDto;
+    await this.findOneUser(assignRoleUserDto.userId);
+    return this.userRepo.save({
+      roles: [role],
+      id: assignRoleUserDto.userId,
+    });
+  }
 
   async emailExist(email: string): Promise<number> {
     return await this.userRepo.count({ where: { email } });
