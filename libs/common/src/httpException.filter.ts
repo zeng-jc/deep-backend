@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { HttpExceptionCustom } from './httpExceptionCustom.filter';
+import { DeepHttpException } from './DeepHttpException.filter';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -15,7 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    if (exception instanceof HttpExceptionCustom) {
+    if (exception instanceof DeepHttpException) {
       response.status(status).json({
         code: exception.getErrCode(),
         timestamp: new Date().toISOString(),

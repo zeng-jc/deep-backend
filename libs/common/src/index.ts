@@ -1,4 +1,4 @@
 export * from './httpException.filter';
-export * from './httpExceptionCustom.filter';
+export * from './DeepHttpException.filter';
 export * from './response.interceptor';
 export * from './response.statusCode';
