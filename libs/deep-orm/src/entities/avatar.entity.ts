@@ -7,10 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '@app/deep-orm/entities/user.entity';
+import { UserEntity } from '@app/deep-orm/entities';
 
 @Entity('tbl_avatar')
-export class AvatarEntiry {
+export class AvatarEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()

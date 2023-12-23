@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '@app/deep-orm/entities/user.entity';
+import { UserEntity } from '@app/deep-orm/entities';
 
 @Entity({ name: 'tbl_article' })
 export class ArticleEntity {

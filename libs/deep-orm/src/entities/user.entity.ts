@@ -6,9 +6,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
-import { AvatarEntiry } from '@app/deep-orm/entities/avatar.entiry';
-import { ArticleEntity } from '@app/deep-orm/entities/article.entity';
+import { AvatarEntity } from '@app/deep-orm/entities';
+import { ArticleEntity } from '@app/deep-orm/entities';
+import { RoleEntity } from './role.entity';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
@@ -54,6 +57,9 @@ export class UserEntity {
   // 设置双向（反向）关系(设置后可以通过主表联系附表查询)
   @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.user)
   articles: ArticleEntity[];
-  @OneToOne(() => AvatarEntiry, (avatarEntity) => avatarEntity.user)
-  avatar: AvatarEntiry;
+  @OneToOne(() => AvatarEntity, (avatarEntity) => avatarEntity.user)
+  avatar: AvatarEntity;
+  @ManyToMany(() => RoleEntity)
+  @JoinTable({ name: 'relation_user_role' })
+  role: RoleEntity;
 }

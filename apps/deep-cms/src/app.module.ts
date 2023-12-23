@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { CacheModule } from '@app/cache';
 import { DeepAmqpModule } from '@app/deep-amqp';
+import { RoleModule } from './role/role.module';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { DeepAmqpModule } from '@app/deep-amqp';
     ArticleModule,
     CacheModule,
     DeepAmqpModule,
+    RoleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
