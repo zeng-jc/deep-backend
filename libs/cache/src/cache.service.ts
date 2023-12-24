@@ -6,12 +6,12 @@ import { REDIS_CLIENT } from './constant';
 export class CacheService {
   constructor(@Inject(REDIS_CLIENT) private redisClient: RedisClientType) {}
   //获取值
-  async get(key: string) {
+  async get<T>(key: string): Promise<T> {
     let value = await this.redisClient.get(key);
     try {
       value = JSON.parse(value);
     } catch (error) {}
-    return value;
+    return value as T;
   }
 
   /**
