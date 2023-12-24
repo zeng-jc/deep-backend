@@ -22,6 +22,7 @@ export class PermissionService {
         id,
       },
     });
+
     if (userInfo) {
       const permissions = userInfo.roles.flatMap((role) => role.permissions);
       const permissionNames = permissions.map((permission) => permission.name);
