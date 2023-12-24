@@ -1,4 +1,5 @@
 import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +9,7 @@ import { CacheModule } from '@app/cache';
 import { DeepAmqpModule } from '@app/deep-amqp';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
-import { APP_PIPE } from '@nestjs/core';
+import { AuthGuard } from './common/guard/auth.guard';
 
 @Module({
   imports: [
@@ -37,6 +38,10 @@ import { APP_PIPE } from '@nestjs/core';
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
   ],
 })

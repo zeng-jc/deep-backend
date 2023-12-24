@@ -43,6 +43,7 @@ export class UserController {
     return this.userService.findMultiUser(query);
   }
 
+  @Permissions('query')
   @Get(':id')
   findOneUser(@Param('id', new ParseIntPipe()) id: number) {
     return this.userService.findOneUser(id);

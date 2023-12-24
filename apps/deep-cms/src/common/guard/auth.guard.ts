@@ -1,14 +1,21 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Global,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PermissionService } from './permission.service';
 import { DeepHttpException, cmsStatusCode } from '@app/common';
 import { CacheService } from '@app/cache';
+import { DataSource } from 'typeorm';
+import { UserEntity } from '@app/deep-orm';
 
+@Global()
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly permissionService: PermissionService,
+    private readonly dataSource: DataSource,
     private readonly cacheService: CacheService,
   ) {}
 
@@ -30,11 +37,18 @@ export class PermissionGuard implements CanActivate {
     if (cachePermissions) {
       permissions = cachePermissions;
     } else {
-      permissions = await this.permissionService.findPermissions(userId);
+      const users = await this.dataSource.getRepository(UserEntity).findOne({
+        where: {
+          id: userId,
+        },
+        relations: ['roles', 'roles.permissions'],
+      });
+      permissions = users.roles.flatMap((role) => role.permissions);
+      permissions = [...new Set(permissions.map((p) => p.name))];
       this.cacheService.set<string[]>(
         `permission.guard.${userId}`,
         permissions ?? [],
-        1000 * 60,
+        60,
       );
     }
 
