@@ -13,11 +13,11 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
-import { PaginationPipe } from '../pipe/pagination.pipe';
-import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
+import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
-import { Permissions } from '../common/public.decorator';
+import { Permissions } from '../common/decorator/public.decorator';
 
 @Controller('user')
 @ApiTags('user')

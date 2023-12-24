@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleEntity, UserEntity } from '@app/deep-orm/entities';
 import { APP_PIPE } from '@nestjs/core';
 import { AvatarEntity } from '@app/deep-orm/entities';
+import { EmailService } from '../common/service/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, AvatarEntity, RoleEntity])],
@@ -15,6 +16,7 @@ import { AvatarEntity } from '@app/deep-orm/entities';
       useClass: ValidationPipe,
     },
     UserService,
+    EmailService,
   ],
 })
 export class UserModule {}

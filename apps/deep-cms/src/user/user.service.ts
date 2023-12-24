@@ -9,6 +9,7 @@ import { CacheService } from '@app/cache';
 import { DeepHttpException } from '@app/common';
 import { cmsStatusCode } from '@app/common/ResStatusCode/cms.statusCode';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
+import { EmailService } from '../common/service/email.service';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     @InjectRepository(RoleEntity)
     private readonly roleRepo: Repository<RoleEntity>,
     private readonly cacheService: CacheService,
+    private readonly emailService: EmailService,
   ) {}
 
   async assginRole(assignRoleUserDto: AssignRoleUserDto) {
@@ -62,6 +64,11 @@ export class UserService {
     user.major = createUserDto.major;
     user.position = createUserDto.position;
     user.github = createUserDto.github;
+    // 发送邮箱
+    this.emailService.sendMailCreateUser(
+      createUserDto.email,
+      createUserDto.nickname,
+    );
     return this.userRepo.save(user);
   }
 

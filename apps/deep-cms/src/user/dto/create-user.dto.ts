@@ -7,9 +7,10 @@ export class CreateUserDto {
   password!: string;
   @IsNotEmpty()
   nickname!: string;
-  gender?: number;
+  @IsNotEmpty()
   @IsEmail()
-  email?: string;
+  email!: string;
+  gender?: number;
   status?: number;
   bio?: string;
   level?: number;

@@ -13,7 +13,7 @@ import {
         return {
           exchanges: [
             {
-              name: 'exchange_test',
+              name: 'deep_exchange',
               type: 'direct',
               options: { durable: false },
             },
@@ -21,6 +21,7 @@ import {
           uri: 'amqp://guest:guest@localhost:5672',
           connectionInitOptions: { wait: false },
           enableDirectReplyTo: false,
+          enableControllerDiscovery: true,
           prefetchCount: 300,
           defaultSubscribeErrorBehavior: MessageHandlerErrorBehavior.ACK,
         };

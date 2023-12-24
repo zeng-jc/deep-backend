@@ -4,7 +4,7 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { QueryUserDto } from '../user/dto/query-user.dto';
+import { QueryUserDto } from '../../user/dto/query-user.dto';
 
 @Injectable()
 export class PaginationPipe implements PipeTransform {
