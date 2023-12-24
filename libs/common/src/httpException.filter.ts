@@ -17,19 +17,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof DeepHttpException) {
       response.status(status).json({
-        code: exception.getErrCode(),
-        timestamp: new Date().toISOString(),
         path: request.url,
+        timestamp: new Date().toISOString(),
         message: exception.getErrMsg(),
+        code: exception.getErrCode(),
       });
       return;
     }
 
     response.status(status).json({
-      code: status,
-      timestamp: new Date().toISOString(),
       path: request.url,
+      timestamp: new Date().toISOString(),
       message: exception.message,
+      code: status,
     });
   }
 }

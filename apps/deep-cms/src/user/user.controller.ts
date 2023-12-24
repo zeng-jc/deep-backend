@@ -17,12 +17,13 @@ import { PaginationPipe } from '../pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
+import { Permissions } from '../common/public.decorator';
 
 @Controller('user')
 @ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  @Permissions('create')
   @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);

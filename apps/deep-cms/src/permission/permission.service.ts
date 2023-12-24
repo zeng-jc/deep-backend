@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PermissionEntity } from '@app/deep-orm';
+import { PermissionEntity, UserEntity } from '@app/deep-orm';
 import { Repository } from 'typeorm';
 import { DeepHttpException, cmsStatusCode } from '@app/common';
 
@@ -11,7 +11,26 @@ export class PermissionService {
   constructor(
     @InjectRepository(PermissionEntity)
     private readonly permissionRepo: Repository<PermissionEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
   ) {}
+
+  async findPermissions(id: number) {
+    const userInfo = await this.userRepo.findOne({
+      relations: ['roles', 'roles.permissions'],
+      where: {
+        id,
+      },
+    });
+    if (userInfo) {
+      const permissions = userInfo.roles.flatMap((role) => role.permissions);
+      const permissionNames = permissions.map((permission) => permission.name);
+      return [...new Set(permissionNames)];
+    } else {
+      return [];
+    }
+  }
+
   async createPermission(createPermissionDto: CreatePermissionDto) {
     const res = await this.permissionRepo.findOne({
       where: {
