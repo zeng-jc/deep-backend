@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { DeepHttpException, cmsStatusCode } from '@app/common';
-import { CacheService } from '@app/cache';
+import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/deep-orm';
 

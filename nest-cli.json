@@ -46,13 +46,13 @@
         "tsConfigPath": "libs/deep-orm/tsconfig.lib.json"
       }
     },
-    "cache": {
+    "deep-cache": {
       "type": "library",
-      "root": "libs/cache",
+      "root": "libs/deep-cache",
       "entryFile": "index",
-      "sourceRoot": "libs/cache/src",
+      "sourceRoot": "libs/deep-cache/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/cache/tsconfig.lib.json"
+        "tsConfigPath": "libs/deep-cache/tsconfig.lib.json"
       }
     },
     "common": {

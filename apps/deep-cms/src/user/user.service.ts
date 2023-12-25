@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RoleEntity, UserEntity } from '@app/deep-orm/entities';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
-import { CacheService } from '@app/cache';
+import { CacheService } from '@app/deep-cache';
 import { DeepHttpException } from '@app/common';
 import { cmsStatusCode } from '@app/common/ResStatusCode/cms.statusCode';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';

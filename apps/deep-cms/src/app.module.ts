@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
-import { CacheModule } from '@app/cache';
+import { CacheModule } from '@app/deep-cache';
 import { DeepAmqpModule } from '@app/deep-amqp';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
@@ -25,10 +25,10 @@ import { AuthGuard } from './common/guard/auth.guard';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    UserModule,
-    ArticleModule,
     CacheModule,
     DeepAmqpModule,
+    UserModule,
+    ArticleModule,
     RoleModule,
     PermissionModule,
   ],

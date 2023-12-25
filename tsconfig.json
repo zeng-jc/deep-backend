@@ -24,11 +24,11 @@
       "@app/deep-orm/*": [
         "libs/deep-orm/src/*"
       ],
-      "@app/cache": [
-        "libs/cache/src"
+      "@app/deep-cache": [
+        "libs/deep-cache/src"
       ],
-      "@app/cache/*": [
-        "libs/cache/src/*"
+      "@app/deep-cache/*": [
+        "libs/deep-cache/src/*"
       ],
       "@app/common": [
         "libs/common/src"
