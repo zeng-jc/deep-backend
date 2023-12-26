@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { cmsStatusCode } from './ResStatusCode/cms.statusCode';
+import { CmsErrorCode } from './ResStatusCode/cms.ErrorCode';
+import { CmsErrorMsg } from './ResStatusCode/cms.ErrorMsg';
 
 export class DeepHttpException extends HttpException {
-  private errMsg: string;
-  private errCode: cmsStatusCode;
+  private errMsg: CmsErrorMsg;
+  private errCode: CmsErrorCode;
 
   constructor(
-    errMsg: string,
-    errCode: cmsStatusCode,
+    errMsg: CmsErrorMsg,
+    errCode: CmsErrorCode,
     // 建议初始化，否则调用DeepHttpException需要传入此参数
     statusCode: HttpStatus = HttpStatus.OK,
   ) {
@@ -16,7 +17,7 @@ export class DeepHttpException extends HttpException {
     this.errCode = errCode;
   }
 
-  getErrCode(): cmsStatusCode {
+  getErrCode(): CmsErrorCode {
     return this.errCode;
   }
 

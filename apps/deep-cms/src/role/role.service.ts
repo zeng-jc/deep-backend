@@ -4,7 +4,11 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PermissionEntity, RoleEntity } from '@app/deep-orm';
 import { In, Repository } from 'typeorm';
-import { DeepHttpException, cmsStatusCode } from '@app/common';
+import {
+  DeepHttpException,
+  CmsErrorMsg,
+  CmsErrorCode,
+} from '@app/common/ExceptionFilter';
 import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 
 @Injectable()
@@ -21,7 +25,10 @@ export class RoleService {
       where: { name: createRoleDto.name },
     });
     if (res)
-      throw new DeepHttpException('角色已存在', cmsStatusCode.ROLE_EXIST);
+      throw new DeepHttpException(
+        CmsErrorMsg.ROLE_EXIST,
+        CmsErrorCode.ROLE_EXIST,
+      );
     const role = new RoleEntity();
     role.name = createRoleDto.name;
     role.desc = createRoleDto.desc;
@@ -36,8 +43,8 @@ export class RoleService {
     });
     if (permissions.length === 0)
       throw new DeepHttpException(
-        '分配的权限不存在',
-        cmsStatusCode.PERMISSION_NOT_EXIST,
+        CmsErrorMsg.PERMISSION_NOT_EXIST,
+        CmsErrorCode.PERMISSION_NOT_EXIST,
       );
     // DOTO：判断权限是否已经分配
     return this.roleRepo.save({

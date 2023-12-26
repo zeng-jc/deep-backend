@@ -1,5 +1,4 @@
-export enum cmsStatusCode {
-  SUCCESS = '200',
+export enum CmsErrorCode {
   /** 用户状态码 **/
   UNKNOWN_ERROR = '10000', //未知错误
   USER_ID_INVALID = '100001', //用户id无效

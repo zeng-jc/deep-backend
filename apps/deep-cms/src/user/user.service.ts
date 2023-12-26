@@ -6,8 +6,11 @@ import { RoleEntity, UserEntity } from '@app/deep-orm/entities';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CacheService } from '@app/deep-cache';
-import { DeepHttpException } from '@app/common';
-import { cmsStatusCode } from '@app/common/ResStatusCode/cms.statusCode';
+import {
+  DeepHttpException,
+  CmsErrorMsg,
+  CmsErrorCode,
+} from '@app/common/ExceptionFilter';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '../common/service/email.service';
 
@@ -27,7 +30,10 @@ export class UserService {
       where: { id: assignRoleUserDto.roleId },
     });
     if (!role)
-      throw new DeepHttpException('角色不存在', cmsStatusCode.ROLE_NOT_EXIST);
+      throw new DeepHttpException(
+        CmsErrorMsg.ROLE_EXIST,
+        CmsErrorCode.ROLE_NOT_EXIST,
+      );
     assignRoleUserDto;
     await this.findOneUser(assignRoleUserDto.userId);
     return this.userRepo.save({
@@ -108,7 +114,10 @@ export class UserService {
       where: { id },
     });
     if (!user) {
-      throw new DeepHttpException('用户不存在', cmsStatusCode.USER_ID_INVALID);
+      throw new DeepHttpException(
+        CmsErrorMsg.USER_ID_INVALID,
+        CmsErrorCode.USER_ID_INVALID,
+      );
     }
     this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;

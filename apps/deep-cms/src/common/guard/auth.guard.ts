@@ -5,7 +5,11 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { DeepHttpException, cmsStatusCode } from '@app/common';
+import {
+  DeepHttpException,
+  CmsErrorMsg,
+  CmsErrorCode,
+} from '@app/common/ExceptionFilter';
 import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/deep-orm';
@@ -57,7 +61,10 @@ export class AuthGuard implements CanActivate {
     );
 
     if (!isContainPermission) {
-      throw new DeepHttpException('权限不足', cmsStatusCode.PERMISSION_DENIED);
+      throw new DeepHttpException(
+        CmsErrorMsg.PERMISSION_DENIED,
+        CmsErrorCode.PERMISSION_DENIED,
+      );
     }
     return true;
   }

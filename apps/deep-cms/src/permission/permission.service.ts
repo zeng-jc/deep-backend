@@ -4,7 +4,11 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PermissionEntity, UserEntity } from '@app/deep-orm';
 import { Repository } from 'typeorm';
-import { DeepHttpException, cmsStatusCode } from '@app/common';
+import {
+  DeepHttpException,
+  CmsErrorMsg,
+  CmsErrorCode,
+} from '@app/common/ExceptionFilter';
 
 @Injectable()
 export class PermissionService {
@@ -40,8 +44,8 @@ export class PermissionService {
     });
     if (res)
       throw new DeepHttpException(
-        '权限已经存在',
-        cmsStatusCode.PERMISSION_EXIST,
+        CmsErrorMsg.PERMISSION_EXIST,
+        CmsErrorCode.PERMISSION_EXIST,
       );
     const permission = new PermissionEntity();
     permission.name = createPermissionDto.name;
