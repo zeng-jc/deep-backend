@@ -4,6 +4,8 @@ import { HttpExceptionFilter } from '@app/common/ExceptionFilter';
 import { ResponseInterceptor } from '@app/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
+const PORT = process.env.PORT ?? 3003;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -17,7 +19,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-docs', app, document);
-  await app.listen(3003);
+  await app.listen(PORT);
 }
 
 bootstrap();
