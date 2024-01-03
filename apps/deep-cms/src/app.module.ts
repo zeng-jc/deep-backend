@@ -20,8 +20,8 @@ import { AuthGuard } from './common/guard/auth.guard';
       username: 'root',
       password: '123',
       database: 'coderhub',
-      retryDelay: 500, //重试连接数据库间隔
-      retryAttempts: 10, //重试连接数据库的次数
+      retryDelay: 500,
+      retryAttempts: 5,
       synchronize: true,
       autoLoadEntities: true,
     }),
