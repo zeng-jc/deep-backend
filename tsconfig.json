@@ -41,6 +41,12 @@
       ],
       "@app/deep-amqp/*": [
         "libs/deep-amqp/src/*"
+      ],
+      "@app/deep-db": [
+        "libs/deep-db/src"
+      ],
+      "@app/deep-db/*": [
+        "libs/deep-db/src/*"
       ]
     }
   }

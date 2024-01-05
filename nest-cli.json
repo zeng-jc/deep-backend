@@ -72,6 +72,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/deep-amqp/tsconfig.lib.json"
       }
+    },
+    "deep-db": {
+      "type": "library",
+      "root": "libs/deep-db",
+      "entryFile": "index",
+      "sourceRoot": "libs/deep-db/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/deep-db/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -2,7 +2,6 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { CacheModule } from '@app/deep-cache';
@@ -10,21 +9,11 @@ import { DeepAmqpModule } from '@app/deep-amqp';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './common/guard/auth.guard';
+import { DeepDbModule } from '@app/deep-db';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root',
-      password: '123',
-      database: 'coderhub',
-      retryDelay: 500,
-      retryAttempts: 5,
-      synchronize: true,
-      autoLoadEntities: true,
-    }),
+    DeepDbModule,
     CacheModule,
     DeepAmqpModule,
     UserModule,

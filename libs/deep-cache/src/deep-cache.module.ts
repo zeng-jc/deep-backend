@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { CacheService } from './deep-cache.service';
 import { createClient } from 'redis';
 import { REDIS_CLIENT } from './constant';
+import { cacheConfig } from './deep-cache.config';
 @Global()
 @Module({
   providers: [
@@ -9,12 +10,7 @@ import { REDIS_CLIENT } from './constant';
     {
       provide: REDIS_CLIENT,
       async useFactory() {
-        const client = createClient({
-          socket: {
-            host: '127.0.0.1',
-            port: 6379,
-          },
-        });
+        const client = createClient(cacheConfig);
         await client.connect();
         return client;
       },
