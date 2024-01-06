@@ -3,6 +3,13 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/deep-backend/src",
   "compilerOptions": {
+    "assets": [
+      {
+        "include": "**/*.proto",
+        "watchAssets": true
+      }
+    ],
+    "watchAssets": true,
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/deep-backend/tsconfig.app.json"
