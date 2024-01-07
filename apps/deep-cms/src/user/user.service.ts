@@ -49,7 +49,7 @@ export class UserService {
   async userExist(username: string): Promise<number> {
     return await this.userRepo.count({ where: { username } });
   }
-
+  // TODO: 密码加密
   async createUser(createUserDto: CreateUserDto) {
     if ((await this.userExist(createUserDto.username)) !== 0)
       return 'user exist';
