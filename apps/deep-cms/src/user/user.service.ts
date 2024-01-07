@@ -12,7 +12,7 @@ import {
   CmsErrorCode,
 } from '@app/common/ExceptionFilter';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
-import { EmailService } from '../common/service/email.service';
+import { EmailService } from '@app/common/emailService/email.service';
 
 @Injectable()
 export class UserService {
