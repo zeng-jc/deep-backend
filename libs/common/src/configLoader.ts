@@ -7,10 +7,7 @@
 // );
 import { resolve } from 'path';
 
-export function configLoader<T extends object, K extends keyof T>(
-  config: T,
-  key: K,
-): any {
+export function configLoader(key: string): string {
   let configFile;
   try {
     const fileName = `${process.env.APP_ENV ?? 'local'}.config.js`;
@@ -20,5 +17,5 @@ export function configLoader<T extends object, K extends keyof T>(
   }
   console.log('configFile', configFile);
   console.log('process.env', process.env.APP_ENV);
-  return config[key];
+  return key;
 }

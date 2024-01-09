@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { DeepAuthModule } from './deep-auth.module';
+import { AppModule } from './app.module';
 
 const PORT = process.env.PORT ?? 3001;
 
 async function bootstrap() {
-  const app = await NestFactory.create(DeepAuthModule);
+  const app = await NestFactory.create(AppModule);
   await app.listen(PORT);
 }
 
