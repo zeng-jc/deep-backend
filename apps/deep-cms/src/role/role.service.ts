@@ -1,27 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PermissionEntity, RoleEntity } from '@app/deep-orm';
-import { In, Repository } from 'typeorm';
+import { RoleEntity } from '@app/deep-orm';
+import { In } from 'typeorm';
 import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
 } from '@app/common/exceptionFilter';
 import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class RoleService {
-  constructor(
-    @InjectRepository(RoleEntity)
-    private readonly roleRepo: Repository<RoleEntity>,
-    @InjectRepository(PermissionEntity)
-    private readonly permissionRepo: Repository<PermissionEntity>,
-  ) {}
+  constructor(private readonly database: DatabaseService) {}
 
   async createRole(createRoleDto: CreateRoleDto) {
-    const res = await this.roleRepo.findOne({
+    const res = await this.database.roleRepo.findOne({
       where: { name: createRoleDto.name },
     });
     if (res)
@@ -32,11 +27,11 @@ export class RoleService {
     const role = new RoleEntity();
     role.name = createRoleDto.name;
     role.desc = createRoleDto.desc;
-    return this.roleRepo.save(role);
+    return this.database.roleRepo.save(role);
   }
 
   async assignPermissions(assignPermissionRoleDto: AssignPermissionRoleDto) {
-    const permissions = await this.permissionRepo.find({
+    const permissions = await this.database.permissionRepo.find({
       where: {
         id: In(assignPermissionRoleDto.permissionIds),
       },
@@ -47,18 +42,18 @@ export class RoleService {
         CmsErrorCode.PERMISSION_NOT_EXIST,
       );
     // DOTO：判断权限是否已经分配
-    return this.roleRepo.save({
+    return this.database.roleRepo.save({
       permissions,
       id: assignPermissionRoleDto.roleId,
     });
   }
 
   findAllRole() {
-    return this.roleRepo.find();
+    return this.database.roleRepo.find();
   }
 
   findOneRole(id: number) {
-    return this.roleRepo.findOne({
+    return this.database.roleRepo.findOne({
       where: {
         id,
       },
@@ -69,10 +64,10 @@ export class RoleService {
     const role = new RoleEntity();
     role.name = updateRoleDto.name;
     role.desc = updateRoleDto.desc;
-    return this.roleRepo.update(id, role);
+    return this.database.roleRepo.update(id, role);
   }
 
   removeRole(id: number) {
-    return this.roleRepo.delete(id);
+    return this.database.roleRepo.delete(id);
   }
 }

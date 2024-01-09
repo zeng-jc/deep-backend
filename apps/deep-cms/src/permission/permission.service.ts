@@ -1,26 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PermissionEntity, UserEntity } from '@app/deep-orm';
-import { Repository } from 'typeorm';
+import { PermissionEntity } from '@app/deep-orm';
 import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
 } from '@app/common/exceptionFilter';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class PermissionService {
-  constructor(
-    @InjectRepository(PermissionEntity)
-    private readonly permissionRepo: Repository<PermissionEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userRepo: Repository<UserEntity>,
-  ) {}
+  constructor(private readonly database: DatabaseService) {}
 
   async findPermissions(id: number) {
-    const userInfo = await this.userRepo.findOne({
+    const userInfo = await this.database.userRepo.findOne({
       relations: ['roles', 'roles.permissions'],
       where: {
         id,
@@ -37,7 +31,7 @@ export class PermissionService {
   }
 
   async createPermission(createPermissionDto: CreatePermissionDto) {
-    const res = await this.permissionRepo.findOne({
+    const res = await this.database.permissionRepo.findOne({
       where: {
         name: createPermissionDto.name,
       },
@@ -50,15 +44,15 @@ export class PermissionService {
     const permission = new PermissionEntity();
     permission.name = createPermissionDto.name;
     permission.desc = createPermissionDto.desc;
-    return this.permissionRepo.save(permission);
+    return this.database.permissionRepo.save(permission);
   }
 
   findAllPermission() {
-    return this.permissionRepo.find();
+    return this.database.permissionRepo.find();
   }
 
   findOnePermission(id: number) {
-    return this.permissionRepo.findOne({
+    return this.database.permissionRepo.findOne({
       where: {
         id,
       },
@@ -69,10 +63,10 @@ export class PermissionService {
     const permission = new PermissionEntity();
     permission.name = updatePermissionDto.name;
     permission.desc = updatePermissionDto.desc;
-    return this.permissionRepo.update(id, permission);
+    return this.database.permissionRepo.update(id, permission);
   }
 
   removePermission(id: number) {
-    return this.permissionRepo.delete(id);
+    return this.database.permissionRepo.delete(id);
   }
 }
