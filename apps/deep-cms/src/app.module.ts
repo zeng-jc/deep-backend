@@ -10,12 +10,14 @@ import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './common/guard/auth.guard';
 import { DeepDbModule } from '@app/deep-db';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
     DeepDbModule,
     CacheModule,
     DeepAmqpModule,
+    DatabaseModule,
     UserModule,
     ArticleModule,
     RoleModule,

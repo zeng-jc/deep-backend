@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { RoleEntity, UserEntity } from '@app/deep-orm/entities';
-import { Like, Repository } from 'typeorm';
+import { UserEntity } from '@app/deep-orm/entities';
+import { Like } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
 import { CacheService } from '@app/deep-cache';
 import {
@@ -13,20 +12,18 @@ import {
 } from '@app/common/exceptionFilter';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '@app/common/emailService/email.service';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepo: Repository<UserEntity>,
-    @InjectRepository(RoleEntity)
-    private readonly roleRepo: Repository<RoleEntity>,
+    private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
     private readonly emailService: EmailService,
   ) {}
 
   async assginRole(assignRoleUserDto: AssignRoleUserDto) {
-    const role = await this.roleRepo.findOne({
+    const role = await this.database.roleRepo.findOne({
       where: { id: assignRoleUserDto.roleId },
     });
     if (!role)
@@ -36,18 +33,18 @@ export class UserService {
       );
     assignRoleUserDto;
     await this.findOneUser(assignRoleUserDto.userId);
-    return this.userRepo.save({
+    return this.database.userRepo.save({
       roles: [role],
       id: assignRoleUserDto.userId,
     });
   }
 
   async emailExist(email: string): Promise<number> {
-    return await this.userRepo.count({ where: { email } });
+    return await this.database.userRepo.count({ where: { email } });
   }
 
   async userExist(username: string): Promise<number> {
-    return await this.userRepo.count({ where: { username } });
+    return await this.database.userRepo.count({ where: { username } });
   }
   // TODO: 密码加密
   async createUser(createUserDto: CreateUserDto) {
@@ -75,7 +72,7 @@ export class UserService {
       createUserDto.email,
       createUserDto.nickname,
     );
-    return this.userRepo.save(user);
+    return this.database.userRepo.save(user);
   }
 
   async findMultiUser(query: QueryUserDto) {
@@ -83,7 +80,7 @@ export class UserService {
     keywords = keywords ?? '';
     const curpage = Number.parseInt(query.curpage);
     const pagesize = Number.parseInt(query.pagesize);
-    const [data, total] = await this.userRepo.findAndCount({
+    const [data, total] = await this.database.userRepo.findAndCount({
       relations: ['avatar', 'roles'],
       where: [
         {
@@ -109,7 +106,7 @@ export class UserService {
   async findOneUser(id: number) {
     const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
-    const user = await this.userRepo.findOne({
+    const user = await this.database.userRepo.findOne({
       relations: ['avatar', 'roles', 'roles.permissions'],
       where: { id },
     });
@@ -139,21 +136,23 @@ export class UserService {
     user.major = updateUserDto.major;
     user.position = updateUserDto.position;
     user.github = updateUserDto.github;
-    return this.userRepo.update(id, user);
+    return this.database.userRepo.update(id, user);
   }
 
   async removeUser(id: number) {
-    const data = await this.userRepo.delete(id);
+    const data = await this.database.userRepo.delete(id);
     if (data.affected !== 0)
       await this.cacheService.del(`user.findOneUser.${id}`);
     return data;
   }
 
   async lockUser(id: string) {
-    const user = await this.userRepo.findOne({ where: { id: +id } });
+    const user = await this.database.userRepo.findOne({
+      where: { id: +id },
+    });
     if (user) {
       user.status = user.status === 0 ? 1 : 0;
-      return this.userRepo.save(user);
+      return this.database.userRepo.save(user);
     } else {
       return 'operator failed';
     }
