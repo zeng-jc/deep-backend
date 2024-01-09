@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { SigninAuthDto } from './dto/signin-auth.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '@app/deep-orm';
-import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import { resolve } from 'path';
@@ -12,6 +9,7 @@ import {
   AuthErrorMsg,
   DeepHttpException,
 } from '@app/common/exceptionFilter';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class AuthService {
@@ -25,15 +23,12 @@ export class AuthService {
     'utf8',
   );
 
-  constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepo: Repository<UserEntity>,
-  ) {}
+  constructor(private readonly database: DatabaseService) {}
 
   async signin(signinAuthData: SigninAuthDto) {
     const { username, password } = signinAuthData;
 
-    const userInfo = await this.userRepo.findOne({
+    const userInfo = await this.database.userRepo.findOne({
       where: {
         username,
         password,
