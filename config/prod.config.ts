@@ -1,4 +1,4 @@
-module.exports = {
+export const prodConfig = {
   mysql: {
     type: 'mysql',
     host: 'xx',
@@ -30,6 +30,6 @@ module.exports = {
     enableDirectReplyTo: false,
     enableControllerDiscovery: true,
     prefetchCount: 300,
-    defaultSubscribeErrorBehavior: MessageHandlerErrorBehavior.ACK,
+    defaultSubscribeErrorBehavior: 'ACK',
   },
 };

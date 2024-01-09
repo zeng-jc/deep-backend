@@ -1,6 +1,3 @@
-export const cacheConfig = {
-  socket: {
-    host: '127.0.0.1',
-    port: 6379,
-  },
-};
+import { configLoader } from '@app/common/configLoader';
+
+export const cacheConfig = configLoader('redis');

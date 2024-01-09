@@ -1,4 +1,4 @@
-module.exports = {
+export const localConfig = {
   mysql: {
     type: 'mysql',
     host: '127.0.0.1',

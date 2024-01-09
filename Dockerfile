@@ -17,10 +17,12 @@ RUN npm run build deep-cms && \
     npm run build deep-auth && \
     npm run build deep-backend
 
+# 生产
 FROM node:20.10.0-alpine3.17 as production-build
 
-# 生产
-ENV NODE_ENV production
+ARG APP_ENV=production
+
+ENV NODE_ENV=${APP_ENV}
 
 WORKDIR /app
 
@@ -40,4 +42,4 @@ RUN npm install -g pm2
 
 EXPOSE 3001 3002 3003 
 
-CMD ["pm2-runtime", "ecosystem.config.js", "--env", "prod"]
+CMD pm2-runtime ecosystem.config.js --env {APP_ENV}
