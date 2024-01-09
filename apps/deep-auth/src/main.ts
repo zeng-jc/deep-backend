@@ -12,8 +12,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('deep-cms api docs')
-    .setDescription('deep-cms api接口文档')
+    .setTitle('deep-auth api docs')
+    .setDescription('deep-auth api接口文档')
     .setVersion('1.0')
     .addTag('user')
     .build();
