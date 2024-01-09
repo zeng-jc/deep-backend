@@ -8,7 +8,7 @@ import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
-} from '@app/common/ExceptionFilter';
+} from '@app/common/exceptionFilter';
 import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CmsErrorCode } from './ResStatusCode/cms.ErrorCode';
-import { CmsErrorMsg } from './ResStatusCode/cms.ErrorMsg';
-import { AuthErrorCode, AuthErrorMsg } from './ResStatusCode';
+import { CmsErrorCode } from './resStatusCode/cms.ErrorCode';
+import { CmsErrorMsg } from './resStatusCode/cms.ErrorMsg';
+import { AuthErrorCode, AuthErrorMsg } from './resStatusCode';
 
 type ErrMsg = CmsErrorMsg | AuthErrorMsg;
 type ErrCode = CmsErrorCode | AuthErrorCode;

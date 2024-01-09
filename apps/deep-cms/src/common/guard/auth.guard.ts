@@ -9,7 +9,7 @@ import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
-} from '@app/common/ExceptionFilter';
+} from '@app/common/exceptionFilter';
 import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/deep-orm';

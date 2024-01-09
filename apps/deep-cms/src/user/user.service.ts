@@ -10,7 +10,7 @@ import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
-} from '@app/common/ExceptionFilter';
+} from '@app/common/exceptionFilter';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '@app/common/emailService/email.service';
 

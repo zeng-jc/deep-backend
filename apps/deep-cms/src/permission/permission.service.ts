@@ -8,7 +8,7 @@ import {
   DeepHttpException,
   CmsErrorMsg,
   CmsErrorCode,
-} from '@app/common/ExceptionFilter';
+} from '@app/common/exceptionFilter';
 
 @Injectable()
 export class PermissionService {

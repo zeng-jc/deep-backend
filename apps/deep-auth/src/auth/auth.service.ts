@@ -11,7 +11,7 @@ import {
   AuthErrorCode,
   AuthErrorMsg,
   DeepHttpException,
-} from '@app/common/ExceptionFilter';
+} from '@app/common/exceptionFilter';
 
 @Injectable()
 export class AuthService {
