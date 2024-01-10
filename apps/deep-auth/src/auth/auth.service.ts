@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SigninAuthDto } from './dto/signin-auth.dto';
-import * as fs from 'fs';
+// import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import { resolve } from 'path';
 import { TokenPayload } from '../common/interface/tokenPayload.interface';
 import {
   AuthErrorCode,
@@ -10,20 +9,14 @@ import {
   DeepHttpException,
 } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
+import { SecretKeyService } from '@app/common/secretKey/secretKey.service';
 
 @Injectable()
 export class AuthService {
-  private PRIVATE_KEY: string = fs.readFileSync(
-    resolve(__dirname, './secretKey/private.key'),
-    'utf8',
-  );
-
-  private PUBLIC_KEY: string = fs.readFileSync(
-    resolve(__dirname, './secretKey/public.key'),
-    'utf8',
-  );
-
-  constructor(private readonly database: DatabaseService) {}
+  constructor(
+    private readonly database: DatabaseService,
+    private readonly secretKey: SecretKeyService,
+  ) {}
 
   async signin(signinAuthData: SigninAuthDto) {
     const { username, password } = signinAuthData;
@@ -54,7 +47,7 @@ export class AuthService {
   }
 
   createToken<T>(payload: T): string {
-    return jwt.sign(payload, this.PRIVATE_KEY, {
+    return jwt.sign(payload, this.secretKey.getPrivateKey(), {
       algorithm: 'RS256',
       expiresIn: 60 * 60 * 24,
     });
@@ -71,7 +64,9 @@ export class AuthService {
   verify(token: string): TokenPayload {
     let result;
     try {
-      result = jwt.verify(token, this.PUBLIC_KEY, { algorithms: ['RS256'] });
+      result = jwt.verify(token, this.secretKey.getPublicKey(), {
+        algorithms: ['RS256'],
+      });
     } catch (error) {
       throw new DeepHttpException(
         AuthErrorMsg.TOKEN_INVALID,

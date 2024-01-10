@@ -5,12 +5,7 @@
   "compilerOptions": {
     "assets": [
       {
-        "include": "**/*.proto",
-        "watchAssets": true
-      },
-      {
-        "include": "**/*.key",
-        "watchAssets": true
+        "include": "**/*.proto"
       }
     ],
     "watchAssets": true,

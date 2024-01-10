@@ -34,6 +34,9 @@ COPY --from=build-stage /app/package.json /app/package.json
 
 COPY --from=build-stage /app/ecosystem.config.js /app/ecosystem.config.js
 
+COPY /secretKey/private.Key .
+
+
 RUN npm config set registry https://registry.npmmirror.com/
 
 RUN npm install --production
