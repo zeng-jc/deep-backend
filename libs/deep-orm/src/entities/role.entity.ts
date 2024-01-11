@@ -15,7 +15,7 @@ export class RoleEntity {
   id!: number;
   @Column({ type: 'varchar', length: 255, unique: true })
   name!: string;
-  @Column({ type: 'varchar', length: 255, default: '' })
+  @Column({ type: 'varchar', length: 255 })
   desc: string;
   @CreateDateColumn()
   createAt!: Date;

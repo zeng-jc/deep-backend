@@ -30,25 +30,25 @@ export class UserEntity {
   nickname!: string;
   @Column({ type: 'enum', enum: [0, 1, 2], default: 2 })
   gender?: number;
-  @Column({ type: 'varchar', length: 255, default: '', unique: true })
+  @Column({ type: 'varchar', length: 255, unique: true })
   email?: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
-  @Column({ type: 'varchar', length: 255, default: '' })
+  @Column({ type: 'varchar', length: 255 })
   bio?: string;
   @Column({ type: 'tinyint', default: 1 })
   level?: number;
-  @Column({ type: 'date', default: null })
+  @Column({ type: 'date' })
   birthday?: Date;
-  @Column({ type: 'varchar', length: 30, default: '' })
+  @Column({ type: 'varchar', length: 30 })
   phone?: string;
-  @Column({ type: 'varchar', length: 100, default: '' })
+  @Column({ type: 'varchar', length: 100 })
   school?: string;
-  @Column({ type: 'varchar', length: 255, default: '' })
+  @Column({ type: 'varchar', length: 255 })
   major?: string;
-  @Column({ type: 'varchar', length: 50, default: '' })
+  @Column({ type: 'varchar', length: 50 })
   position?: string;
-  @Column({ type: 'varchar', length: 255, default: '' })
+  @Column({ type: 'varchar', length: 255 })
   github?: string;
   @CreateDateColumn({ type: 'timestamp' })
   createAt: Date;
