@@ -18,6 +18,7 @@ import { DeepDbModule } from '@app/deep-db';
 import { DatabaseModule } from './database/database.module';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middleware';
+import { MomentModule } from './moment/moment.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middle
     ArticleModule,
     RoleModule,
     PermissionModule,
+    MomentModule,
   ],
   controllers: [AppController],
   providers: [

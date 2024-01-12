@@ -12,6 +12,7 @@ import {
 import { AvatarEntity } from '@app/deep-orm/entities';
 import { ArticleEntity } from '@app/deep-orm/entities';
 import { RoleEntity } from './role.entity';
+import { MomentEntity } from './moment.entity';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
@@ -57,6 +58,8 @@ export class UserEntity {
   // 设置双向（反向）关系(设置后可以通过主表联系附表查询)
   @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.user)
   articles: ArticleEntity[];
+  @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.user)
+  moments: MomentEntity[];
   @OneToOne(() => AvatarEntity, (avatarEntity) => avatarEntity.user)
   avatar: AvatarEntity;
   @ManyToMany(() => RoleEntity)

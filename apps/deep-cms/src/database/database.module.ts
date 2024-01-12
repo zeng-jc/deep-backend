@@ -9,6 +9,8 @@ import {
   ArticleEntity,
   ArticleCommentEntity,
 } from '@app/deep-orm';
+import { MomentEntity } from '@app/deep-orm/entities/moment.entity';
+import { MomentCommentEntity } from '@app/deep-orm/entities/momentComment.entity';
 
 @Global()
 @Module({
@@ -20,6 +22,8 @@ import {
       PermissionEntity,
       ArticleEntity,
       ArticleCommentEntity,
+      MomentEntity,
+      MomentCommentEntity,
     ]),
   ],
   providers: [DatabaseService],
