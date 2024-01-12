@@ -4,6 +4,7 @@ import {
   RoleEntity,
   PermissionEntity,
   ArticleEntity,
+  ArticleCommentEntity,
 } from '@app/deep-orm';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -22,6 +23,8 @@ export class DatabaseService {
     public readonly permissionRepo: Repository<PermissionEntity>,
     @InjectRepository(ArticleEntity)
     public readonly articleRepo: Repository<ArticleEntity>,
+    @InjectRepository(ArticleCommentEntity)
+    public readonly articleCommentRepo: Repository<ArticleCommentEntity>,
 
     @InjectEntityManager()
     public readonly entityManager: EntityManager,

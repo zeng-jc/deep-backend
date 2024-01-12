@@ -7,6 +7,7 @@ import {
   RoleEntity,
   PermissionEntity,
   ArticleEntity,
+  ArticleCommentEntity,
 } from '@app/deep-orm';
 
 @Global()
@@ -18,6 +19,7 @@ import {
       RoleEntity,
       PermissionEntity,
       ArticleEntity,
+      ArticleCommentEntity,
     ]),
   ],
   providers: [DatabaseService],

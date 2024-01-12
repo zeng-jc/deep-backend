@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities';
+import { ArticleCommentEntity } from './articleComment.entity';
 
 @Entity({ name: 'tbl_article' })
 export class ArticleEntity {
@@ -32,4 +34,9 @@ export class ArticleEntity {
     onUpdate: 'CASCADE',
   })
   user: UserEntity;
+  @OneToMany(
+    () => ArticleCommentEntity,
+    (articleCommentEntity) => articleCommentEntity.article,
+  )
+  articleCommnets: ArticleCommentEntity[];
 }
