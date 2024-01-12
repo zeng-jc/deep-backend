@@ -38,7 +38,7 @@ export class UserEntity {
   bio?: string;
   @Column({ type: 'tinyint', default: 1 })
   level?: number;
-  @Column({ type: 'date' })
+  @Column({ type: 'date', default: null })
   birthday?: Date;
   @Column({ type: 'varchar', length: 30 })
   phone?: string;
