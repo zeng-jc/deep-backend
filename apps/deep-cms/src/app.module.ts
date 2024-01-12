@@ -1,4 +1,9 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,6 +16,8 @@ import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './common/guard/auth.guard';
 import { DeepDbModule } from '@app/deep-db';
 import { DatabaseModule } from './database/database.module';
+import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
+import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middleware';
 
 @Module({
   imports: [
@@ -18,6 +25,7 @@ import { DatabaseModule } from './database/database.module';
     CacheModule,
     DeepAmqpModule,
     DatabaseModule,
+    SecretKeyModule,
     UserModule,
     ArticleModule,
     RoleModule,
@@ -36,4 +44,8 @@ import { DatabaseModule } from './database/database.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(verifyTokenMiddleware).forRoutes('*');
+  }
+}
