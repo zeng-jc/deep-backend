@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,6 +10,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities';
 import { MomentCommentEntity } from './moment_comment.entity';
+import { MomentLabelEntity } from './moment_label.entity';
 
 @Entity({ name: 'tbl_moment' })
 export class MomentEntity {
@@ -39,4 +41,10 @@ export class MomentEntity {
     (momentCommentEntity) => momentCommentEntity.moment,
   )
   momentCommnets: MomentCommentEntity[];
+  @ManyToMany(
+    () => MomentLabelEntity,
+    (momentLabelEntity) => momentLabelEntity.moments,
+    { cascade: true },
+  )
+  momentLabels: MomentLabelEntity[];
 }

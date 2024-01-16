@@ -10,9 +10,11 @@ import {
   ArticleCommentEntity,
   ArticleLabelEntity,
   ArticleLabelRelationEntity,
+  MomentEntity,
+  MomentCommentEntity,
+  MomentLabelEntity,
+  MomentLabelRelationEntity,
 } from '@app/deep-orm';
-import { MomentEntity } from '@app/deep-orm/entities/moment.entity';
-import { MomentCommentEntity } from '@app/deep-orm/entities/moment_comment.entity';
 
 @Global()
 @Module({
@@ -28,6 +30,8 @@ import { MomentCommentEntity } from '@app/deep-orm/entities/moment_comment.entit
       ArticleLabelRelationEntity,
       MomentEntity,
       MomentCommentEntity,
+      MomentLabelEntity,
+      MomentLabelRelationEntity,
     ]),
   ],
   providers: [DatabaseService],

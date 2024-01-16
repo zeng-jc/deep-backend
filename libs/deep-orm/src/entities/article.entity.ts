@@ -43,7 +43,6 @@ export class ArticleEntity {
   @ManyToMany(
     () => ArticleLabelEntity,
     (articleLabelEntity) => articleLabelEntity.articles,
-    { cascade: true },
   )
   articleLabels: ArticleLabelEntity[];
 }

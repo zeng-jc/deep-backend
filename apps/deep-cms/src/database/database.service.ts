@@ -7,6 +7,10 @@ import {
   ArticleCommentEntity,
   ArticleLabelEntity,
   ArticleLabelRelationEntity,
+  MomentEntity,
+  MomentCommentEntity,
+  MomentLabelEntity,
+  MomentLabelRelationEntity,
 } from '@app/deep-orm';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -28,9 +32,17 @@ export class DatabaseService {
     @InjectRepository(ArticleCommentEntity)
     public readonly articleCommentRepo: Repository<ArticleCommentEntity>,
     @InjectRepository(ArticleLabelEntity)
-    public readonly ArticleLabelRepo: Repository<ArticleLabelEntity>,
+    public readonly articleLabelRepo: Repository<ArticleLabelEntity>,
     @InjectRepository(ArticleLabelRelationEntity)
-    public readonly ArticleLabelRelationRepo: Repository<ArticleLabelRelationEntity>,
+    public readonly articleLabelRelationRepo: Repository<ArticleLabelRelationEntity>,
+    @InjectRepository(MomentEntity)
+    public readonly momentEntityRepo: Repository<MomentEntity>,
+    @InjectRepository(MomentCommentEntity)
+    public readonly momentCommentEntityRepo: Repository<MomentCommentEntity>,
+    @InjectRepository(MomentLabelEntity)
+    public readonly momentLabelEntityRepo: Repository<MomentLabelEntity>,
+    @InjectRepository(MomentLabelRelationEntity)
+    public readonly momentLabelRelationEntityRepo: Repository<MomentLabelRelationEntity>,
 
     @InjectEntityManager()
     public readonly entityManager: EntityManager,

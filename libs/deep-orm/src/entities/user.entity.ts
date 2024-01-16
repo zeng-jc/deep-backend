@@ -63,6 +63,6 @@ export class UserEntity {
   @OneToOne(() => AvatarEntity, (avatarEntity) => avatarEntity.user)
   avatar: AvatarEntity;
   @ManyToMany(() => RoleEntity)
-  @JoinTable({ name: 'relation_user_role' })
+  @JoinTable({ name: 'tbl_user_role_relation' })
   roles: RoleEntity[];
 }

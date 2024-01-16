@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ArticleEntity } from './article.entity';
+import { MomentEntity } from './moment.entity';
 
-@Entity({ name: 'tbl_article_label' })
-export class ArticleLabelEntity {
+@Entity({ name: 'tbl_moment_label' })
+export class MomentLabelEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ unique: true })
@@ -18,9 +18,6 @@ export class ArticleLabelEntity {
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  @OneToMany(
-    () => ArticleEntity,
-    (articleEntity) => articleEntity.articleLabels,
-  )
-  articles: ArticleEntity[];
+  @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.momentLabels)
+  moments: MomentEntity[];
 }

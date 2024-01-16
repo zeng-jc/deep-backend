@@ -23,7 +23,7 @@ export class RoleEntity {
   updateAt!: Date;
   @ManyToMany(() => PermissionEntity)
   @JoinTable({
-    name: 'relation_role_permission',
+    name: 'tbl_role_permission_relation',
   })
   permissions: PermissionEntity[];
 }
