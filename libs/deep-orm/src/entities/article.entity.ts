@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -31,7 +30,6 @@ export class ArticleEntity {
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  // 设置多对一的关联关系
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
@@ -47,7 +45,5 @@ export class ArticleEntity {
     (articleLabelEntity) => articleLabelEntity.articles,
     { cascade: true },
   )
-  // @JoinTable({ name: 'tbl_article_label_relation' })
-  @JoinTable()
   articleLabels: ArticleLabelEntity[];
 }
