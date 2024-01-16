@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { ArticleCommentEntity } from './articleComment.entity';
-import { ArticleLabelEntity } from './articleLabel.entity';
+import { ArticleCommentEntity } from './article_comment.entity';
+import { ArticleLabelEntity } from './article_label.entity';
 
 @Entity({ name: 'tbl_article' })
 export class ArticleEntity {

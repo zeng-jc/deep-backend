@@ -12,7 +12,7 @@ import {
   ArticleLabelRelationEntity,
 } from '@app/deep-orm';
 import { MomentEntity } from '@app/deep-orm/entities/moment.entity';
-import { MomentCommentEntity } from '@app/deep-orm/entities/momentComment.entity';
+import { MomentCommentEntity } from '@app/deep-orm/entities/moment_comment.entity';
 
 @Global()
 @Module({

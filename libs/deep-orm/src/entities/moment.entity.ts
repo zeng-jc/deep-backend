@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities';
-import { MomentCommentEntity } from './momentComment.entity';
+import { MomentCommentEntity } from './moment_comment.entity';
 
 @Entity({ name: 'tbl_moment' })
 export class MomentEntity {

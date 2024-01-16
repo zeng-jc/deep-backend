@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ArticleEntity } from './article.entity';
-import { ArticleLabelEntity } from './articleLabel.entity';
+import { ArticleLabelEntity } from './article_label.entity';
 
 @Entity({ name: 'tbl_article_label_relation' })
 export class ArticleLabelRelationEntity {
