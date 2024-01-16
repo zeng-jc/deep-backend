@@ -2,13 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '@app/deep-orm/entities';
+import { UserEntity } from './user.entity';
 import { ArticleCommentEntity } from './articleComment.entity';
+import { ArticleLabelEntity } from './articleLabel.entity';
 
 @Entity({ name: 'tbl_article' })
 export class ArticleEntity {
@@ -39,4 +42,12 @@ export class ArticleEntity {
     (articleCommentEntity) => articleCommentEntity.article,
   )
   articleCommnets: ArticleCommentEntity[];
+  @ManyToMany(
+    () => ArticleLabelEntity,
+    (articleLabelEntity) => articleLabelEntity.articles,
+    { cascade: true },
+  )
+  // @JoinTable({ name: 'tbl_article_label_relation' })
+  @JoinTable()
+  articleLabels: ArticleLabelEntity[];
 }
