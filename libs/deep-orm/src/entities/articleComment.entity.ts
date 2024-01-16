@@ -18,9 +18,9 @@ export class ArticleCommentEntity {
   @Column({ default: 0 })
   likes: number;
   @Column()
-  create_At: Date;
+  createAt: Date;
   @Column()
-  update_At: Date;
+  updateAt: Date;
   @ManyToOne(() => ArticleEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
