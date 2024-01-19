@@ -5,7 +5,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 @Injectable()
 export class ArticleService {
   create(_createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+    return 'adds a new article';
   }
 
   findAll() {
