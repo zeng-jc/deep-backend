@@ -19,13 +19,13 @@ export class ArticleEntity {
   @Column({ type: 'enum', enum: [0, 1], default: 0 })
   status!: number;
   @Column({ length: 30 })
-  name: string;
+  name!: string;
   @Column()
-  cover: string;
+  cover?: string;
   @Column()
-  imges: string;
+  images?: string;
   @Column({ type: 'text' })
-  content: string;
+  content!: string;
   @CreateDateColumn()
   createAt: Date;
   @UpdateDateColumn()

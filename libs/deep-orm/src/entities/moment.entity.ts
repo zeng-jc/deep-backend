@@ -18,19 +18,16 @@ export class MomentEntity {
   id: number;
   @Column({ type: 'enum', enum: [0, 1], default: 0 })
   status!: number;
-  @Column({ length: 30 })
-  name: string;
   @Column()
-  cover: string;
+  images?: string;
   @Column()
-  imges: string;
+  video?: string;
   @Column({ type: 'text' })
-  content: string;
+  content!: string;
   @CreateDateColumn()
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  // 设置多对一的关联关系
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

@@ -6,18 +6,25 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { UpdateMomentDto } from './dto/update-moment.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('moment')
 export class MomentController {
   constructor(private readonly momentService: MomentService) {}
 
   @Post()
-  create(@Body() createMomentDto: CreateMomentDto) {
-    return this.momentService.create(createMomentDto);
+  @UseInterceptors(FilesInterceptor('momentImages'))
+  create(
+    @UploadedFiles() files: object[],
+    @Body() createMomentDto: CreateMomentDto,
+  ) {
+    return this.momentService.create(files, createMomentDto);
   }
 
   @Get()

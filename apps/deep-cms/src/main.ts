@@ -3,11 +3,14 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@app/common/exceptionFilter';
 import { ResponseInterceptor } from '@app/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 const PORT = process.env.PORT ?? 3003;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useStaticAssets(join(__dirname, '../images'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
   const config = new DocumentBuilder()
