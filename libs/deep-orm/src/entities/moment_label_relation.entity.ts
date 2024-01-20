@@ -22,10 +22,10 @@ export class MomentLabelRelationEntity {
   @UpdateDateColumn()
   updateAt: Date;
   @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.momentLabels)
-  public article: MomentEntity;
+  public moment: MomentEntity;
   @ManyToOne(
     () => MomentLabelEntity,
     (momentLabelEntity) => momentLabelEntity.moments,
   )
-  public articleLabel: MomentLabelEntity;
+  public momentLabel: MomentLabelEntity;
 }

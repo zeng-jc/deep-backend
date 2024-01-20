@@ -22,7 +22,7 @@ export class ArticleEntity {
   name!: string;
   @Column()
   cover?: string;
-  @Column()
+  @Column({ default: '' })
   images?: string;
   @Column({ type: 'text' })
   content!: string;

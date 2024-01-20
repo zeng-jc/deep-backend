@@ -34,7 +34,7 @@ export class UserController {
     return this.userService.assginRole(assignRoleUserDto);
   }
 
-  @Permissions('read')
+  @Permissions('query')
   @Get()
   findMultiUser(
     @Query(new PaginationPipe())

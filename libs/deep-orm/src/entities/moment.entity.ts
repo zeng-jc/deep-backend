@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -18,9 +17,9 @@ export class MomentEntity {
   id: number;
   @Column({ type: 'enum', enum: [0, 1], default: 0 })
   status!: number;
-  @Column()
+  @Column({ type: 'text', nullable: true })
   images?: string;
-  @Column()
+  @Column({ type: 'text', nullable: true })
   video?: string;
   @Column({ type: 'text' })
   content!: string;
@@ -38,7 +37,7 @@ export class MomentEntity {
     (momentCommentEntity) => momentCommentEntity.moment,
   )
   momentCommnets: MomentCommentEntity[];
-  @ManyToMany(
+  @OneToMany(
     () => MomentLabelEntity,
     (momentLabelEntity) => momentLabelEntity.moments,
     { cascade: true },
