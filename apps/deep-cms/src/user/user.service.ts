@@ -28,7 +28,7 @@ export class UserService {
     });
     if (!role)
       throw new DeepHttpException(
-        CmsErrorMsg.ROLE_EXIST,
+        CmsErrorMsg.ROLE_NOT_EXIST,
         CmsErrorCode.ROLE_NOT_EXIST,
       );
     assignRoleUserDto;
