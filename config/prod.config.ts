@@ -5,7 +5,7 @@ export const prodConfig = {
     port: 3306,
     username: 'root',
     password: '123',
-    database: 'coderhub',
+    database: 'deep',
     retryDelay: 500,
     retryAttempts: 5,
     synchronize: true,
