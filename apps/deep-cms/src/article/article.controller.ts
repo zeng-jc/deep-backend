@@ -11,7 +11,9 @@ import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from '../common/decorator/auth.decorator';
 
+@Roles('admin')
 @Controller('article')
 @ApiTags('article')
 export class ArticleController {

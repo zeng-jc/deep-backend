@@ -11,7 +11,9 @@ import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from '../common/decorator/auth.decorator';
 
+@Roles('admin')
 @Controller('permission')
 @ApiTags('permission')
 export class PermissionController {

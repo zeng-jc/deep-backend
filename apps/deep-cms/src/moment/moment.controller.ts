@@ -13,7 +13,8 @@ import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { UpdateMomentDto } from './dto/update-moment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-
+import { Roles } from '../common/decorator/auth.decorator';
+@Roles('admin')
 @Controller('moment')
 export class MomentController {
   constructor(private readonly momentService: MomentService) {}
