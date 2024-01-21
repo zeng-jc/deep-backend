@@ -3,7 +3,6 @@
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
@@ -73,3 +72,22 @@ you'd like to join them, please [read more here](https://docs.nestjs.com/support
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## 深谙
+
+**程序员交流的社区，寓意深刻理解和掌握编程技术**
+
+## 项目启动说明
+
+1. 创建deep数据库，导入database中的数据
+2. email.config.ts需要自行创建和配置，没有账号没关系，在`deep-backend/libs/common/emailService/email.config.ts`先写入如下内容
+
+```JavaScript
+// email.config.ts
+export const EMAIL_CONFIG = {};
+export const EMAIL_FROM = '';
+```
+
+3. 公钥和私钥需要自己生成`deep-backend` 目录下创建`secretKey`目录，继续创建`private.key`和`public.key`（提示：这两个文件可以通过git生成）
+
+4. 数据库第一个用户是管理员，有后台接口权限不能删除，否则要去数据库中自己配置权限
