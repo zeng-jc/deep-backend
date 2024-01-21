@@ -6,7 +6,7 @@ import {
 import { SecretKeyService } from '@app/common/secretKey/secretKey.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 // TODO
-import { TokenPayload } from 'apps/deep-auth/src/common/interface/tokenPayload.interface';
+import { TokenPayload } from '../interface';
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 
@@ -16,7 +16,7 @@ export class verifyTokenMiddleware implements NestMiddleware {
   use(req: Request, _res: Response, next: (error?: unknown) => void) {
     const token = req.headers.authorization?.split(' ')[1];
     const tokenPayload = this.verify(token);
-    req.headers.tokenPayload = JSON.stringify(tokenPayload);
+    req.headers.authorization = JSON.stringify(tokenPayload);
     next();
   }
   verify(token: string): TokenPayload {

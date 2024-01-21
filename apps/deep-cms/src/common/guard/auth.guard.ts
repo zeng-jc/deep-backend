@@ -13,6 +13,8 @@ import {
 import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/deep-orm';
+import { Request } from 'express';
+import { TokenPayload } from '@app/common';
 
 @Global()
 @Injectable()
@@ -31,8 +33,12 @@ export class AuthGuard implements CanActivate {
     );
     if (!requiredPermissions) return true;
 
-    // 需要通过token拿到用户信息，这里暂时写死，就当登录的是id为1的用户
-    const userId = 1;
+    // 通过token拿到用户信息
+    const req = context.switchToHttp().getRequest<Request>();
+    const userInfo: TokenPayload = JSON.parse(req.headers.authorization);
+
+    const { id: userId } = userInfo;
+
     const cachePermissions = await this.cacheService.get<string[]>(
       `permission.guard.${userId}`,
     );

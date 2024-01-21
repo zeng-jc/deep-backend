@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SigninAuthDto } from './dto/signin-auth.dto';
 // import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import { TokenPayload } from '../common/interface/tokenPayload.interface';
+import { TokenPayload } from '@app/common';
 import {
   AuthErrorCode,
   AuthErrorMsg,
