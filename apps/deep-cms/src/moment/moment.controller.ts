@@ -20,9 +20,9 @@ export class MomentController {
   constructor(private readonly momentService: MomentService) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('momentImages'))
+  @UseInterceptors(FilesInterceptor('images'))
   create(
-    @UploadedFiles() files: object[],
+    @UploadedFiles() files: Express.Multer.File[],
     @Body() createMomentDto: CreateMomentDto,
   ) {
     return this.momentService.create(files, createMomentDto);

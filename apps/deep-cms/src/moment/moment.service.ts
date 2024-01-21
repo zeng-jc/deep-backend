@@ -7,7 +7,7 @@ import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
 @Injectable()
 export class MomentService {
   constructor(private readonly database: DatabaseService) {}
-  async create(files: object[], createMomentDto: CreateMomentDto) {
+  async create(files: Express.Multer.File[], createMomentDto: CreateMomentDto) {
     const user = await this.database.userRepo.findOne({
       where: {
         id: Number(createMomentDto.userId) || 0,
@@ -16,9 +16,7 @@ export class MomentService {
     const moment = new MomentEntity();
 
     if (files.length) {
-      const filenames = new Set([
-        ...files.map((item) => (item as { filename: string }).filename),
-      ]);
+      const filenames = [...files.map((item) => item.filename)];
       const filenamesStr = JSON.stringify(filenames);
       moment.images = filenamesStr;
     }
@@ -52,7 +50,11 @@ export class MomentService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} moment`;
+    return this.database.momentEntityRepo.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, _updateMomentDto: UpdateMomentDto) {
