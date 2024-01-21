@@ -5,8 +5,7 @@ import { ResponseInterceptor } from '@app/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-
-const PORT = process.env.PORT ?? 3003;
+import { configLoader } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,7 +21,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-docs', app, document);
-  await app.listen(PORT);
+  await app.listen(configLoader<{ port: number }>('cmsService').port);
 }
 
 bootstrap();

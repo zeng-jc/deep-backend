@@ -3,6 +3,7 @@ import { CreateMomentDto } from './dto/create-moment.dto';
 import { UpdateMomentDto } from './dto/update-moment.dto';
 import { DatabaseService } from '../database/database.service';
 import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
+import { configLoader } from '@app/common';
 
 @Injectable()
 export class MomentService {
@@ -17,8 +18,7 @@ export class MomentService {
 
     if (files.length) {
       const filenames = [...files.map((item) => item.filename)];
-      const filenamesStr = JSON.stringify(filenames);
-      moment.images = filenamesStr;
+      moment.images = filenames;
     }
     moment.content = createMomentDto.content;
     moment.user = user;
@@ -49,12 +49,19 @@ export class MomentService {
     return `This action returns all moment`;
   }
 
-  findOne(id: number) {
-    return this.database.momentEntityRepo.findOne({
+  async findOne(id: number, protocol: string) {
+    const momentEntity = await this.database.momentEntityRepo.findOne({
       where: {
         id,
       },
     });
+    const { host, port } = configLoader<{ host: string; port: number }>(
+      'cmsService',
+    );
+    momentEntity.images = momentEntity?.images.map(
+      (item) => `${protocol}://${host}:${port}/${item}`,
+    );
+    return momentEntity;
   }
 
   update(id: number, _updateMomentDto: UpdateMomentDto) {

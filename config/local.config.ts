@@ -1,4 +1,8 @@
 export const localConfig = {
+  cmsService: {
+    host: '127.0.0.1',
+    port: 3003,
+  },
   mysql: {
     type: 'mysql',
     host: '127.0.0.1',

@@ -17,10 +17,10 @@ export class MomentEntity {
   id: number;
   @Column({ type: 'enum', enum: [0, 1], default: 0 })
   status!: number;
-  @Column({ type: 'text', nullable: true })
-  images?: string;
-  @Column({ type: 'text', nullable: true })
-  video?: string;
+  @Column({ type: 'simple-array', nullable: true })
+  images?: string[];
+  @Column({ type: 'simple-array', nullable: true })
+  video?: string[];
   @Column({ type: 'text' })
   content!: string;
   @CreateDateColumn()

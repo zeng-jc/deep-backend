@@ -8,12 +8,14 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  Request,
 } from '@nestjs/common';
 import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { UpdateMomentDto } from './dto/update-moment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../common/decorator/auth.decorator';
+
 @Roles('admin')
 @Controller('moment')
 export class MomentController {
@@ -34,8 +36,8 @@ export class MomentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.momentService.findOne(+id);
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.momentService.findOne(+id, req.protocol);
   }
 
   @Patch(':id')
