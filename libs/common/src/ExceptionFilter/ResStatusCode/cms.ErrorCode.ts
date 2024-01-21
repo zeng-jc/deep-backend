@@ -7,7 +7,7 @@ export enum CmsErrorCode {
   PERMISSION_EXIST = '200002', //权限已存在
   PERMISSION_NOT_EXIST = '200003', // 权限不存在
   /** 角色状态码 **/
-  ROLE_EXIST = '300001', //角色已存在
-  /** 角色状态码 **/
-  ROLE_NOT_EXIST = '300002', //角色已存在
+  ROLE_ACCESS_PROHIBITED = '300001', //角色禁止访问
+  ROLE_EXIST = '300002', //角色已存在
+  ROLE_NOT_EXIST = '300003', //角色不存在
 }

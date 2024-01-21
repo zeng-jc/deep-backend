@@ -12,7 +12,9 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
+import { Roles } from '../common/decorator/auth.decorator';
 
+@Roles('admin')
 @Controller('role')
 @ApiTags('role')
 export class RoleController {

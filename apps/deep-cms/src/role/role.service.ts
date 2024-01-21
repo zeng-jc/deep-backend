@@ -41,7 +41,7 @@ export class RoleService {
         CmsErrorMsg.PERMISSION_NOT_EXIST,
         CmsErrorCode.PERMISSION_NOT_EXIST,
       );
-    // DOTO：判断权限是否已经分配
+    // DOTO：还需要判断权限是否已经分配
     return this.database.roleRepo.save({
       permissions,
       id: assignPermissionRoleDto.roleId,

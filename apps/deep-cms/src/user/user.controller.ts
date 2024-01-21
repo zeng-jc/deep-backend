@@ -17,7 +17,7 @@ import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
-import { Permissions } from '../common/decorator/public.decorator';
+import { Permissions } from '../common/decorator/auth.decorator';
 
 @Controller('user')
 @ApiTags('user')
