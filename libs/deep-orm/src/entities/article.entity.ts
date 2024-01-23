@@ -39,10 +39,10 @@ export class ArticleEntity {
     () => ArticleCommentEntity,
     (articleCommentEntity) => articleCommentEntity.article,
   )
-  articleCommnets: ArticleCommentEntity[];
+  commnets: ArticleCommentEntity[];
   @ManyToMany(
     () => ArticleLabelEntity,
     (articleLabelEntity) => articleLabelEntity.articles,
   )
-  articleLabels: ArticleLabelEntity[];
+  labels: ArticleLabelEntity[];
 }

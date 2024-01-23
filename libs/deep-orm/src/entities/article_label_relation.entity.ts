@@ -18,10 +18,7 @@ export class ArticleLabelRelationEntity {
   labelId: string;
   @CreateDateColumn()
   createAt: Date;
-  @ManyToOne(
-    () => ArticleEntity,
-    (articleEntity) => articleEntity.articleLabels,
-  )
+  @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels)
   public article: ArticleEntity;
   @ManyToOne(
     () => ArticleLabelEntity,

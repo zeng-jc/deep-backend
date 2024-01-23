@@ -18,9 +18,6 @@ export class ArticleLabelEntity {
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  @OneToMany(
-    () => ArticleEntity,
-    (articleEntity) => articleEntity.articleLabels,
-  )
+  @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.labels)
   articles: ArticleEntity[];
 }
