@@ -41,7 +41,7 @@ export class MomentService {
         );
       }),
     );
-    moment.momentLabels = momentLables;
+    moment.labels = momentLables;
     return this.database.momentEntityRepo.insert(moment);
   }
 
@@ -54,7 +54,9 @@ export class MomentService {
       where: {
         id,
       },
+      relations: ['commnets'],
     });
+
     const { host, port } = configLoader<{ host: string; port: number }>(
       'cmsService',
     );

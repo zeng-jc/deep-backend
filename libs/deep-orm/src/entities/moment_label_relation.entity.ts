@@ -13,9 +13,9 @@ export class MomentLabelRelationEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  momentId: string;
+  momentId: number;
   @Column()
-  labelId: string;
+  labelId: number;
   @CreateDateColumn()
   createAt: Date;
   @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels)

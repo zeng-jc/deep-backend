@@ -9,7 +9,7 @@ export class MomentCommentEntity {
   moment_id!: number;
   @Column()
   user_id!: number;
-  @Column()
+  @Column({ nullable: true })
   reply_id: number;
   @Column({ type: 'varchar', length: 500 })
   content!: string;
