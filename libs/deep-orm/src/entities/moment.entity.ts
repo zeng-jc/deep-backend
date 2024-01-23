@@ -36,11 +36,11 @@ export class MomentEntity {
     () => MomentCommentEntity,
     (momentCommentEntity) => momentCommentEntity.moment,
   )
-  momentCommnets: MomentCommentEntity[];
+  commnets: MomentCommentEntity[];
   @OneToMany(
     () => MomentLabelEntity,
     (momentLabelEntity) => momentLabelEntity.moments,
     { cascade: true },
   )
-  momentLabels: MomentLabelEntity[];
+  labels: MomentLabelEntity[];
 }

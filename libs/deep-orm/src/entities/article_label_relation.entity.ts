@@ -4,7 +4,6 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { ArticleLabelEntity } from './article_label.entity';
@@ -19,8 +18,6 @@ export class ArticleLabelRelationEntity {
   labelId: string;
   @CreateDateColumn()
   createAt: Date;
-  @UpdateDateColumn()
-  updateAt: Date;
   @ManyToOne(
     () => ArticleEntity,
     (articleEntity) => articleEntity.articleLabels,
@@ -30,5 +27,5 @@ export class ArticleLabelRelationEntity {
     () => ArticleLabelEntity,
     (articleLabelEntity) => articleLabelEntity.articles,
   )
-  public articleLabel: ArticleLabelEntity;
+  public label: ArticleLabelEntity;
 }

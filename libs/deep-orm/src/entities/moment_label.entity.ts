@@ -18,6 +18,6 @@ export class MomentLabelEntity {
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.momentLabels)
+  @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.labels)
   moments: MomentEntity[];
 }

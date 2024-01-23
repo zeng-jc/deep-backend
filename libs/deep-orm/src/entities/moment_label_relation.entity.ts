@@ -4,7 +4,6 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { MomentEntity } from './moment.entity';
 import { MomentLabelEntity } from './moment_label.entity';
@@ -19,13 +18,11 @@ export class MomentLabelRelationEntity {
   labelId: string;
   @CreateDateColumn()
   createAt: Date;
-  @UpdateDateColumn()
-  updateAt: Date;
-  @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.momentLabels)
+  @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels)
   public moment: MomentEntity;
   @ManyToOne(
     () => MomentLabelEntity,
     (momentLabelEntity) => momentLabelEntity.moments,
   )
-  public momentLabel: MomentLabelEntity;
+  public label: MomentLabelEntity;
 }
