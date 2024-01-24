@@ -36,7 +36,7 @@ export class MomentEntity {
     () => MomentCommentEntity,
     (momentCommentEntity) => momentCommentEntity.moment,
   )
-  commnets: MomentCommentEntity[];
+  comments: MomentCommentEntity[];
   @OneToMany(
     () => MomentLabelEntity,
     (momentLabelEntity) => momentLabelEntity.moments,

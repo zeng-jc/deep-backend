@@ -49,7 +49,7 @@ export class RoleService {
   }
 
   findAllRole() {
-    return this.database.roleRepo.find();
+    return this.database.roleRepo.find({ relations: ['permissions'] });
   }
 
   findOneRole(id: number) {
