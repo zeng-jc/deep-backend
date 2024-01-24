@@ -1,12 +1,3 @@
-INSERT INTO deep.tbl_avatar (originalname,filename,encoding,minitype,`size`,`path`,createAt,updateAt,userId) VALUES
-	 ('avatar.jpg','95633947e39f5926bee342d32ed51a3c','7bit','image/jpeg','59927','5926bee342d32ed51a3c.jpg','2023-12-18 09:28:02','2023-12-18 09:28:04',1);
-INSERT INTO deep.tbl_moment (status,content,createAt,updateAt,userId,images,video) VALUES
-	 ('0','666','2024-01-20 21:22:59.217039','2024-01-20 21:22:59.217039',1,NULL,NULL),
-	 ('0','666','2024-01-20 21:27:11.411293','2024-01-20 21:27:11.411293',1,NULL,NULL),
-	 ('0','666','2024-01-20 21:30:21.002948','2024-01-20 21:30:21.002948',1,NULL,NULL);
-INSERT INTO deep.tbl_moment_label (name,createAt,updateAt) VALUES
-	 ('123','2024-01-20 19:36:02.495711','2024-01-20 19:36:02.495711'),
-	 ('222','2024-01-20 19:39:34.785589','2024-01-20 19:39:34.785589');
 INSERT INTO deep.tbl_permission (name,`desc`,createAt,updateAt) VALUES
 	 ('create','创建权限','2023-12-23 17:49:09.848291','2023-12-23 17:49:09.848291'),
 	 ('update','更新权限','2023-12-23 18:17:45.396137','2023-12-23 18:17:45.396137'),
@@ -18,7 +9,8 @@ INSERT INTO deep.tbl_role (name,updateAt,`desc`,createAt) VALUES
 INSERT INTO deep.tbl_role_permission_relation (tblRoleId,tblPermissionId) VALUES
 	 (1,1),
 	 (1,2),
-	 (1,3);
+	 (1,3),
+	 (1,4);
 INSERT INTO deep.tbl_user (username,password,nickname,email,bio,`level`,birthday,school,major,`position`,github,createAt,updateAt,gender,status,phone) VALUES
 	 ('123456','123456','231234','1231231223@qq.com','123123123',1,'2000-07-22','123213','123213','233','xxx','2023-12-16 23:23:41.773728','2024-01-09 09:41:00.767741','1','1','1234566'),
 	 ('12223456','Wa123231@','nick','1231223@qq.com','',1,NULL,'','','','','2023-12-17 11:39:48.129221','2023-12-17 11:39:48.129221','1','1',''),
