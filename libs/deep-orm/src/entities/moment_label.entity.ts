@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { MomentEntity } from './moment.entity';
+import { MomentLabelRelationEntity } from './moment_label_relation.entity';
 
 @Entity({ name: 'tbl_moment_label' })
 export class MomentLabelEntity {
@@ -18,6 +18,9 @@ export class MomentLabelEntity {
   createAt: Date;
   @UpdateDateColumn()
   updateAt: Date;
-  @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.labels)
-  moments: MomentEntity[];
+  @OneToMany(
+    () => MomentLabelRelationEntity,
+    (momentLabelRelationEntity) => momentLabelRelationEntity.label,
+  )
+  moments: MomentLabelRelationEntity[];
 }

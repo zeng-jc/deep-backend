@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '@app/deep-orm/entities';
+import { UserEntity } from './user.entity';
+import { MomentLabelRelationEntity } from './moment_label_relation.entity';
 import { MomentCommentEntity } from './moment_comment.entity';
-import { MomentLabelEntity } from './moment_label.entity';
 
 @Entity({ name: 'tbl_moment' })
 export class MomentEntity {
@@ -38,9 +38,9 @@ export class MomentEntity {
   )
   comments: MomentCommentEntity[];
   @OneToMany(
-    () => MomentLabelEntity,
-    (momentLabelEntity) => momentLabelEntity.moments,
+    () => MomentLabelRelationEntity,
+    (momentLabelRelationEntity) => momentLabelRelationEntity.moment,
     { cascade: true },
   )
-  labels: MomentLabelEntity[];
+  labels: MomentLabelRelationEntity[];
 }

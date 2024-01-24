@@ -34,15 +34,15 @@ export class DatabaseService {
     @InjectRepository(ArticleLabelEntity)
     public readonly articleLabelRepo: Repository<ArticleLabelEntity>,
     @InjectRepository(ArticleLabelRelationEntity)
-    public readonly articleLabelRelationRepo: Repository<ArticleLabelRelationEntity>,
+    public readonly articleLabelRelsRepo: Repository<ArticleLabelRelationEntity>,
     @InjectRepository(MomentEntity)
     public readonly momentEntityRepo: Repository<MomentEntity>,
     @InjectRepository(MomentCommentEntity)
-    public readonly momentCommentEntityRepo: Repository<MomentCommentEntity>,
+    public readonly momentCommentRepo: Repository<MomentCommentEntity>,
     @InjectRepository(MomentLabelEntity)
-    public readonly momentLabelEntityRepo: Repository<MomentLabelEntity>,
+    public readonly momentLabelRepo: Repository<MomentLabelEntity>,
     @InjectRepository(MomentLabelRelationEntity)
-    public readonly momentLabelRelationEntityRepo: Repository<MomentLabelRelationEntity>,
+    public readonly momentLabelRelsRepo: Repository<MomentLabelRelationEntity>,
 
     @InjectEntityManager()
     public readonly entityManager: EntityManager,

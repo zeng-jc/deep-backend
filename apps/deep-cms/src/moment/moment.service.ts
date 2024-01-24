@@ -22,7 +22,7 @@ export class MomentService {
     }
     moment.content = createMomentDto.content;
     moment.user = user;
-    const momentLables = await Promise.all(
+    const momentLableIds = await Promise.all(
       createMomentDto.labels?.map(async (tag) => {
         const momentLabelExisting = await this.database.entityManager.findOne(
           MomentLabelEntity,
@@ -32,17 +32,25 @@ export class MomentService {
             },
           },
         );
-        if (momentLabelExisting) return momentLabelExisting;
+        if (momentLabelExisting) return momentLabelExisting.id;
         const momentLable = new MomentLabelEntity();
         momentLable.name = tag;
-        return await this.database.entityManager.save(
+        const momentLabel = await this.database.entityManager.save(
           MomentLabelEntity,
           momentLable,
         );
+        return momentLabel.id;
       }),
     );
-    moment.labels = momentLables;
-    return this.database.momentEntityRepo.insert(moment);
+    const momentInfo = await this.database.momentEntityRepo.save(moment);
+    const rels = [];
+    for (const id of momentLableIds) {
+      rels.push({
+        labelId: id,
+        momentId: momentInfo.id,
+      });
+    }
+    return this.database.momentLabelRelsRepo.insert(rels);
   }
 
   findAll() {
@@ -54,7 +62,7 @@ export class MomentService {
       where: {
         id,
       },
-      relations: ['commnets'],
+      relations: ['labels'],
     });
 
     const { host, port } = configLoader<{ host: string; port: number }>(
