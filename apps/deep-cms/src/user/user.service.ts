@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from '@app/deep-orm/entities';
 import { Like } from 'typeorm';
-import { QueryUserDto } from './dto/query-user.dto';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { CacheService } from '@app/deep-cache';
 import {
   DeepHttpException,
@@ -75,7 +75,7 @@ export class UserService {
     return this.database.userRepo.save(user);
   }
 
-  async findMultiUser(query: QueryUserDto) {
+  async findMultiUser(query: PaginationQueryDto) {
     let { keywords } = query;
     keywords = keywords ?? '';
     const curpage = Number.parseInt(query.curpage);

@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { QueryUserDto } from './dto/query-user.dto';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
@@ -38,7 +38,7 @@ export class UserController {
   @Get()
   findMultiUser(
     @Query(new PaginationPipe())
-    query: QueryUserDto,
+    query: PaginationQueryDto,
   ) {
     return this.userService.findMultiUser(query);
   }

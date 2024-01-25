@@ -1,4 +1,4 @@
-export class QueryUserDto {
+export class PaginationQueryDto {
   curpage!: string;
   pagesize!: string;
   keywords?: string;
