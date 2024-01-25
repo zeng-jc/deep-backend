@@ -3,18 +3,19 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseInterceptors,
   UploadedFiles,
   Request,
+  Query,
 } from '@nestjs/common';
 import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
-import { UpdateMomentDto } from './dto/update-moment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../common/decorator/auth.decorator';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Roles('admin')
 @Controller('moment')
@@ -31,18 +32,16 @@ export class MomentController {
   }
 
   @Get()
-  findAll() {
-    return this.momentService.findAll();
+  findMultiMoments(
+    @Query(new PaginationPipe()) paginationParams: PaginationQueryDto,
+    @Request() req,
+  ) {
+    return this.momentService.findMultiMoments(paginationParams, req.protocol);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
     return this.momentService.findOne(+id, req.protocol);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMomentDto: UpdateMomentDto) {
-    return this.momentService.update(+id, updateMomentDto);
   }
 
   @Delete(':id')

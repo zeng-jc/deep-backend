@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMomentDto } from './dto/create-moment.dto';
-import { UpdateMomentDto } from './dto/update-moment.dto';
 import { DatabaseService } from '../database/database.service';
 import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
 import { configLoader } from '@app/common';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class MomentService {
@@ -53,8 +54,32 @@ export class MomentService {
     return this.database.momentLabelRelsRepo.insert(rels);
   }
 
-  findAll() {
-    return `This action returns all moment`;
+  async findMultiMoments(paginationParams: PaginationQueryDto, protocol) {
+    let { keywords } = paginationParams;
+    keywords = keywords ?? '';
+    const curpage = Number.parseInt(paginationParams.curpage);
+    const pagesize = Number.parseInt(paginationParams.pagesize);
+    const [moments, count] = await this.database.momentEntityRepo.findAndCount({
+      relations: ['labels'],
+      where: {
+        content: Like(`%${keywords}%`),
+      },
+      order: { id: 'DESC' },
+      skip: pagesize * (curpage - 1),
+      take: pagesize,
+    });
+    const { host, port } = configLoader<{ host: string; port: number }>(
+      'cmsService',
+    );
+    moments.forEach((item) => {
+      item.images = item?.images?.map(
+        (item) => `${protocol}://${host}:${port}/${item}`,
+      );
+    });
+    return {
+      moments,
+      count,
+    };
   }
 
   async findOne(id: number, protocol: string) {
@@ -72,10 +97,6 @@ export class MomentService {
       (item) => `${protocol}://${host}:${port}/${item}`,
     );
     return momentEntity;
-  }
-
-  update(id: number, _updateMomentDto: UpdateMomentDto) {
-    return `This action updates a #${id} moment`;
   }
 
   remove(id: number) {
