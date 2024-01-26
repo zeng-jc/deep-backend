@@ -1,3 +1,4 @@
 export enum AuthErrorCode {
   TOKEN_INVALID = '10000',
+  INVALID_IDENTITY_INFORMATION = '10001',
 }

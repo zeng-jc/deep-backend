@@ -30,8 +30,8 @@ export class AuthService {
 
     if (!userInfo) {
       throw new DeepHttpException(
-        AuthErrorMsg.TOKEN_INVALID,
-        AuthErrorCode.TOKEN_INVALID,
+        AuthErrorMsg.INVALID_IDENTITY_INFORMATION,
+        AuthErrorCode.INVALID_IDENTITY_INFORMATION,
       );
     }
 
