@@ -99,7 +99,8 @@ export class MomentService {
     return momentEntity;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} moment`;
+  async remove(id: number) {
+    // DOTO: 如果该标签下没有任何一篇文章，标签也应该删除
+    return this.database.momentEntityRepo.delete(id);
   }
 }
