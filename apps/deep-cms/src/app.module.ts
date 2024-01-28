@@ -19,6 +19,8 @@ import { DatabaseModule } from './database/database.module';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middleware';
 import { MomentModule } from './moment/moment.module';
+import { MomentCommentModule } from './moment-comment/moment-comment.module';
+import { ArticleCommentModule } from './article-comment/article-comment.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { MomentModule } from './moment/moment.module';
     RoleModule,
     PermissionModule,
     MomentModule,
+    MomentCommentModule,
+    ArticleCommentModule,
   ],
   controllers: [AppController],
   providers: [
