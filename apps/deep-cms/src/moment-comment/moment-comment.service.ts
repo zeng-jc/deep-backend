@@ -33,6 +33,7 @@ export class MomentCommentService {
   }
 
   async findOne(id: number) {
+    // 后期考虑删除avatar表，改为user表的avatar字段
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         momentId: id,
@@ -46,6 +47,6 @@ export class MomentCommentService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} momentComment`;
+    return this.database.momentCommentRepo.delete(id);
   }
 }
