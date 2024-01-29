@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { MomentEntity } from './moment.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'tbl_moment_comment' })
 export class MomentCommentEntity {
@@ -33,4 +34,9 @@ export class MomentCommentEntity {
     onUpdate: 'CASCADE',
   })
   moment: MomentEntity;
+  @ManyToOne(() => UserEntity, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user: UserEntity;
 }

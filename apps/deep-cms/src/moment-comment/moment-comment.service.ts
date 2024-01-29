@@ -32,8 +32,17 @@ export class MomentCommentService {
     return `This action returns all momentComment`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} momentComment`;
+  async findOne(id: number) {
+    const [data, total] = await this.database.momentCommentRepo.findAndCount({
+      where: {
+        momentId: id,
+      },
+      relations: ['user'],
+    });
+    return {
+      data,
+      total,
+    };
   }
 
   remove(id: number) {
