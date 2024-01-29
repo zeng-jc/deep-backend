@@ -1,11 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
-import { UpdateMomentCommentDto } from './dto/update-moment-comment.dto';
+import { DatabaseService } from '../database/database.service';
+import { MomentCommentEntity } from '@app/deep-orm';
+import {
+  CmsErrorCode,
+  CmsErrorMsg,
+  DeepHttpException,
+} from '@app/common/exceptionFilter';
 
 @Injectable()
 export class MomentCommentService {
-  create(createMomentCommentDto: CreateMomentCommentDto) {
-    return 'This action adds a new momentComment' + createMomentCommentDto;
+  constructor(private readonly database: DatabaseService) {}
+  async create(createMomentCommentDto: CreateMomentCommentDto) {
+    const { userId, momentId, content, replyId } = createMomentCommentDto;
+    const comment = new MomentCommentEntity();
+    comment.momentId = parseInt(momentId);
+    comment.userId = parseInt(userId);
+    comment.content = content;
+    comment.replyId = Number(replyId ?? null);
+    try {
+      return await this.database.momentCommentRepo.save(comment);
+    } catch (error) {
+      throw new DeepHttpException(
+        CmsErrorMsg.COMMONET_PARAMETER_VALUE_ERROR,
+        CmsErrorCode.COMMONET_PARAMETER_VALUE_ERROR,
+      );
+    }
   }
 
   findAll() {
@@ -14,12 +34,6 @@ export class MomentCommentService {
 
   findOne(id: number) {
     return `This action returns a #${id} momentComment`;
-  }
-
-  update(id: number, updateMomentCommentDto: UpdateMomentCommentDto) {
-    return (
-      `This action updates a #${id} momentComment` + updateMomentCommentDto
-    );
   }
 
   remove(id: number) {

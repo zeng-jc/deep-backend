@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { MomentCommentService } from './moment-comment.service';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
-import { UpdateMomentCommentDto } from './dto/update-moment-comment.dto';
 
 @Controller('moment-comment')
 export class MomentCommentController {
@@ -28,14 +19,6 @@ export class MomentCommentController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.momentCommentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateMomentCommentDto: UpdateMomentCommentDto,
-  ) {
-    return this.momentCommentService.update(+id, updateMomentCommentDto);
   }
 
   @Delete(':id')

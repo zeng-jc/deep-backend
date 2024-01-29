@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { MomentEntity } from './moment.entity';
 
 @Entity({ name: 'tbl_moment_comment' })
@@ -6,20 +13,20 @@ export class MomentCommentEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({})
-  moment_id!: number;
+  momentId!: number;
   @Column()
-  user_id!: number;
-  @Column({ nullable: true })
-  reply_id: number;
+  userId!: number;
+  @Column()
+  replyId: number;
   @Column({ type: 'varchar', length: 500 })
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   state!: number;
   @Column({ default: 0 })
   likes: number;
-  @Column()
+  @CreateDateColumn()
   createAt: Date;
-  @Column()
+  @UpdateDateColumn()
   updateAt: Date;
   @ManyToOne(() => MomentEntity, {
     onDelete: 'CASCADE',
