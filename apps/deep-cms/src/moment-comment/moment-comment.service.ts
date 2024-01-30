@@ -7,6 +7,7 @@ import {
   CmsErrorMsg,
   DeepHttpException,
 } from '@app/common/exceptionFilter';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Injectable()
 export class MomentCommentService {
@@ -28,11 +29,23 @@ export class MomentCommentService {
     }
   }
 
-  findAll() {
-    return `This action returns all momentComment`;
+  async findMultiCommentComment(query: PaginationQueryDto) {
+    const { keywords, pagesize, curpage } = query;
+    const [data, total] = await this.database.momentCommentRepo.findAndCount({
+      where: {
+        content: keywords ?? '',
+      },
+      order: { id: 'DESC' },
+      skip: Number.parseInt(pagesize) * (Number.parseInt(curpage) - 1),
+      take: Number.parseInt(pagesize),
+    });
+    return {
+      data,
+      total,
+    };
   }
 
-  async findOne(id: number) {
+  async findOneMomentComment(id: number) {
     // 后期考虑删除avatar表，改为user表的avatar字段
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
