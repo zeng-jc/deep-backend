@@ -8,6 +8,7 @@ import {
   DeepHttpException,
 } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class MomentCommentService {
@@ -33,7 +34,7 @@ export class MomentCommentService {
     const { keywords, pagesize, curpage } = query;
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
-        content: keywords ?? '',
+        content: Like(`%${keywords ?? ''}%`),
       },
       order: { id: 'DESC' },
       skip: Number.parseInt(pagesize) * (Number.parseInt(curpage) - 1),
