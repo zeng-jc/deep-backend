@@ -9,7 +9,7 @@ import { configLoader } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets(join(__dirname, '../images'));
+  app.useStaticAssets(join(__dirname, '../assets'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
   const config = new DocumentBuilder()

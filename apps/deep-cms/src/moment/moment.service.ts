@@ -73,7 +73,7 @@ export class MomentService {
     );
     moments.forEach((item) => {
       item.images = item?.images?.map(
-        (item) => `${protocol}://${host}:${port}/${item}`,
+        (item) => `${protocol}://${host}:${port}/moment/${item}`,
       );
     });
     return {
@@ -89,12 +89,12 @@ export class MomentService {
       },
       relations: ['labels'],
     });
-
+    if (!momentEntity) return null;
     const { host, port } = configLoader<{ host: string; port: number }>(
       'cmsService',
     );
     momentEntity.images = momentEntity?.images.map(
-      (item) => `${protocol}://${host}:${port}/${item}`,
+      (item) => `${protocol}://${host}:${port}/moment/${item}`,
     );
     return momentEntity;
   }
