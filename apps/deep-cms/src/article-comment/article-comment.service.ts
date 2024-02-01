@@ -1,28 +1,66 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArticleCommentDto } from './dto/create-article-comment.dto';
-import { UpdateArticleCommentDto } from './dto/update-article-comment.dto';
+import { DatabaseService } from '../database/database.service';
+import { ArticleCommentEntity } from '@app/deep-orm';
+import {
+  CmsErrorCode,
+  CmsErrorMsg,
+  DeepHttpException,
+} from '@app/common/exceptionFilter';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class ArticleCommentService {
-  create(createArticleCommentDto: CreateArticleCommentDto) {
-    return 'This action adds a new articleComment' + createArticleCommentDto;
+  constructor(private readonly database: DatabaseService) {}
+  async create(createArticleCommentDto: CreateArticleCommentDto) {
+    const { userId, articleId, content, replyId } = createArticleCommentDto;
+    const comment = new ArticleCommentEntity();
+    comment.articleId = parseInt(articleId);
+    comment.userId = parseInt(userId);
+    comment.content = content;
+    comment.replyId = Number(replyId ?? null);
+    try {
+      return await this.database.articleCommentRepo.save(comment);
+    } catch (error) {
+      throw new DeepHttpException(
+        CmsErrorMsg.ARTICLE_PARAMETER_VALUE_ERROR,
+        CmsErrorCode.ARTICLE_PARAMETER_VALUE_ERROR,
+      );
+    }
   }
 
-  findAll() {
-    return `This action returns all articleComment`;
+  async findMultiCommentComment(query: PaginationQueryDto) {
+    const { keywords, pagesize, curpage } = query;
+    const [data, total] = await this.database.articleCommentRepo.findAndCount({
+      where: {
+        content: Like(`%${keywords ?? ''}%`),
+      },
+      order: { id: 'DESC' },
+      skip: Number.parseInt(pagesize) * (Number.parseInt(curpage) - 1),
+      take: Number.parseInt(pagesize),
+    });
+    return {
+      data,
+      total,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} articleComment`;
-  }
-
-  update(id: number, updateArticleCommentDto: UpdateArticleCommentDto) {
-    return (
-      `This action updates a #${id} articleComment` + updateArticleCommentDto
-    );
+  async findOneArticleComment(id: number) {
+    // 后期考虑删除avatar表，改为user表的avatar字段
+    const [data, total] = await this.database.articleCommentRepo.findAndCount({
+      where: {
+        articleId: id,
+      },
+      relations: ['user'],
+    });
+    return {
+      data,
+      total,
+    };
   }
 
   remove(id: number) {
-    return `This action removes a #${id} articleComment`;
+    return this.database.articleCommentRepo.delete(id);
   }
 }

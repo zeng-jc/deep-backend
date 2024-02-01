@@ -1,15 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { ArticleCommentService } from './article-comment.service';
 import { CreateArticleCommentDto } from './dto/create-article-comment.dto';
-import { UpdateArticleCommentDto } from './dto/update-article-comment.dto';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Controller('article-comment')
 export class ArticleCommentController {
@@ -21,21 +14,15 @@ export class ArticleCommentController {
   }
 
   @Get()
-  findAll() {
-    return this.articleCommentService.findAll();
+  findMultiCommentComment(
+    @Param(new PaginationPipe()) query: PaginationQueryDto,
+  ) {
+    return this.articleCommentService.findMultiCommentComment(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articleCommentService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateArticleCommentDto: UpdateArticleCommentDto,
-  ) {
-    return this.articleCommentService.update(+id, updateArticleCommentDto);
+  findOneArticleComment(@Param('id') id: string) {
+    return this.articleCommentService.findOneArticleComment(+id);
   }
 
   @Delete(':id')

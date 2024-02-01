@@ -6,11 +6,11 @@ export class ArticleCommentEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({})
-  article_id!: number;
+  articleId!: number;
   @Column()
-  user_id!: number;
+  userId!: number;
   @Column()
-  reply_id: number;
+  replyId: number;
   @Column({ type: 'varchar', length: 500 })
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })

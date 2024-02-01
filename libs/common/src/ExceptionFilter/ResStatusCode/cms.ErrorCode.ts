@@ -12,4 +12,6 @@ export enum CmsErrorCode {
   ROLE_NOT_EXIST = '300003', //角色不存在
   /** 动态评论状态码 */
   COMMONET_PARAMETER_VALUE_ERROR = '400001',
+  /** 文章评论状态码 */
+  ARTICLE_PARAMETER_VALUE_ERROR = '500001',
 }
