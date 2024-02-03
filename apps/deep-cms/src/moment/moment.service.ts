@@ -9,7 +9,11 @@ import { Like } from 'typeorm';
 @Injectable()
 export class MomentService {
   constructor(private readonly database: DatabaseService) {}
-  async create(files: Express.Multer.File[], createMomentDto: CreateMomentDto) {
+  async create(
+    files: Express.Multer.File[],
+    createMomentDto: CreateMomentDto,
+    type: string,
+  ) {
     const user = await this.database.userRepo.findOne({
       where: {
         id: Number(createMomentDto.userId) || 0,
@@ -19,7 +23,8 @@ export class MomentService {
 
     if (files.length) {
       const filenames = [...files.map((item) => item.filename)];
-      moment.images = filenames;
+      if (type === 'images') moment.images = filenames;
+      if (type === 'video') moment.video = filenames;
     }
     moment.content = createMomentDto.content;
     moment.user = user;

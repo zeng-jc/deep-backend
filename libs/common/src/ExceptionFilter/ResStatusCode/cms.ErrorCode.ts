@@ -10,8 +10,10 @@ export enum CmsErrorCode {
   ROLE_ACCESS_PROHIBITED = '300001', //角色禁止访问
   ROLE_EXIST = '300002', //角色已存在
   ROLE_NOT_EXIST = '300003', //角色不存在
-  /** 动态评论状态码 */
+  /** 动态状态码 */
   COMMONET_PARAMETER_VALUE_ERROR = '400001',
-  /** 文章评论状态码 */
+  MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE = '400002',
+  MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE = '400003',
+  /** 文章状态码 */
   ARTICLE_PARAMETER_VALUE_ERROR = '500001',
 }
