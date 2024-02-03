@@ -21,8 +21,10 @@ import {
   CmsErrorMsg,
   CmsErrorCode,
 } from '@app/common/exceptionFilter';
+import { ApiTags } from '@nestjs/swagger';
 
 @Roles('admin')
+@ApiTags('moment')
 @Controller('moment')
 export class MomentController {
   constructor(private readonly momentService: MomentService) {}

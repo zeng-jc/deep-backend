@@ -3,7 +3,11 @@ import { MomentCommentService } from './moment-comment.service';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { Roles } from '../common/decorator/auth.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@Roles('admin')
+@ApiTags('moment-comment')
 @Controller('moment-comment')
 export class MomentCommentController {
   constructor(private readonly momentCommentService: MomentCommentService) {}

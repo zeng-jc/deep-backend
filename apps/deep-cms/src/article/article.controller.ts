@@ -14,8 +14,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/decorator/auth.decorator';
 
 @Roles('admin')
-@Controller('article')
 @ApiTags('article')
+@Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
