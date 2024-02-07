@@ -8,9 +8,4 @@ import { Roles } from './common/decorator/auth.decorator';
 @ApiBearerAuth()
 export class AppController {
   constructor(private readonly deepCmsService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.deepCmsService.getHello();
-  }
 }

@@ -21,6 +21,7 @@ import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middle
 import { MomentModule } from './moment/moment.module';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
+import { MinioClientModule } from './minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ArticleCommentModule } from './article-comment/article-comment.module';
     MomentModule,
     MomentCommentModule,
     ArticleCommentModule,
+    MinioClientModule
   ],
   controllers: [AppController],
   providers: [
