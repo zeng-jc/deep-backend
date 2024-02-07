@@ -1,5 +1,5 @@
 import { Body, Controller, Headers, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SigninAuthDto } from './dto/signin-auth.dto';
 import { AuthService } from './auth.service';
 import { HeadersAuthDto } from './dto/headers-auth.dto';
@@ -9,6 +9,16 @@ import { HeadersAuthDto } from './dto/headers-auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('signin')
+  @ApiOperation({ summary: 'signin with username and password' })
+  @ApiBody({ 
+    schema: { 
+      type: 'object',
+      properties: {
+        username: { type: 'string', default: '123456' },
+        password: { type: 'string', default: '123456' },
+      }
+    } 
+  })
   signin(@Body() signinAuthData: SigninAuthDto) {
     return this.authService.signin(signinAuthData);
   }
