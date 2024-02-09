@@ -72,7 +72,7 @@ export const staticMenu = [
     component: '/article/index',
     meta: {
       icon: 'InfoFilled',
-      title: '文章管理',
+      title: '文章模块',
     },
     children: [
       {
@@ -81,7 +81,7 @@ export const staticMenu = [
         component: '/article/list/index',
         meta: {
           icon: 'Menu',
-          title: '动态管理',
+          title: '文章管理',
         },
       },
       {

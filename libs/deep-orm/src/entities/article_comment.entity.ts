@@ -14,7 +14,7 @@ export class ArticleCommentEntity {
   @Column({ type: 'varchar', length: 500 })
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
-  state!: number;
+  status!: number;
   @Column({ default: 0 })
   likes: number;
   @Column()
