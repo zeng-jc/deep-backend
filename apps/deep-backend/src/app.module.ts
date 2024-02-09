@@ -1,10 +1,38 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { verifyTokenMiddleware } from '@app/common';
+import { DatabaseModule } from './database/database.module';
+import { UserModule } from './user/user.module';
+import { APP_GUARD } from '@nestjs/core';
+import { CheckResourceOwnershipGuard } from './common/guard/checkResourceOwnership.guard';
 
 @Module({
-  imports: [],
+  imports: [DatabaseModule, UserModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: CheckResourceOwnershipGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // post、delete、put、patch 请求必须需要登录
+    consumer
+      .apply(verifyTokenMiddleware)
+      .forRoutes(
+        { path: '*', method: RequestMethod.DELETE },
+        { path: '*', method: RequestMethod.PUT },
+        { path: '*', method: RequestMethod.PATCH },
+        { path: '*', method: RequestMethod.POST },
+      );
+  }
+}

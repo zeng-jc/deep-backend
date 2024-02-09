@@ -17,7 +17,7 @@ import { AuthGuard } from './common/guard/auth.guard';
 import { DeepDbModule } from '@app/deep-db';
 import { DatabaseModule } from './database/database.module';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
-import { verifyTokenMiddleware } from '@app/common/middleware/verifyToken.middleware';
+import { verifyTokenMiddleware } from '@app/common';
 import { MomentModule } from './moment/moment.module';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';

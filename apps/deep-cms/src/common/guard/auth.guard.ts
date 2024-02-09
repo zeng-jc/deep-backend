@@ -56,17 +56,17 @@ export class AuthGuard implements CanActivate {
       permissions = cachePermissions;
       roles = cacheRoles;
     } else {
-      const users = await this.dataSource.getRepository(UserEntity).findOne({
+      const user = await this.dataSource.getRepository(UserEntity).findOne({
         where: {
           id: userId,
         },
         relations: ['roles', 'roles.permissions'],
       });
 
-      roles = users.roles.map((role) => role.name);
+      roles = user.roles.map((role) => role.name);
       this.cacheService.set<string[]>(`roles.guard.${userId}`, roles ?? [], 60);
 
-      permissions = users.roles.flatMap((role) => role.permissions);
+      permissions = user.roles.flatMap((role) => role.permissions);
       permissions = [...new Set(permissions.map((p) => p.name))];
       this.cacheService.set<string[]>(
         `permission.guard.${userId}`,
@@ -75,7 +75,6 @@ export class AuthGuard implements CanActivate {
       );
     }
 
-    // DOTO：暂时写死只有admi的角色才能访问
     const isContainRole: boolean = requiredRoles.every(
       (item) => roles?.includes(item),
     );
