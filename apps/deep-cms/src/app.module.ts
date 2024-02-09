@@ -22,6 +22,7 @@ import { MomentModule } from './moment/moment.module';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { MinioClientModule } from './minio-client/minio-client.module';
     MomentModule,
     MomentCommentModule,
     ArticleCommentModule,
-    MinioClientModule
+    MinioClientModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
