@@ -27,31 +27,47 @@ export class CheckResourceOwnershipGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>();
     // 对DELETE、PUT、PATCH请求进行验证资源是否属于自己
-    if (
-      !(
-        req.method === 'DELETE' ||
-        req.method === 'PUT' ||
-        req.method === 'PATCH'
-      )
-    )
-      return true;
+    const isWriteOperation = ['DELETE', 'PUT', 'PATCH'].includes(req.method);
+    if (!isWriteOperation) return true;
+
+    // 从控制器的元数据中拿到表明
     const tableName = this.reflector.get<string>(
       'tableName',
       context.getClass(),
     );
-    const { id: userId }: TokenPayload = JSON.parse(req.headers.authorization);
-    const resourceId = req.params.id;
-    const res = await this.dataSource.getRepository(tableName).findOne({
-      where: {
-        id: resourceId,
-      },
-    });
-    if (!(res.userId === userId)) {
+
+    const { id: reqUserId }: TokenPayload = JSON.parse(
+      req.headers.authorization,
+    );
+    const resourceId: string = req.params.id;
+
+    const cacheKey = `checkResourceOwnership.guard.${reqUserId}`;
+
+    const cacheUserId: number | null =
+      await this.cacheService.get<number>(cacheKey);
+    if (cacheUserId && reqUserId !== cacheUserId) {
       throw new DeepHttpException(
         AuthErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE,
         AuthErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE,
       );
     }
+    if (cacheUserId && reqUserId === cacheUserId) {
+      return true;
+    }
+    const { userId: dbUserId } = await this.dataSource
+      .getRepository(tableName)
+      .findOne({
+        where: {
+          id: resourceId,
+        },
+      });
+    if (reqUserId !== dbUserId) {
+      throw new DeepHttpException(
+        AuthErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE,
+        AuthErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE,
+      );
+    }
+    this.cacheService.set<number>(cacheKey, dbUserId, 60);
     return true;
   }
 }

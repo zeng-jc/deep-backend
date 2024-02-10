@@ -39,16 +39,16 @@ export class AuthGuard implements CanActivate {
 
     // 通过token拿到用户信息
     const req = context.switchToHttp().getRequest<Request>();
-    const userInfo: TokenPayload = JSON.parse(req.headers.authorization);
-
-    const { id: userId } = userInfo;
-
-    const cachePermissions = await this.cacheService.get<string[]>(
-      `permission.guard.${userId}`,
+    const { id: reqUserId }: TokenPayload = JSON.parse(
+      req.headers.authorization,
     );
-    const cacheRoles = await this.cacheService.get<string[]>(
-      `roles.guard.${userId}`,
-    );
+
+    const permissionCacheKey = `permission.guard.${reqUserId}`;
+    const roleCacheKey = `roles.guard.${reqUserId}`;
+
+    const cachePermissions =
+      await this.cacheService.get<string[]>(permissionCacheKey);
+    const cacheRoles = await this.cacheService.get<string[]>(roleCacheKey);
 
     let permissions;
     let roles: string[];
@@ -58,18 +58,18 @@ export class AuthGuard implements CanActivate {
     } else {
       const user = await this.dataSource.getRepository(UserEntity).findOne({
         where: {
-          id: userId,
+          id: reqUserId,
         },
         relations: ['roles', 'roles.permissions'],
       });
 
       roles = user.roles.map((role) => role.name);
-      this.cacheService.set<string[]>(`roles.guard.${userId}`, roles ?? [], 60);
+      this.cacheService.set<string[]>(roleCacheKey, roles ?? [], 60);
 
       permissions = user.roles.flatMap((role) => role.permissions);
       permissions = [...new Set(permissions.map((p) => p.name))];
       this.cacheService.set<string[]>(
-        `permission.guard.${userId}`,
+        permissionCacheKey,
         permissions ?? [],
         60,
       );
