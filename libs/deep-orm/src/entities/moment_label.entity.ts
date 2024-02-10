@@ -7,8 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { MomentLabelRelationEntity } from './moment_label_relation.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_moment_label' })
+@Entity({ name: tableNameEnum.moment_label })
 export class MomentLabelEntity {
   @PrimaryGeneratedColumn()
   id: number;

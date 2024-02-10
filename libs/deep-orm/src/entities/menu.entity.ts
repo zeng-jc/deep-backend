@@ -5,8 +5,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_menu' })
+@Entity({ name: tableNameEnum.menu })
 export class MenuEntity {
   @PrimaryGeneratedColumn()
   id: number;

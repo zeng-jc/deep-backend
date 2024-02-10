@@ -10,8 +10,9 @@ import {
 import { UserEntity } from './user.entity';
 import { MomentLabelRelationEntity } from './moment_label_relation.entity';
 import { MomentCommentEntity } from './moment_comment.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_moment' })
+@Entity({ name: tableNameEnum.moment })
 export class MomentEntity {
   @PrimaryGeneratedColumn()
   id: number;

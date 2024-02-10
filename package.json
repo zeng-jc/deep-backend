@@ -11,6 +11,7 @@
     "start": "nest start",
     "start-cms:dev": "cross-env APP_ENV=local nest start --watch deep-cms",
     "start-auth:dev": "cross-env APP_ENV=local nest start --watch deep-auth",
+    "start-backend:dev": "cross-env APP_ENV=local nest start --watch deep-backend",
     "start:dev": "cross-env APP_ENV=local nest start --watch deep-cms",
     "start:debug": "nest start --debug --watch deep-cms",
     "start:prod": "node dist/apps/deep-backend/main",

@@ -8,8 +8,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@app/deep-orm/entities';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity('tbl_avatar')
+@Entity({ name: tableNameEnum.avatar })
 export class AvatarEntity {
   @PrimaryGeneratedColumn()
   id: number;

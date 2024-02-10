@@ -5,8 +5,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_permission' })
+@Entity({ name: tableNameEnum.permission })
 export class PermissionEntity {
   @PrimaryGeneratedColumn()
   id!: number;

@@ -7,8 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ArticleEntity } from './article.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_article_label' })
+@Entity({ name: tableNameEnum.article_label })
 export class ArticleLabelEntity {
   @PrimaryGeneratedColumn()
   id: number;

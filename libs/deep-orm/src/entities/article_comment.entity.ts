@@ -1,7 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_article_comment' })
+@Entity({ name: tableNameEnum.article_comment })
 export class ArticleCommentEntity {
   @PrimaryGeneratedColumn()
   id: number;

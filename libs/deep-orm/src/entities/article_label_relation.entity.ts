@@ -7,8 +7,9 @@ import {
 } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { ArticleLabelEntity } from './article_label.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_article_label_relation' })
+@Entity({ name: tableNameEnum.article_label_relation })
 export class ArticleLabelRelationEntity {
   @PrimaryGeneratedColumn()
   id: number;

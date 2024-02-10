@@ -7,8 +7,9 @@ import {
 } from 'typeorm';
 import { MomentEntity } from './moment.entity';
 import { MomentLabelEntity } from './moment_label.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_moment_label_relation' })
+@Entity({ name: tableNameEnum.moment_label_relation })
 export class MomentLabelRelationEntity {
   @PrimaryGeneratedColumn()
   id: number;

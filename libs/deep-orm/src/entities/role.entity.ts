@@ -9,8 +9,9 @@ import {
 } from 'typeorm';
 import { PermissionEntity } from './permission.entity';
 import { MenuEntity } from './menu.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_role' })
+@Entity({ name: tableNameEnum.role })
 export class RoleEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -24,12 +25,12 @@ export class RoleEntity {
   updateAt!: Date;
   @ManyToMany(() => PermissionEntity)
   @JoinTable({
-    name: 'tbl_role_permission_relation',
+    name: tableNameEnum.role_permission_relation,
   })
   permissions: PermissionEntity[];
   @ManyToMany(() => MenuEntity)
   @JoinTable({
-    name: 'tbl_role_menu_relation',
+    name: tableNameEnum.role_menu_relation,
   })
   enums: MenuEntity[];
 }

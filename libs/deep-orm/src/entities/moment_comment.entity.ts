@@ -8,8 +8,9 @@ import {
 } from 'typeorm';
 import { MomentEntity } from './moment.entity';
 import { UserEntity } from './user.entity';
+import { tableNameEnum } from '../tableNameEnum';
 
-@Entity({ name: 'tbl_moment_comment' })
+@Entity({ name: tableNameEnum.moment_comment })
 export class MomentCommentEntity {
   @PrimaryGeneratedColumn()
   id: number;

@@ -10,9 +10,10 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { tableName } from '../common/decorator/table.decorator';
+import { tableName } from '../common/decorator/tableName.decorator';
+import { tableNameEnum } from '@app/deep-orm';
 
-@tableName('user')
+@tableName(tableNameEnum.user)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

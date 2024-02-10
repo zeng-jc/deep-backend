@@ -13,12 +13,13 @@ import { AvatarEntity } from '@app/deep-orm/entities';
 import { ArticleEntity } from '@app/deep-orm/entities';
 import { RoleEntity } from './role.entity';
 import { MomentEntity } from './moment.entity';
+import { tableNameEnum } from '../tableNameEnum';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
 // }
 // UserStatus.lock;
-@Entity({ name: 'tbl_user' })
+@Entity({ name: tableNameEnum.user })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -63,6 +64,6 @@ export class UserEntity {
   @OneToOne(() => AvatarEntity, (avatarEntity) => avatarEntity.user)
   avatar: AvatarEntity;
   @ManyToMany(() => RoleEntity)
-  @JoinTable({ name: 'tbl_user_role_relation' })
+  @JoinTable({ name: tableNameEnum.user_role_relation })
   roles: RoleEntity[];
 }
