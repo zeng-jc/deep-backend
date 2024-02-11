@@ -5,6 +5,7 @@
 email.config.ts
 private.key
 public.key
+prod.config.ts
 
 # Logs
 logs
