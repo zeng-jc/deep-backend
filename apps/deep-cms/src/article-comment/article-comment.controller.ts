@@ -18,9 +18,7 @@ export class ArticleCommentController {
   }
 
   @Get()
-  findMultiCommentComment(
-    @Param(new PaginationPipe()) query: PaginationQueryDto,
-  ) {
+  findMultiCommentComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
     return this.articleCommentService.findMultiCommentComment(query);
   }
 

@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateArticleCommentDto } from './dto/create-article-comment.dto';
 import { DatabaseService } from '../database/database.service';
 import { ArticleCommentEntity } from '@app/deep-orm';
-import {
-  CmsErrorCode,
-  CmsErrorMsg,
-  DeepHttpException,
-} from '@app/common/exceptionFilter';
+import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
 
@@ -23,10 +19,7 @@ export class ArticleCommentService {
     try {
       return await this.database.articleCommentRepo.save(comment);
     } catch (error) {
-      throw new DeepHttpException(
-        CmsErrorMsg.ARTICLE_PARAMETER_VALUE_ERROR,
-        CmsErrorCode.ARTICLE_PARAMETER_VALUE_ERROR,
-      );
+      throw new DeepHttpException(CmsErrorMsg.ARTICLE_PARAMETER_VALUE_ERROR, CmsErrorCode.ARTICLE_PARAMETER_VALUE_ERROR);
     }
   }
 

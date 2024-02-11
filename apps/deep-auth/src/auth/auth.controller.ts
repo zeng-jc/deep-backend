@@ -10,14 +10,14 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('signin')
   @ApiOperation({ summary: 'signin with username and password' })
-  @ApiBody({ 
-    schema: { 
+  @ApiBody({
+    schema: {
       type: 'object',
       properties: {
         username: { type: 'string', default: '123456' },
         password: { type: 'string', default: '123456' },
-      }
-    } 
+      },
+    },
   })
   signin(@Body() signinAuthData: SigninAuthDto) {
     return this.authService.signin(signinAuthData);

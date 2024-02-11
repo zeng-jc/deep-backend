@@ -1,26 +1,11 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  UseInterceptors,
-  UploadedFiles,
-  Request,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFiles, Request, Query } from '@nestjs/common';
 import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../common/decorator/auth.decorator';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import {
-  DeepHttpException,
-  CmsErrorMsg,
-  CmsErrorCode,
-} from '@app/common/exceptionFilter';
+import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
 import { ApiTags } from '@nestjs/swagger';
 
 @Roles('admin')
@@ -37,10 +22,7 @@ export class MomentController {
       },
     }),
   )
-  createMomentImages(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() createMomentDto: CreateMomentDto,
-  ) {
+  createMomentImages(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
     files.forEach((file) => {
       if (files.length && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
         throw new DeepHttpException(
@@ -60,10 +42,7 @@ export class MomentController {
       },
     }),
   )
-  createMomentVideo(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() createMomentDto: CreateMomentDto,
-  ) {
+  createMomentVideo(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
     if (files.length && !files[0].originalname.match(/\.(mp4)$/)) {
       throw new DeepHttpException(
         CmsErrorMsg.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE,
@@ -74,10 +53,7 @@ export class MomentController {
   }
 
   @Get()
-  findMultiMoments(
-    @Query(new PaginationPipe()) paginationParams: PaginationQueryDto,
-    @Request() req,
-  ) {
+  findMultiMoments(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto, @Request() req) {
     return this.momentService.findMultiMoments(paginationParams, req.protocol);
   }
 

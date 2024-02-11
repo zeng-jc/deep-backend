@@ -5,11 +5,7 @@ import { UserEntity } from '@app/deep-orm/entities';
 import { Like } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { CacheService } from '@app/deep-cache';
-import {
-  DeepHttpException,
-  CmsErrorMsg,
-  CmsErrorCode,
-} from '@app/common/exceptionFilter';
+import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
@@ -26,11 +22,7 @@ export class UserService {
     const role = await this.database.roleRepo.findOne({
       where: { id: assignRoleUserDto.roleId },
     });
-    if (!role)
-      throw new DeepHttpException(
-        CmsErrorMsg.ROLE_NOT_EXIST,
-        CmsErrorCode.ROLE_NOT_EXIST,
-      );
+    if (!role) throw new DeepHttpException(CmsErrorMsg.ROLE_NOT_EXIST, CmsErrorCode.ROLE_NOT_EXIST);
     assignRoleUserDto;
     await this.findOneUser(assignRoleUserDto.userId);
     return this.database.userRepo.save({
@@ -48,10 +40,8 @@ export class UserService {
   }
   // TODO: 密码加密
   async createUser(createUserDto: CreateUserDto) {
-    if ((await this.userExist(createUserDto.username)) !== 0)
-      return 'user exist';
-    if ((await this.emailExist(createUserDto.email)) !== 0)
-      return 'email exist';
+    if ((await this.userExist(createUserDto.username)) !== 0) return 'user exist';
+    if ((await this.emailExist(createUserDto.email)) !== 0) return 'email exist';
     const user = new UserEntity();
     user.username = createUserDto.username;
     user.password = createUserDto.password;
@@ -68,10 +58,7 @@ export class UserService {
     user.position = createUserDto.position;
     user.github = createUserDto.github;
     // 发送邮箱
-    this.emailService.sendMailCreateUser(
-      createUserDto.email,
-      createUserDto.nickname,
-    );
+    this.emailService.sendMailCreateUser(createUserDto.email, createUserDto.nickname);
     return this.database.userRepo.save(user);
   }
 
@@ -111,10 +98,7 @@ export class UserService {
       where: { id },
     });
     if (!user) {
-      throw new DeepHttpException(
-        CmsErrorMsg.USER_ID_INVALID,
-        CmsErrorCode.USER_ID_INVALID,
-      );
+      throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
     }
     this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;
@@ -141,8 +125,7 @@ export class UserService {
 
   async removeUser(id: number) {
     const data = await this.database.userRepo.delete(id);
-    if (data.affected !== 0)
-      await this.cacheService.del(`user.findOneUser.${id}`);
+    if (data.affected !== 0) await this.cacheService.del(`user.findOneUser.${id}`);
     return data;
   }
 

@@ -42,6 +42,5 @@ export const localConfig = {
     useSSL: false,
     accessKey: '2356924146',
     secretKey: 'Qq2356924146',
-    bucket: 'deep-resource',
   },
 };

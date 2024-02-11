@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionEntity } from '@app/deep-orm';
-import {
-  DeepHttpException,
-  CmsErrorMsg,
-  CmsErrorCode,
-} from '@app/common/exceptionFilter';
+import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 
 @Injectable()
@@ -36,11 +32,7 @@ export class PermissionService {
         name: createPermissionDto.name,
       },
     });
-    if (res)
-      throw new DeepHttpException(
-        CmsErrorMsg.PERMISSION_EXIST,
-        CmsErrorCode.PERMISSION_EXIST,
-      );
+    if (res) throw new DeepHttpException(CmsErrorMsg.PERMISSION_EXIST, CmsErrorCode.PERMISSION_EXIST);
     const permission = new PermissionEntity();
     permission.name = createPermissionDto.name;
     permission.desc = createPermissionDto.desc;

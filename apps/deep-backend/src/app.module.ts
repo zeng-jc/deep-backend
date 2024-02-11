@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { verifyTokenMiddleware } from '@app/common';
@@ -16,13 +11,7 @@ import { CacheModule } from '@app/deep-cache';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 
 @Module({
-  imports: [
-    DeepDbModule,
-    CacheModule,
-    DatabaseModule,
-    SecretKeyModule,
-    UserModule,
-  ],
+  imports: [DeepDbModule, CacheModule, DatabaseModule, SecretKeyModule, UserModule],
   controllers: [AppController],
   providers: [
     AppService,
