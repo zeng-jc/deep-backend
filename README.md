@@ -79,15 +79,8 @@ Nest is [MIT licensed](LICENSE).
 
 ## 项目启动说明
 
-1. 创建deep数据库，导入database中的数据
-2. email.config.ts需要自行创建和配置，没有账号没关系，在`deep-backend/libs/common/emailService/email.config.ts`先写入如下内容
+1. 创建deep数据库，导入index.sql
 
-```JavaScript
-// email.config.ts
-export const EMAIL_CONFIG = {};
-export const EMAIL_FROM = '';
-```
+2. 公钥和私钥需要自己生成`deep-backend`目录下创建`secretKey`目录，继续创建`private.key`和`public.key`（提示：这两个文件可以通过git生成）
 
-3. 公钥和私钥需要自己生成`deep-backend` 目录下创建`secretKey`目录，继续创建`private.key`和`public.key`（提示：这两个文件可以通过git生成）
-
-4. 数据库第一个用户是管理员，有后台接口权限不能删除，否则要去数据库中自己配置权限
+3. 数据库第一个用户是管理员，有后台接口权限不能删除，否则要去数据库中自己配置权限
