@@ -2,7 +2,6 @@
 /dist
 /node_modules
 /config/local.config.js
-email.config.ts
 private.key
 public.key
 prod.config.ts

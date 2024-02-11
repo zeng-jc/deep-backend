@@ -36,6 +36,18 @@ export const localConfig = {
     prefetchCount: 300,
     defaultSubscribeErrorBehavior: 'ACK',
   },
+  email: {
+    emailConfig: {
+      host: 'smtp.163.com',
+      secure: true,
+      port: 465,
+      auth: {
+        user: 'xx@163.com',
+        pass: '',
+      },
+    },
+    emailFrom: 'xx@163.com',
+  },
   minio: {
     endPoint: '127.0.0.1',
     port: 9090,

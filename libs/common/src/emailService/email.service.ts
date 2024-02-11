@@ -1,17 +1,17 @@
 import { Global, Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { EMAIL_CONFIG, EMAIL_FROM } from './email.config';
+import { emailConfig, emailFrom } from './email.config';
 
 @Global()
 @Injectable()
 export class EmailService {
   private transporter;
   constructor() {
-    this.transporter = nodemailer.createTransport(EMAIL_CONFIG);
+    this.transporter = nodemailer.createTransport(emailConfig);
   }
   async sendMail(to: string, subject: string, text: string) {
     const mailOptions = {
-      from: EMAIL_FROM,
+      from: emailFrom,
       to: to,
       subject: subject,
       text: text,
@@ -26,7 +26,7 @@ export class EmailService {
 
   async sendMailCreateUser(to: string, name: string) {
     const mailOptions = {
-      from: EMAIL_FROM,
+      from: emailFrom,
       to: to,
       subject: '深谙',
       html: `

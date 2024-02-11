@@ -5,7 +5,7 @@ export const prodConfig = {
   },
   mysql: {
     type: 'mysql',
-    host: 'xx',
+    host: '127.0.0.1',
     port: 3306,
     username: 'root',
     password: '123',
@@ -17,7 +17,7 @@ export const prodConfig = {
   },
   redis: {
     socket: {
-      host: 'xx',
+      host: '127.0.0.1',
       port: 6379,
     },
   },
@@ -35,5 +35,24 @@ export const prodConfig = {
     enableControllerDiscovery: true,
     prefetchCount: 300,
     defaultSubscribeErrorBehavior: 'ACK',
+  },
+  email: {
+    emailConfig: {
+      host: 'smtp.163.com',
+      secure: true,
+      port: 465,
+      auth: {
+        user: 'xx@163.com',
+        pass: '',
+      },
+    },
+    emailFrom: 'xx@163.com',
+  },
+  minio: {
+    endPoint: '127.0.0.1',
+    port: 9090,
+    useSSL: false,
+    accessKey: '2356924146',
+    secretKey: 'Qq2356924146',
   },
 };
