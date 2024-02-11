@@ -1,10 +1,9 @@
 # compiled output
 /dist
 /node_modules
-/config/local.config.js
+/config/prod.config.ts
 private.key
 public.key
-prod.config.ts
 
 # Logs
 logs
