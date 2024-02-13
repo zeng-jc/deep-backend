@@ -27,6 +27,6 @@ export class MomentEntity {
   user: UserEntity;
   @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.moment)
   comments: MomentCommentEntity[];
-  @OneToMany(() => MomentLabelRelationEntity, (momentLabelRelationEntity) => momentLabelRelationEntity.moment, { cascade: true })
+  @OneToMany(() => MomentLabelRelationEntity, (momentLabelRelationEntity) => momentLabelRelationEntity.moment)
   labels: MomentLabelRelationEntity[];
 }

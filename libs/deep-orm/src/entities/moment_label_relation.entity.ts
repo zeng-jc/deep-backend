@@ -13,8 +13,14 @@ export class MomentLabelRelationEntity {
   labelId: number;
   @CreateDateColumn()
   createAt: Date;
-  @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels)
+  @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   public moment: MomentEntity;
-  @ManyToOne(() => MomentLabelEntity, (momentLabelEntity) => momentLabelEntity.moments)
+  @ManyToOne(() => MomentLabelEntity, (momentLabelEntity) => momentLabelEntity.moments, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   public label: MomentLabelEntity;
 }
