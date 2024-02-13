@@ -8,9 +8,9 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "start-cms:dev": "cross-env NODE_ENV=local nest start --watch deep-cms",
-    "start-auth:dev": "cross-env NODE_ENV=local nest start --watch deep-auth",
-    "start-backend:dev": "cross-env NODE_ENV=local nest start --watch deep-backend",
+    "start-cms:dev": "cross-env NODE_ENV=development nest start --watch deep-cms",
+    "start-auth:dev": "cross-env NODE_ENV=development nest start --watch deep-auth",
+    "start-backend:dev": "cross-env NODE_ENV=development nest start --watch deep-backend",
     "start-cms:prod": "cross-env NODE_ENV=production nest start --watch deep-cms",
     "start-auth:prod": "cross-env NODE_ENV=production nest start --watch deep-auth",
     "start-backend:prod": "cross-env NODE_ENV=production nest start --watch deep-backend",
@@ -114,7 +114,8 @@
       "^@app/cache-xxx(|/.*)$": "<rootDir>/libs/cache-xxx/src/$1",
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
       "^@app/deep-amqp(|/.*)$": "<rootDir>/libs/deep-amqp/src/$1",
-      "^@app/deep-db(|/.*)$": "<rootDir>/libs/deep-db/src/$1"
+      "^@app/deep-db(|/.*)$": "<rootDir>/libs/deep-db/src/$1",
+      "^@app/deep-minio(|/.*)$": "<rootDir>/libs/deep-minio/src/$1"
     }
   }
 }

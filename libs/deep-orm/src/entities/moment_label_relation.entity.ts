@@ -1,10 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MomentEntity } from './moment.entity';
 import { MomentLabelEntity } from './moment_label.entity';
 import { tableNameEnum } from '../tableNameEnum';
@@ -21,9 +15,6 @@ export class MomentLabelRelationEntity {
   createAt: Date;
   @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels)
   public moment: MomentEntity;
-  @ManyToOne(
-    () => MomentLabelEntity,
-    (momentLabelEntity) => momentLabelEntity.moments,
-  )
+  @ManyToOne(() => MomentLabelEntity, (momentLabelEntity) => momentLabelEntity.moments)
   public label: MomentLabelEntity;
 }

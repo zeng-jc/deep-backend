@@ -53,6 +53,6 @@ export const localConfig = {
     port: 9090,
     useSSL: false,
     accessKey: '2356924146',
-    secretKey: 'Qq2356924146',
+    secretKey: '123456',
   },
 };

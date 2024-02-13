@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
 import { CacheModule } from '@app/deep-cache';
-import { DeepAmqpModule } from '@app/deep-amqp';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './common/guard/auth.guard';
@@ -16,15 +15,15 @@ import { verifyTokenMiddleware } from '@app/common';
 import { MomentModule } from './moment/moment.module';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
-import { MinioClientModule } from './minio-client/minio-client.module';
 import { MenuModule } from './menu/menu.module';
+import { DeepMinioModule } from '@app/deep-minio';
 
 @Module({
   imports: [
     DeepDbModule,
     CacheModule,
-    DeepAmqpModule,
     DatabaseModule,
+    DeepMinioModule,
     SecretKeyModule,
     UserModule,
     ArticleModule,
@@ -33,7 +32,6 @@ import { MenuModule } from './menu/menu.module';
     MomentModule,
     MomentCommentModule,
     ArticleCommentModule,
-    MinioClientModule,
     MenuModule,
   ],
   controllers: [AppController],

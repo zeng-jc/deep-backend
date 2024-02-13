@@ -1,10 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { ArticleLabelEntity } from './article_label.entity';
 import { tableNameEnum } from '../tableNameEnum';
@@ -21,9 +15,6 @@ export class ArticleLabelRelationEntity {
   createAt: Date;
   @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels)
   public article: ArticleEntity;
-  @ManyToOne(
-    () => ArticleLabelEntity,
-    (articleLabelEntity) => articleLabelEntity.articles,
-  )
+  @ManyToOne(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
   public label: ArticleLabelEntity;
 }

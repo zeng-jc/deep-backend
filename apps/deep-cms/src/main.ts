@@ -4,12 +4,10 @@ import { HttpExceptionFilter } from '@app/common/exceptionFilter';
 import { ResponseInterceptor } from '@app/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import { configLoader } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets(join(__dirname, '../assets'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
   const config = new DocumentBuilder()

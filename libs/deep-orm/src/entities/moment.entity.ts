@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { MomentLabelRelationEntity } from './moment_label_relation.entity';
 import { MomentCommentEntity } from './moment_comment.entity';
@@ -33,15 +25,8 @@ export class MomentEntity {
     onUpdate: 'CASCADE',
   })
   user: UserEntity;
-  @OneToMany(
-    () => MomentCommentEntity,
-    (momentCommentEntity) => momentCommentEntity.moment,
-  )
+  @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.moment)
   comments: MomentCommentEntity[];
-  @OneToMany(
-    () => MomentLabelRelationEntity,
-    (momentLabelRelationEntity) => momentLabelRelationEntity.moment,
-    { cascade: true },
-  )
+  @OneToMany(() => MomentLabelRelationEntity, (momentLabelRelationEntity) => momentLabelRelationEntity.moment, { cascade: true })
   labels: MomentLabelRelationEntity[];
 }

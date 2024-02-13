@@ -36,14 +36,8 @@ export class ArticleEntity {
     onUpdate: 'CASCADE',
   })
   user: UserEntity;
-  @OneToMany(
-    () => ArticleCommentEntity,
-    (articleCommentEntity) => articleCommentEntity.article,
-  )
+  @OneToMany(() => ArticleCommentEntity, (articleCommentEntity) => articleCommentEntity.article)
   commnets: ArticleCommentEntity[];
-  @ManyToMany(
-    () => ArticleLabelEntity,
-    (articleLabelEntity) => articleLabelEntity.articles,
-  )
+  @ManyToMany(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
   labels: ArticleLabelEntity[];
 }

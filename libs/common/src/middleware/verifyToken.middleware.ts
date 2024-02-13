@@ -1,8 +1,4 @@
-import {
-  AuthErrorCode,
-  AuthErrorMsg,
-  DeepHttpException,
-} from '@app/common/exceptionFilter';
+import { AuthErrorCode, AuthErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { SecretKeyService } from '@app/common/secretKey/secretKey.service';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 // TODO
@@ -26,10 +22,7 @@ export class verifyTokenMiddleware implements NestMiddleware {
         algorithms: ['RS256'],
       });
     } catch (error) {
-      throw new DeepHttpException(
-        AuthErrorMsg.TOKEN_INVALID,
-        AuthErrorCode.TOKEN_INVALID,
-      );
+      throw new DeepHttpException(AuthErrorMsg.TOKEN_INVALID, AuthErrorCode.TOKEN_INVALID);
     }
     return result;
   }

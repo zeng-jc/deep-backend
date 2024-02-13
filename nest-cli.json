@@ -87,6 +87,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/deep-db/tsconfig.lib.json"
       }
+    },
+    "deep-minio": {
+      "type": "library",
+      "root": "libs/deep-minio",
+      "entryFile": "index",
+      "sourceRoot": "libs/deep-minio/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/deep-minio/tsconfig.lib.json"
+      }
     }
   }
 }

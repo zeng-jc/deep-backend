@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { DatabaseService } from '../database/database.service';
 import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
-import { configLoader } from '@app/common';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
-
+import { DeepMinioService } from '@app/deep-minio';
+import { extname } from 'path';
+const bucketName = 'deep-moment';
 @Injectable()
 export class MomentService {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(
+    private readonly database: DatabaseService,
+    private readonly deepMinioService: DeepMinioService,
+  ) {}
   async create(files: Express.Multer.File[], createMomentDto: CreateMomentDto, type: string) {
     const user = await this.database.userRepo.findOne({
       where: {
@@ -18,12 +22,15 @@ export class MomentService {
     const moment = new MomentEntity();
 
     if (files.length) {
-      const filenames = [...files.map((item) => item.filename)];
+      const filenames = [...files.map((item) => (item.originalname = new Date().getTime() + extname(item.originalname)))];
+      // 存储到minio
+      await this.deepMinioService.uploadFiles(files, bucketName);
       if (type === 'images') moment.images = filenames;
       if (type === 'video') moment.video = filenames;
     }
     moment.content = createMomentDto.content;
     moment.user = user;
+    // 1. 获取lable的id
     const momentLableIds = await Promise.all(
       createMomentDto.labels?.map(async (tag) => {
         const momentLabelExisting = await this.database.entityManager.findOne(MomentLabelEntity, {
@@ -38,6 +45,7 @@ export class MomentService {
         return momentLabel.id;
       }),
     );
+    // 2.存储moment
     const momentInfo = await this.database.momentEntityRepo.save(moment);
     const rels = [];
     for (const id of momentLableIds) {
@@ -46,10 +54,12 @@ export class MomentService {
         momentId: momentInfo.id,
       });
     }
-    return this.database.momentLabelRelsRepo.insert(rels);
+    // 3.存储moment和label的关系
+    this.database.momentLabelRelsRepo.insert(rels);
+    return momentInfo;
   }
 
-  async findMultiMoments(paginationParams: PaginationQueryDto, protocol) {
+  async findMultiMoments(paginationParams: PaginationQueryDto) {
     let { keywords } = paginationParams;
     keywords = keywords ?? '';
     const curpage = Number.parseInt(paginationParams.curpage);
@@ -63,17 +73,20 @@ export class MomentService {
       skip: pagesize * (curpage - 1),
       take: pagesize,
     });
-    const { host, port } = configLoader<{ host: string; port: number }>('cmsService');
-    moments.forEach((item) => {
-      item.images = item?.images?.map((item) => `${protocol}://${host}:${port}/moment/${item}`);
-    });
+
+    await Promise.all(
+      moments.map(async (item) => {
+        item.images = await this.deepMinioService.getFileUrls(item.images, bucketName);
+      }),
+    );
+
     return {
       moments,
       count,
     };
   }
 
-  async findOne(id: number, protocol: string) {
+  async findOne(id: number) {
     const momentEntity = await this.database.momentEntityRepo.findOne({
       where: {
         id,
@@ -81,8 +94,7 @@ export class MomentService {
       relations: ['labels'],
     });
     if (!momentEntity) return null;
-    const { host, port } = configLoader<{ host: string; port: number }>('cmsService');
-    momentEntity.images = momentEntity?.images.map((item) => `${protocol}://${host}:${port}/moment/${item}`);
+    momentEntity.images = await this.deepMinioService.getFileUrls(momentEntity.images, bucketName);
     return momentEntity;
   }
 

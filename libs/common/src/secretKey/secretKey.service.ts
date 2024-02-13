@@ -8,14 +8,8 @@ export class SecretKeyService {
   private readonly privateKey: string;
   constructor() {
     try {
-      this.publicKey = readFileSync(
-        resolve(process.cwd(), './secretKey/public.key'),
-        'utf-8',
-      );
-      this.privateKey = readFileSync(
-        resolve(process.cwd(), './secretKey/private.key'),
-        'utf-8',
-      );
+      this.publicKey = readFileSync(resolve(process.cwd(), './secretKey/public.key'), 'utf-8');
+      this.privateKey = readFileSync(resolve(process.cwd(), './secretKey/private.key'), 'utf-8');
     } catch (error) {}
   }
   public getPublicKey(): string {
