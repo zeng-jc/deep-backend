@@ -23,7 +23,7 @@ export class UserEntity {
   id!: number;
   @Column({ type: 'varchar', length: 255, unique: true })
   username!: string;
-  @Column()
+  @Column({ nullable: true })
   avatar!: string;
   // select: false不会返给前端
   @Column({ type: 'varchar', length: 500, select: false })

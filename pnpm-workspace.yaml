@@ -1,2 +1,7 @@
 packages:
-  - 'packages/*'
+  # apps/ 直接子目录中的所有包
+  - 'apps/*'
+  # libs/ 子目录中的所有包
+  - 'libs/**'
+  # 排除测试目录中的包
+  - '!**/test/**'

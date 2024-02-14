@@ -40,25 +40,27 @@ export class UserService {
   }
   // TODO: 密码加密
   async createUser(createUserDto: CreateUserDto) {
-    if ((await this.userExist(createUserDto.username)) !== 0) return 'user exist';
-    if ((await this.emailExist(createUserDto.email)) !== 0) return 'email exist';
+    const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
+      createUserDto;
+    if ((await this.userExist(username)) !== 0) return 'user exist';
+    if ((await this.emailExist(email)) !== 0) return 'email exist';
     const user = new UserEntity();
-    user.username = createUserDto.username;
-    user.password = createUserDto.password;
-    user.nickname = createUserDto.nickname;
-    user.gender = createUserDto.gender;
-    user.email = createUserDto.email;
-    user.status = createUserDto.status;
-    user.bio = createUserDto.bio;
-    user.level = createUserDto.level;
-    user.birthday = createUserDto.birthday;
-    user.phone = createUserDto.phone;
-    user.school = createUserDto.school;
-    user.major = createUserDto.major;
-    user.position = createUserDto.position;
-    user.github = createUserDto.github;
+    user.username = username;
+    user.password = password;
+    user.nickname = nickname;
+    user.gender = gender;
+    user.email = email;
+    user.status = status;
+    user.bio = bio;
+    user.level = level;
+    user.birthday = birthday;
+    user.phone = phone;
+    user.school = school;
+    user.major = major;
+    user.position = position;
+    user.github = github;
     // 发送邮箱
-    this.emailService.sendMailCreateUser(createUserDto.email, createUserDto.nickname);
+    this.emailService.sendMailCreateUser(email, nickname);
     return this.database.userRepo.save(user);
   }
 
