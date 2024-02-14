@@ -1,6 +1,5 @@
 import {
   UserEntity,
-  AvatarEntity,
   RoleEntity,
   PermissionEntity,
   ArticleEntity,
@@ -22,8 +21,6 @@ export class DatabaseService {
   constructor(
     @InjectRepository(UserEntity)
     public readonly userRepo: Repository<UserEntity>,
-    @InjectRepository(AvatarEntity)
-    public readonly avatarRepo: Repository<AvatarEntity>,
     @InjectRepository(RoleEntity)
     public readonly roleRepo: Repository<RoleEntity>,
     @InjectRepository(PermissionEntity)

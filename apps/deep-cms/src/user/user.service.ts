@@ -68,7 +68,7 @@ export class UserService {
     const curpage = Number.parseInt(query.curpage);
     const pagesize = Number.parseInt(query.pagesize);
     const [data, total] = await this.database.userRepo.findAndCount({
-      relations: ['avatar', 'roles'],
+      relations: ['roles'],
       where: [
         {
           nickname: Like(`%${keywords}%`),
@@ -94,7 +94,7 @@ export class UserService {
     const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
     const user = await this.database.userRepo.findOne({
-      relations: ['avatar', 'roles', 'roles.permissions'],
+      relations: ['roles', 'roles.permissions'],
       where: { id },
     });
     if (!user) {

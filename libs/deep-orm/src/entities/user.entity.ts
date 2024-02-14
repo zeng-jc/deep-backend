@@ -2,14 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { AvatarEntity } from '@app/deep-orm/entities';
 import { ArticleEntity } from '@app/deep-orm/entities';
 import { RoleEntity } from './role.entity';
 import { MomentEntity } from './moment.entity';
@@ -25,7 +23,9 @@ export class UserEntity {
   id!: number;
   @Column({ type: 'varchar', length: 255, unique: true })
   username!: string;
-  // select: false表示不会返给前端
+  @Column()
+  avatar!: string;
+  // select: false不会返给前端
   @Column({ type: 'varchar', length: 500, select: false })
   password!: string;
   @Column({ type: 'varchar', length: 10 })
@@ -36,21 +36,21 @@ export class UserEntity {
   email?: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   bio?: string;
   @Column({ type: 'tinyint', default: 1 })
   level?: number;
-  @Column({ type: 'date', default: null })
+  @Column({ type: 'date', nullable: true })
   birthday?: Date;
-  @Column({ type: 'varchar', length: 30 })
+  @Column({ type: 'varchar', length: 30, nullable: true })
   phone?: string;
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   school?: string;
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   major?: string;
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   position?: string;
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   github?: string;
   @CreateDateColumn({ type: 'timestamp' })
   createAt: Date;
@@ -61,8 +61,6 @@ export class UserEntity {
   articles: ArticleEntity[];
   @OneToMany(() => MomentEntity, (momentEntity) => momentEntity.user)
   moments: MomentEntity[];
-  @OneToOne(() => AvatarEntity, (avatarEntity) => avatarEntity.user)
-  avatar: AvatarEntity;
   @ManyToMany(() => RoleEntity)
   @JoinTable({ name: tableNameEnum.user_role_relation })
   roles: RoleEntity[];

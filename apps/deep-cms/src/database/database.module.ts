@@ -3,7 +3,6 @@ import { DatabaseService } from './database.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   UserEntity,
-  AvatarEntity,
   RoleEntity,
   PermissionEntity,
   ArticleEntity,
@@ -22,7 +21,6 @@ import {
   imports: [
     TypeOrmModule.forFeature([
       UserEntity,
-      AvatarEntity,
       RoleEntity,
       PermissionEntity,
       ArticleEntity,

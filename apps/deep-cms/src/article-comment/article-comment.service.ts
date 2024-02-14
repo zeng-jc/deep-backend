@@ -40,7 +40,6 @@ export class ArticleCommentService {
   }
 
   async findOneArticleComment(id: number) {
-    // 后期考虑删除avatar表，改为user表的avatar字段
     const [data, total] = await this.database.articleCommentRepo.findAndCount({
       where: {
         articleId: id,
