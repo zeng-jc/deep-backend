@@ -137,7 +137,7 @@ export class UserService {
       user.status = user.status === 0 ? 1 : 0;
       return this.database.userRepo.save(user);
     } else {
-      return 'operator failed';
+      throw new DeepHttpException(CmsErrorMsg.USER_NOT_EXEITST, CmsErrorCode.USER_NOT_EXEITST);
     }
   }
 }

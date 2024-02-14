@@ -6,6 +6,7 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
+import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 const bucketName = 'deep-moment';
 @Injectable()
 export class MomentService {
@@ -46,7 +47,7 @@ export class MomentService {
       }),
     );
     // 2.存储moment
-    const momentInfo = await this.database.momentEntityRepo.save(moment);
+    const momentInfo = await this.database.momentRepo.save(moment);
     const rels = [];
     for (const id of momentLableIds) {
       rels.push({
@@ -64,7 +65,7 @@ export class MomentService {
     keywords = keywords ?? '';
     const curpage = Number.parseInt(paginationParams.curpage);
     const pagesize = Number.parseInt(paginationParams.pagesize);
-    const [moments, count] = await this.database.momentEntityRepo.findAndCount({
+    const [moments, count] = await this.database.momentRepo.findAndCount({
       relations: ['labels'],
       where: {
         content: Like(`%${keywords}%`),
@@ -87,7 +88,7 @@ export class MomentService {
   }
 
   async findOne(id: number) {
-    const momentEntity = await this.database.momentEntityRepo.findOne({
+    const momentEntity = await this.database.momentRepo.findOne({
       where: {
         id,
       },
@@ -100,6 +101,18 @@ export class MomentService {
 
   async remove(id: number) {
     // DOTO: 如果该标签下没有任何一篇文章，标签也应该删除
-    return this.database.momentEntityRepo.delete(id);
+    return this.database.momentRepo.delete(id);
+  }
+
+  async lockMoment(id: string) {
+    const moment = await this.database.momentRepo.findOne({
+      where: { id: +id },
+    });
+    if (moment) {
+      moment.status = moment.status === 0 ? 1 : 0;
+      return this.database.momentRepo.save(moment);
+    } else {
+      throw new DeepHttpException(CmsErrorMsg.MOMENT_NOT_EXEITST, CmsErrorCode.MOMENT_NOT_EXEITST);
+    }
   }
 }

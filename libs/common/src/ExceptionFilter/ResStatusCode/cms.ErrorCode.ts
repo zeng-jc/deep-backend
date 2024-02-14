@@ -1,7 +1,8 @@
 export enum CmsErrorCode {
   /** 用户状态码 **/
-  UNKNOWN_ERROR = '10000', //未知错误
-  USER_ID_INVALID = '100001', //用户id无效
+  UNKNOWN_ERROR = '100001', //未知错误
+  USER_ID_INVALID = '100002', //用户id无效
+  USER_NOT_EXEITST = '100003',
   /** 权限状态码 **/
   PERMISSION_DENIED = '200001', //权限不足
   PERMISSION_EXIST = '200002', //权限已存在
@@ -14,6 +15,7 @@ export enum CmsErrorCode {
   COMMONET_PARAMETER_VALUE_ERROR = '400001',
   MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE = '400002',
   MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE = '400003',
+  MOMENT_NOT_EXEITST = '400004',
   /** 文章状态码 */
   ARTICLE_PARAMETER_VALUE_ERROR = '500001',
 }

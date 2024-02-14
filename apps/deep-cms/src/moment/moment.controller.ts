@@ -7,6 +7,7 @@ import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
 import { ApiTags } from '@nestjs/swagger';
+import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 
 @Roles('admin')
 @ApiTags('moment')
@@ -65,5 +66,10 @@ export class MomentController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.momentService.remove(+id);
+  }
+
+  @Post('/lockMoment')
+  lockMoment(@Body(new GetBodyIdPipe()) id: string) {
+    return this.momentService.lockMoment(id);
   }
 }

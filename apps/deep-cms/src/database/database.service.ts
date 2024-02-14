@@ -37,7 +37,7 @@ export class DatabaseService {
     @InjectRepository(ArticleLabelRelationEntity)
     public readonly articleLabelRelsRepo: Repository<ArticleLabelRelationEntity>,
     @InjectRepository(MomentEntity)
-    public readonly momentEntityRepo: Repository<MomentEntity>,
+    public readonly momentRepo: Repository<MomentEntity>,
     @InjectRepository(MomentCommentEntity)
     public readonly momentCommentRepo: Repository<MomentCommentEntity>,
     @InjectRepository(MomentLabelEntity)
