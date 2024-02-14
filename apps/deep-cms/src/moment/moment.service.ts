@@ -3,7 +3,6 @@ import { CreateMomentDto } from './dto/create-moment.dto';
 import { DatabaseService } from '../database/database.service';
 import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
 import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
@@ -61,19 +60,21 @@ export class MomentService {
   }
 
   async findMultiMoments(paginationParams: PaginationQueryDto) {
-    let { keywords } = paginationParams;
-    keywords = keywords ?? '';
-    const curpage = Number.parseInt(paginationParams.curpage);
-    const pagesize = Number.parseInt(paginationParams.pagesize);
-    const [moments, count] = await this.database.momentRepo.findAndCount({
-      relations: ['labels'],
-      where: {
-        content: Like(`%${keywords}%`),
-      },
-      order: { id: 'DESC' },
-      skip: pagesize * (curpage - 1),
-      take: pagesize,
-    });
+    const { keywords, labelId } = paginationParams;
+    const curpage = +paginationParams.curpage;
+    const pagesize = +paginationParams.pagesize;
+    let query = this.database.momentRepo.createQueryBuilder('moment');
+    query = query.leftJoinAndSelect('moment.labels', 'labels');
+    query = query.orderBy('moment.id', 'DESC');
+    query = query.skip(pagesize * (curpage - 1));
+    query = query.take(pagesize);
+    if (keywords) {
+      query = query.where('moment.content LIKE :keywords', { keywords: `%${keywords}%` });
+    }
+    if (labelId) {
+      query = query.andWhere('labels.labelId = :labelId', { labelId });
+    }
+    const [moments, count] = await query.getManyAndCount();
 
     await Promise.all(
       moments.map(async (item) => {
