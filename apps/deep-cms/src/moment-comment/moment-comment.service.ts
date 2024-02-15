@@ -5,15 +5,20 @@ import { MomentCommentEntity } from '@app/deep-orm';
 import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
+import { DeepMinioService } from '@app/deep-minio';
+const bucketName = 'deep-moment';
 
 @Injectable()
 export class MomentCommentService {
-  constructor(private readonly database: DatabaseService) {}
-  async create(createMomentCommentDto: CreateMomentCommentDto) {
-    const { userId, momentId, content, replyId } = createMomentCommentDto;
+  constructor(
+    private readonly database: DatabaseService,
+    private readonly deepMinioService: DeepMinioService,
+  ) {}
+  async create(createMomentCommentDto: CreateMomentCommentDto, userId: string) {
+    const { momentId, content, replyId } = createMomentCommentDto;
     const comment = new MomentCommentEntity();
-    comment.momentId = parseInt(momentId);
-    comment.userId = parseInt(userId);
+    comment.momentId = +momentId;
+    comment.userId = +userId;
     comment.content = content;
     comment.replyId = Number(replyId ?? null);
     try {
@@ -23,6 +28,7 @@ export class MomentCommentService {
     }
   }
 
+  // 评论搜索（不查头像，影响性能）
   async findMultiCommentComment(query: PaginationQueryDto) {
     const { keywords, pagesize, curpage } = query;
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
@@ -30,28 +36,39 @@ export class MomentCommentService {
         content: Like(`%${keywords ?? ''}%`),
       },
       order: { id: 'DESC' },
-      skip: Number.parseInt(pagesize) * (Number.parseInt(curpage) - 1),
-      take: Number.parseInt(pagesize),
+      skip: +pagesize * (+curpage - 1),
+      take: +pagesize,
     });
     return {
       data,
       total,
     };
   }
-
-  async findOneMomentComment(id: number) {
-    const [data, total] = await this.database.momentCommentRepo.findAndCount({
+  // 查询指定动态的所有评论
+  async findOneMomentComment(momentId: number) {
+    const [comments, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
-        momentId: id,
+        momentId,
       },
       relations: ['user'],
     });
+    if (!comments) {
+      throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
+    }
+    await Promise.all(
+      comments.map(
+        async (comment) =>
+          (comment.user.avatar =
+            comment.user.avatar && (await this.deepMinioService.getFileUrl(comment.user.avatar, bucketName))),
+      ),
+    );
     return {
-      data,
+      comments,
       total,
     };
   }
 
+  // TODO：还需要删除子评论
   remove(id: number) {
     return this.database.momentCommentRepo.delete(id);
   }

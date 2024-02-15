@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Headers } from '@nestjs/common';
 import { MomentCommentService } from './moment-comment.service';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
@@ -13,8 +13,9 @@ export class MomentCommentController {
   constructor(private readonly momentCommentService: MomentCommentService) {}
 
   @Post()
-  create(@Body() createMomentCommentDto: CreateMomentCommentDto) {
-    return this.momentCommentService.create(createMomentCommentDto);
+  create(@Headers() headers, @Body() createMomentCommentDto: CreateMomentCommentDto) {
+    const { id: userId }: { id: string } = JSON.parse(headers.authorization);
+    return this.momentCommentService.create(createMomentCommentDto, userId);
   }
 
   @Get()
