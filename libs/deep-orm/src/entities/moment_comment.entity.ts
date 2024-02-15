@@ -17,8 +17,8 @@ export class MomentCommentEntity {
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
-  @Column({ default: 0 })
-  likes: number;
+  @Column({ type: 'simple-array', nullable: true })
+  likes: string[];
   @CreateDateColumn()
   createAt: Date;
   @UpdateDateColumn()

@@ -6,7 +6,7 @@ import { Roles } from '../common/decorator/auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
 
 @Roles('admin')
-@ApiTags('moment')
+@ApiTags('menu')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}

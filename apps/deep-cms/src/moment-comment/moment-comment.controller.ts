@@ -32,4 +32,11 @@ export class MomentCommentController {
   remove(@Param('id') id: string) {
     return this.momentCommentService.remove(+id);
   }
+
+  // 切换点赞
+  @Post('toggle-likes/:id')
+  toggleLikes(@Headers() headers, @Param('id') id: string) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.momentCommentService.toggleLikes(userId + '', id);
+  }
 }
