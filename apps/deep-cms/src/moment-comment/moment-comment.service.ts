@@ -29,7 +29,7 @@ export class MomentCommentService {
   }
 
   // 评论搜索（不查头像，影响性能）
-  async findMultiCommentComment(query: PaginationQueryDto) {
+  async findMultiMomentComment(query: PaginationQueryDto) {
     const { keywords, pagesize, curpage } = query;
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
@@ -46,24 +46,21 @@ export class MomentCommentService {
   }
   // 查询指定动态的所有评论
   async findOneMomentComment(momentId: number) {
-    const [comments, total] = await this.database.momentCommentRepo.findAndCount({
+    const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         momentId,
       },
       relations: ['user'],
     });
-    if (!comments) {
-      throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
-    }
     await Promise.all(
-      comments.map(
+      data.map(
         async (comment) =>
           (comment.user.avatar =
             comment.user.avatar && (await this.deepMinioService.getFileUrl(comment.user.avatar, bucketName))),
       ),
     );
     return {
-      comments,
+      data,
       total,
     };
   }

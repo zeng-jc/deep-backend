@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: tableNameEnum.article_comment })
 export class ArticleCommentEntity {
@@ -27,4 +28,9 @@ export class ArticleCommentEntity {
     onUpdate: 'CASCADE',
   })
   article: ArticleEntity;
+  @ManyToOne(() => UserEntity, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user: UserEntity;
 }

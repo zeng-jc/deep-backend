@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Headers } from '@nestjs/common';
 import { ArticleCommentService } from './article-comment.service';
 import { CreateArticleCommentDto } from './dto/create-article-comment.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
@@ -13,13 +13,14 @@ export class ArticleCommentController {
   constructor(private readonly articleCommentService: ArticleCommentService) {}
 
   @Post()
-  create(@Body() createArticleCommentDto: CreateArticleCommentDto) {
-    return this.articleCommentService.create(createArticleCommentDto);
+  create(@Headers() headers, @Body() createArticleCommentDto: CreateArticleCommentDto) {
+    const { id: userId }: { id: string } = JSON.parse(headers.authorization);
+    return this.articleCommentService.create(createArticleCommentDto, userId);
   }
 
   @Get()
   findMultiCommentComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
-    return this.articleCommentService.findMultiCommentComment(query);
+    return this.articleCommentService.findMultiArticleComment(query);
   }
 
   @Get(':id')
