@@ -4,8 +4,8 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleEntity } from '@app/deep-orm';
 import { In } from 'typeorm';
 import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
-import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 import { DatabaseService } from '../database/database.service';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Injectable()
 export class RoleService {
@@ -22,18 +22,16 @@ export class RoleService {
     return this.database.roleRepo.save(role);
   }
 
-  async assignPermissions(assignPermissionRoleDto: AssignPermissionRoleDto) {
-    const permissions = await this.database.permissionRepo.find({
-      where: {
-        id: In(assignPermissionRoleDto.permissionIds),
-      },
+  // 给用户分配角色（替换角色）
+  async assignRole(assignRoleDto: AssignRoleDto) {
+    const { roleIds, userId } = assignRoleDto;
+    const roles = await this.database.roleRepo.find({
+      where: { id: In(roleIds) },
     });
-    if (permissions.length === 0)
-      throw new DeepHttpException(CmsErrorMsg.PERMISSION_NOT_EXIST, CmsErrorCode.PERMISSION_NOT_EXIST);
-    // DOTO：还需要判断权限是否已经分配
-    return this.database.roleRepo.save({
-      permissions,
-      id: assignPermissionRoleDto.roleId,
+    if (!roles) throw new DeepHttpException(CmsErrorMsg.ROLE_NOT_EXIST, CmsErrorCode.ROLE_NOT_EXIST);
+    return this.database.userRepo.save({
+      roles,
+      id: userId,
     });
   }
 

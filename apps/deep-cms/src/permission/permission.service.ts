@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { AssignPermissionDto } from './dto/assign-permission.dto';
 import { PermissionEntity } from '@app/deep-orm';
 import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
+import { In } from 'typeorm';
 
 @Injectable()
 export class PermissionService {
@@ -24,6 +26,22 @@ export class PermissionService {
     } else {
       return [];
     }
+  }
+
+  async assignPermissions(assignPermissionDto: AssignPermissionDto) {
+    const { roleId, permissionIds } = assignPermissionDto;
+    const permissions = await this.database.permissionRepo.find({
+      where: {
+        id: In(permissionIds),
+      },
+    });
+    if (permissions.length === 0)
+      throw new DeepHttpException(CmsErrorMsg.PERMISSION_NOT_EXIST, CmsErrorCode.PERMISSION_NOT_EXIST);
+    // TODO：还需要判断权限是否已经分配
+    return this.database.roleRepo.save({
+      permissions,
+      id: roleId,
+    });
   }
 
   async createPermission(createPermissionDto: CreatePermissionDto) {

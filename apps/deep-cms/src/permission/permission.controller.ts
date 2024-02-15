@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
+import { AssignPermissionDto } from './dto/assign-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/decorator/auth.decorator';
@@ -14,6 +15,11 @@ export class PermissionController {
   @Post()
   createPermission(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionService.createPermission(createPermissionDto);
+  }
+
+  @Post('/assignPermissions')
+  assignPermissions(@Body() assignPermissionDto: AssignPermissionDto) {
+    return this.permissionService.assignPermissions(assignPermissionDto);
   }
 
   @Get()

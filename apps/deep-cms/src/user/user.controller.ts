@@ -18,7 +18,6 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
-import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { Permissions, Roles } from '../common/decorator/auth.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
@@ -32,11 +31,6 @@ export class UserController {
   @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
-  }
-
-  @Post('/assignRole')
-  assignRole(@Body() assignRoleUserDto: AssignRoleUserDto) {
-    return this.userService.assignRole(assignRoleUserDto);
   }
 
   @Permissions('query')

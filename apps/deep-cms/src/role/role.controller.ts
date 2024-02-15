@@ -3,8 +3,8 @@ import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { AssignPermissionRoleDto } from './dto/assignPermission-role.dto';
 import { Roles } from '../common/decorator/auth.decorator';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Roles('admin')
 @Controller('role')
@@ -17,9 +17,9 @@ export class RoleController {
     return this.roleService.createRole(createRoleDto);
   }
 
-  @Post('/assignPermissions')
-  assignPermissions(@Body() assignPermissionRoleDto: AssignPermissionRoleDto) {
-    return this.roleService.assignPermissions(assignPermissionRoleDto);
+  @Post('/assignRole')
+  assignRole(@Body() assignRoleDto: AssignRoleDto) {
+    return this.roleService.assignRole(assignRoleDto);
   }
 
   @Get()

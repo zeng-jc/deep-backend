@@ -101,7 +101,7 @@ export class MomentService {
   }
 
   async remove(id: number) {
-    // DOTO: 如果该标签下没有任何一篇文章，标签也应该删除
+    // TODO: 如果该标签下没有任何一篇文章，标签也应该删除
     return this.database.momentRepo.delete(id);
   }
 

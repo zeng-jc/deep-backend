@@ -6,7 +6,6 @@ import { Like } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { CacheService } from '@app/deep-cache';
 import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
-import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
 import { extname } from 'path';
@@ -20,19 +19,6 @@ export class UserService {
     private readonly emailService: EmailService,
     private readonly deepMinioService: DeepMinioService,
   ) {}
-
-  async assignRole(assignRoleUserDto: AssignRoleUserDto) {
-    const role = await this.database.roleRepo.findOne({
-      where: { id: assignRoleUserDto.roleId },
-    });
-    if (!role) throw new DeepHttpException(CmsErrorMsg.ROLE_NOT_EXIST, CmsErrorCode.ROLE_NOT_EXIST);
-    assignRoleUserDto;
-    await this.findOneUser(assignRoleUserDto.userId);
-    return this.database.userRepo.save({
-      roles: [role],
-      id: assignRoleUserDto.userId,
-    });
-  }
 
   async emailExist(email: string, excludeId?: number): Promise<boolean> {
     let queryBuilder = this.database.userRepo.createQueryBuilder('user');

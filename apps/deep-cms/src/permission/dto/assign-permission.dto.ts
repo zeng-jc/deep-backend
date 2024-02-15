@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty } from 'class-validator';
 
-export class AssignPermissionRoleDto {
+export class AssignPermissionDto {
   @IsNotEmpty()
   roleId!: number;
   @IsNotEmpty()
