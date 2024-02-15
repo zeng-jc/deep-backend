@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,6 +20,8 @@ import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { Permissions, Roles } from '../common/decorator/auth.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 
 @Roles('admin')
 @Controller('user')
@@ -20,9 +34,9 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Post('/assginRole')
-  assginRole(@Body() assignRoleUserDto: AssignRoleUserDto) {
-    return this.userService.assginRole(assignRoleUserDto);
+  @Post('/assignRole')
+  assignRole(@Body() assignRoleUserDto: AssignRoleUserDto) {
+    return this.userService.assignRole(assignRoleUserDto);
   }
 
   @Permissions('query')
@@ -41,8 +55,18 @@ export class UserController {
   }
 
   @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(+id, updateUserDto);
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      limits: {
+        fileSize: 2 * 1024 * 1024,
+      },
+    }),
+  )
+  updateUser(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    if (file && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      throw new DeepHttpException(CmsErrorMsg.AVATAR_UNSUPPORTED_FILE_TYPE, CmsErrorCode.AVATAR_UNSUPPORTED_FILE_TYPE);
+    }
+    return this.userService.updateUser(+id, updateUserDto, file);
   }
 
   @Delete(':id')

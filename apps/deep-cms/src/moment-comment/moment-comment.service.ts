@@ -19,7 +19,7 @@ export class MomentCommentService {
     try {
       return await this.database.momentCommentRepo.save(comment);
     } catch (error) {
-      throw new DeepHttpException(CmsErrorMsg.COMMONET_PARAMETER_VALUE_ERROR, CmsErrorCode.COMMONET_PARAMETER_VALUE_ERROR);
+      throw new DeepHttpException(CmsErrorMsg.MOMENT_PARAMETER_VALUE_ERROR, CmsErrorCode.MOMENT_PARAMETER_VALUE_ERROR);
     }
   }
 

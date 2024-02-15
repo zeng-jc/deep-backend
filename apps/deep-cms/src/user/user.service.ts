@@ -9,16 +9,19 @@ import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/except
 import { AssignRoleUserDto } from './dto/assignRole-user.dto';
 import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
-
+import { extname } from 'path';
+import { DeepMinioService } from '@app/deep-minio';
+const bucketName = 'deep-avatar';
 @Injectable()
 export class UserService {
   constructor(
     private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
     private readonly emailService: EmailService,
+    private readonly deepMinioService: DeepMinioService,
   ) {}
 
-  async assginRole(assignRoleUserDto: AssignRoleUserDto) {
+  async assignRole(assignRoleUserDto: AssignRoleUserDto) {
     const role = await this.database.roleRepo.findOne({
       where: { id: assignRoleUserDto.roleId },
     });
@@ -31,19 +34,29 @@ export class UserService {
     });
   }
 
-  async emailExist(email: string): Promise<number> {
-    return await this.database.userRepo.count({ where: { email } });
+  async emailExist(email: string, excludeId?: number): Promise<boolean> {
+    let queryBuilder = this.database.userRepo.createQueryBuilder('user');
+    queryBuilder = queryBuilder.where('user.email = :email', { email });
+    if (excludeId) {
+      queryBuilder = queryBuilder.andWhere('user.id != :id', { id: excludeId });
+    }
+    return !!(await queryBuilder.getCount());
   }
 
-  async userExist(username: string): Promise<number> {
-    return await this.database.userRepo.count({ where: { username } });
+  async userExist(username: string, excludeId?: number): Promise<boolean> {
+    let queryBuilder = this.database.userRepo.createQueryBuilder('user');
+    queryBuilder = queryBuilder.where('user.username = :username', { username });
+    if (excludeId) {
+      queryBuilder = queryBuilder.andWhere('user.id != :id', { id: excludeId });
+    }
+    return !!(await queryBuilder.getCount());
   }
   // TODO: 密码加密
   async createUser(createUserDto: CreateUserDto) {
     const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
       createUserDto;
-    if ((await this.userExist(username)) !== 0) return 'user exist';
-    if ((await this.emailExist(email)) !== 0) return 'email exist';
+    if (await this.userExist(username)) throw new DeepHttpException(CmsErrorMsg.USER_EXIST, CmsErrorCode.USER_EXIST);
+    if (await this.emailExist(email)) throw new DeepHttpException(CmsErrorMsg.EMAIL_EXIST, CmsErrorCode.EMAIL_EXIST);
     const user = new UserEntity();
     user.username = username;
     user.password = password;
@@ -86,6 +99,12 @@ export class UserService {
       skip: pagesize * (curpage - 1),
       take: pagesize,
     });
+    await Promise.all(
+      data.map(
+        async (userEntity) =>
+          (userEntity.avatar = userEntity.avatar && (await this.deepMinioService.getFileUrl(userEntity.avatar, bucketName))),
+      ),
+    );
     return {
       data,
       total,
@@ -102,33 +121,59 @@ export class UserService {
     if (!user) {
       throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
     }
+    user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
     this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
     return user;
   }
 
-  updateUser(id: number, updateUserDto: UpdateUserDto) {
+  async updateUser(id: number, updateUserDto: UpdateUserDto, file: Express.Multer.File) {
+    const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
+      updateUserDto;
+    if (await this.emailExist(email, id)) throw new DeepHttpException(CmsErrorMsg.EMAIL_EXIST, CmsErrorCode.EMAIL_EXIST);
+    if (await this.userExist(email, id)) throw new DeepHttpException(CmsErrorMsg.USER_EXIST, CmsErrorCode.USER_EXIST);
     const user = new UserEntity();
-    user.username = updateUserDto.username;
-    user.password = updateUserDto.password;
-    user.nickname = updateUserDto.nickname;
-    user.gender = updateUserDto.gender;
-    user.email = updateUserDto.email;
-    user.status = updateUserDto.status;
-    user.bio = updateUserDto.bio;
-    user.level = updateUserDto.level;
-    user.birthday = updateUserDto.birthday;
-    user.phone = updateUserDto.phone;
-    user.school = updateUserDto.school;
-    user.major = updateUserDto.major;
-    user.position = updateUserDto.position;
-    user.github = updateUserDto.github;
-    return this.database.userRepo.update(id, user);
+    user.username = username;
+    user.password = password;
+    user.nickname = nickname;
+    user.gender = gender;
+    user.email = email;
+    user.status = status;
+    user.bio = bio;
+    user.level = level;
+    user.birthday = birthday;
+    user.phone = phone;
+    user.school = school;
+    user.major = major;
+    user.position = position;
+    user.github = github;
+    try {
+      // 文件名处理
+      if (file) {
+        user.avatar = file.originalname = new Date().getTime() + extname(file.originalname);
+        const userEntity = await this.database.userRepo.findOne({ where: { id }, select: ['avatar'] });
+        // 对象存储
+        await this.deepMinioService.uploadFile(file, bucketName);
+        // 对象删除
+        await this.deepMinioService.deleteFile(userEntity.avatar, bucketName);
+      }
+      return await this.database.userRepo.update(id, user);
+    } catch (error) {
+      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+    }
   }
 
   async removeUser(id: number) {
-    const data = await this.database.userRepo.delete(id);
-    if (data.affected !== 0) await this.cacheService.del(`user.findOneUser.${id}`);
-    return data;
+    try {
+      const userEntity = await this.database.userRepo.findOne({ where: { id }, select: ['avatar'] });
+      // 清除缓存
+      await this.cacheService.del(`user.findOneUser.${id}`);
+      // 对象删除
+      await this.deepMinioService.deleteFile(userEntity.avatar, bucketName);
+      // 用户删除
+      return await this.database.userRepo.delete(id);
+    } catch (error) {
+      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+    }
   }
 
   async lockUser(id: string) {
@@ -139,7 +184,7 @@ export class UserService {
       user.status = user.status === 0 ? 1 : 0;
       return this.database.userRepo.save(user);
     } else {
-      throw new DeepHttpException(CmsErrorMsg.USER_NOT_EXEITST, CmsErrorCode.USER_NOT_EXEITST);
+      throw new DeepHttpException(CmsErrorMsg.USER_NOT_EXIST, CmsErrorCode.USER_NOT_EXIST);
     }
   }
 }

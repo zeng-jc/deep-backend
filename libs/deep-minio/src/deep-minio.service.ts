@@ -13,7 +13,9 @@ export class DeepMinioService {
     let res;
     try {
       res = await this.client.putObject(bucketName, file.originalname, file.buffer, metaData);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     return res;
   }
 
@@ -38,5 +40,21 @@ export class DeepMinioService {
       }) ?? [],
     );
     return urls;
+  }
+
+  async deleteFile(fileName: string[], bucketName: string): Promise<boolean>;
+  async deleteFile(fileName: string, bucketName: string): Promise<boolean>;
+  async deleteFile(fileName: string | string[], bucketName: string = this.bucketName): Promise<boolean> {
+    try {
+      if (Array.isArray(fileName)) {
+        await this.client.removeObjects(bucketName, fileName);
+      }
+      if (typeof fileName === 'string') {
+        await this.client.removeObject(bucketName, fileName);
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

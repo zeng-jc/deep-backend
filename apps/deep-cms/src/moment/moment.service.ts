@@ -113,7 +113,7 @@ export class MomentService {
       moment.status = moment.status === 0 ? 1 : 0;
       return this.database.momentRepo.save(moment);
     } else {
-      throw new DeepHttpException(CmsErrorMsg.MOMENT_NOT_EXEITST, CmsErrorCode.MOMENT_NOT_EXEITST);
+      throw new DeepHttpException(CmsErrorMsg.MOMENT_NOT_EXIST, CmsErrorCode.MOMENT_NOT_EXIST);
     }
   }
 }
