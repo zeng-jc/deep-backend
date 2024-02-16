@@ -11,3 +11,4 @@ export * from './article_comment.entity';
 export * from './article_label.entity';
 export * from './article_label_relation.entity';
 export * from './menu.entity';
+export * from './moment_likes.entity';

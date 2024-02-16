@@ -103,7 +103,8 @@ export class MomentService {
     // 动态标签处理
     momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
     if (!momentEntity) return null;
-    momentEntity.images = await this.deepMinioService.getFileUrls(momentEntity.images, bucketName);
+    momentEntity.images =
+      momentEntity.images.length && (await this.deepMinioService.getFileUrls(momentEntity.images, bucketName));
     return momentEntity;
   }
 
@@ -124,6 +125,17 @@ export class MomentService {
       return this.database.momentRepo.save(moment);
     } else {
       throw new DeepHttpException(CmsErrorMsg.MOMENT_NOT_EXIST, CmsErrorCode.MOMENT_NOT_EXIST);
+    }
+  }
+
+  async toggleLikes(userId: number, momentId: number) {
+    // 1.查询有没有点赞
+    const data = await this.database.momentLikesRepo.findOne({ where: { userId, momentId } });
+    if (data) {
+      await this.database.momentLikesRepo.delete({ userId, momentId });
+      return { message: 'cancel' };
+    } else {
+      return await this.database.momentLikesRepo.save({ userId, momentId });
     }
   }
 }

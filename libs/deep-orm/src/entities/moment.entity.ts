@@ -3,6 +3,7 @@ import { UserEntity } from './user.entity';
 import { MomentLabelRelationEntity } from './moment_label_relation.entity';
 import { MomentCommentEntity } from './moment_comment.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { MomentLikesEntity } from './moment_likes.entity';
 
 @Entity({ name: tableNameEnum.moment })
 export class MomentEntity {
@@ -28,4 +29,6 @@ export class MomentEntity {
   comments: MomentCommentEntity[];
   @OneToMany(() => MomentLabelRelationEntity, (momentLabelRelationEntity) => momentLabelRelationEntity.moment)
   labels: MomentLabelRelationEntity[];
+  @OneToMany(() => MomentLikesEntity, (momentLikesEntity) => momentLikesEntity.user)
+  momentLikes: MomentLikesEntity;
 }

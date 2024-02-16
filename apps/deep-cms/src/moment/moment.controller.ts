@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFiles, Query, Headers } from '@nestjs/common';
 import { MomentService } from './moment.service';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -71,5 +71,12 @@ export class MomentController {
   @Post('/lockMoment')
   lockMoment(@Body(new GetBodyIdPipe()) id: string) {
     return this.momentService.lockMoment(id);
+  }
+
+  // 切换点赞
+  @Post('toggle-likes/:id')
+  toggleLikes(@Headers() headers, @Param('id') id: string) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.momentService.toggleLikes(userId, +id);
   }
 }

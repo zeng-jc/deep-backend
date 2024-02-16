@@ -12,6 +12,7 @@ import { ArticleEntity, MomentCommentEntity } from '@app/deep-orm/entities';
 import { RoleEntity } from './role.entity';
 import { MomentEntity } from './moment.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { MomentLikesEntity } from './moment_likes.entity';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
@@ -66,4 +67,6 @@ export class UserEntity {
   roles: RoleEntity[];
   @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.user)
   momentComments: MomentCommentEntity;
+  @OneToMany(() => MomentLikesEntity, (momentLikesEntity) => momentLikesEntity.user)
+  momentLikes: MomentLikesEntity;
 }
