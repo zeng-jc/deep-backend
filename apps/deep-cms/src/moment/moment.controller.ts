@@ -59,8 +59,8 @@ export class MomentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.momentService.findOne(+id);
+  findOneMoment(@Param('id') id: string) {
+    return this.momentService.findOneMoment(+id);
   }
 
   @Delete(':id')

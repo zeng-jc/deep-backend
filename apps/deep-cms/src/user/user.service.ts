@@ -108,7 +108,7 @@ export class UserService {
       throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
     }
     user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
-    this.cacheService.set(`user.findOneUser.${id}`, user, 1000 * 60);
+    this.cacheService.set(`user.findOneUser.${id}`, user, 60);
     return user;
   }
 

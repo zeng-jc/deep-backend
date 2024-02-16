@@ -6,11 +6,13 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
 import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
+import { CacheService } from '@app/deep-cache';
 const bucketName = 'deep-moment';
 @Injectable()
 export class MomentService {
   constructor(
     private readonly database: DatabaseService,
+    private readonly cacheService: CacheService,
     private readonly deepMinioService: DeepMinioService,
   ) {}
   async create(files: Express.Multer.File[], createMomentDto: CreateMomentDto, type: string) {
@@ -93,18 +95,28 @@ export class MomentService {
     };
   }
 
-  async findOne(id: number) {
+  async findOneMoment(id: number) {
+    const cacheMoment = await this.cacheService.get(`moment.findOneMoment.${id}`);
+    if (cacheMoment) return cacheMoment;
     const momentEntity = await this.database.momentRepo
       .createQueryBuilder('moment')
       .where('moment.id = :id', { id })
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .getOne();
+    if (!momentEntity) return null;
     // 动态标签处理
     momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
-    if (!momentEntity) return null;
-    momentEntity.images =
-      momentEntity.images.length && (await this.deepMinioService.getFileUrls(momentEntity.images, bucketName));
+    momentEntity.images = momentEntity.images && (await this.deepMinioService.getFileUrls(momentEntity.images, bucketName));
+    // 增加浏览量
+    await this.database.momentRepo
+      .createQueryBuilder()
+      .update()
+      .set({ viewCount: momentEntity.viewCount + 1 }) // 在现有值上加一
+      .where('id = :id', { id })
+      .execute();
+    // 缓存
+    this.cacheService.set(`moment.findOneMoment.${id}`, momentEntity, 60);
     return momentEntity;
   }
 
@@ -133,7 +145,7 @@ export class MomentService {
     const data = await this.database.momentLikesRepo.findOne({ where: { userId, momentId } });
     if (data) {
       await this.database.momentLikesRepo.delete({ userId, momentId });
-      return { message: 'cancel' };
+      return false;
     } else {
       return await this.database.momentLikesRepo.save({ userId, momentId });
     }

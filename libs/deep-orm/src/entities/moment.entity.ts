@@ -17,6 +17,8 @@ export class MomentEntity {
   video?: string[];
   @Column({ type: 'text' })
   content!: string;
+  @Column({ default: 1 })
+  viewCount: number;
   @CreateDateColumn()
   createAt: Date;
   @UpdateDateColumn()
