@@ -68,7 +68,7 @@ export class MomentController {
     return this.momentService.remove(+id);
   }
 
-  @Post('/lockMoment')
+  @Post('lockMoment')
   lockMoment(@Body(new GetBodyIdPipe()) id: string) {
     return this.momentService.lockMoment(id);
   }
@@ -78,5 +78,11 @@ export class MomentController {
   toggleLikes(@Headers() headers, @Param('id') id: string) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.momentService.toggleLikes(userId, +id);
+  }
+
+  // 用户发布动态的总浏览量
+  @Get('get-user-total-moment-views/:id')
+  getUserTotalMomentViews(@Param('id') id: string) {
+    return this.momentService.getUserTotalMomentViews(+id);
   }
 }

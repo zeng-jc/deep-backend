@@ -9,6 +9,8 @@ import { MomentLikesEntity } from './moment_likes.entity';
 export class MomentEntity {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column()
+  userId: number;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
   @Column({ type: 'simple-array', nullable: true })

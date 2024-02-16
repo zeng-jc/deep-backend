@@ -150,4 +150,11 @@ export class MomentService {
       return await this.database.momentLikesRepo.save({ userId, momentId });
     }
   }
+
+  async getUserTotalMomentViews(userId: number) {
+    return (await this.database.momentRepo.find({ where: { userId }, select: ['viewCount'] })).reduce(
+      (pre, cur) => (cur.viewCount += pre),
+      0,
+    );
+  }
 }
