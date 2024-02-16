@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { DatabaseService } from '../database/database.service';
-import { MomentEntity, MomentLabelEntity } from '@app/deep-orm';
+import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity } from '@app/deep-orm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
@@ -64,18 +64,23 @@ export class MomentService {
     const curpage = +paginationParams.curpage;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo.createQueryBuilder('moment');
-    query = query.leftJoinAndSelect('moment.labels', 'labels');
-    query = query.orderBy('moment.id', 'DESC');
-    query = query.skip(pagesize * (curpage - 1));
-    query = query.take(pagesize);
+    query = query
+      .leftJoinAndSelect('moment.labels', 'labels')
+      .leftJoinAndSelect('labels.label', 'label')
+      .orderBy('moment.id', 'DESC')
+      .skip(pagesize * (curpage - 1))
+      .take(pagesize);
     if (keywords) {
       query = query.where('moment.content LIKE :keywords', { keywords: `%${keywords}%` });
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
     }
-    const [moments, count] = await query.getManyAndCount();
-
+    const [moments, total] = await query.getManyAndCount();
+    // 动态标签处理
+    moments.forEach((momentEntity) => {
+      momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
+    });
     await Promise.all(
       moments.map(async (item) => {
         item.images = await this.deepMinioService.getFileUrls(item.images, bucketName);
@@ -84,24 +89,29 @@ export class MomentService {
 
     return {
       moments,
-      count,
+      total,
     };
   }
 
   async findOne(id: number) {
-    const momentEntity = await this.database.momentRepo.findOne({
-      where: {
-        id,
-      },
-      relations: ['labels'],
-    });
+    const momentEntity = await this.database.momentRepo
+      .createQueryBuilder('moment')
+      .where('moment.id = :id', { id })
+      .leftJoinAndSelect('moment.labels', 'labels')
+      .leftJoinAndSelect('labels.label', 'label')
+      .getOne();
+    // 动态标签处理
+    momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
     if (!momentEntity) return null;
     momentEntity.images = await this.deepMinioService.getFileUrls(momentEntity.images, bucketName);
     return momentEntity;
   }
 
+  // TODO: 如果该标签下没有任何一篇文章，标签也应该删除
   async remove(id: number) {
-    // TODO: 如果该标签下没有任何一篇文章，标签也应该删除
+    const data = await this.database.momentRepo.findOne({ where: { id }, select: ['images'] });
+    // 删除图片
+    await this.deepMinioService.deleteFile(data.images, bucketName);
     return this.database.momentRepo.delete(id);
   }
 

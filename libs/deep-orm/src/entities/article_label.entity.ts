@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { tableNameEnum } from '../tableNameEnum';
 
@@ -10,8 +10,6 @@ export class ArticleLabelEntity {
   name!: string;
   @CreateDateColumn()
   createAt: Date;
-  @UpdateDateColumn()
-  updateAt: Date;
   @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.labels)
   articles: ArticleEntity[];
 }

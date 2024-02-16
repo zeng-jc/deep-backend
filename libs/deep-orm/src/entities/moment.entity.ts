@@ -8,7 +8,7 @@ import { tableNameEnum } from '../tableNameEnum';
 export class MomentEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'enum', enum: [0, 1], default: 0 })
+  @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
   @Column({ type: 'simple-array', nullable: true })
   images?: string[];
