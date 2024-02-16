@@ -23,14 +23,12 @@ export class ArticleCommentEntity {
   createAt: Date;
   @Column()
   updateAt: Date;
-  @ManyToOne(() => ArticleEntity, {
+  @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.comments, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   article: ArticleEntity;
-  @ManyToOne(() => UserEntity, {
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.momentComments, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   user: UserEntity;
 }

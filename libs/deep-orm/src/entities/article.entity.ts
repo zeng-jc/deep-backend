@@ -33,11 +33,10 @@ export class ArticleEntity {
   updateAt: Date;
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   user: UserEntity;
   @OneToMany(() => ArticleCommentEntity, (articleCommentEntity) => articleCommentEntity.article)
-  commnets: ArticleCommentEntity[];
+  comments: ArticleCommentEntity[];
   @ManyToMany(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
   labels: ArticleLabelEntity[];
 }

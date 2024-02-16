@@ -8,7 +8,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { ArticleEntity } from '@app/deep-orm/entities';
+import { ArticleEntity, MomentCommentEntity } from '@app/deep-orm/entities';
 import { RoleEntity } from './role.entity';
 import { MomentEntity } from './moment.entity';
 import { tableNameEnum } from '../tableNameEnum';
@@ -64,4 +64,6 @@ export class UserEntity {
   @ManyToMany(() => RoleEntity)
   @JoinTable({ name: tableNameEnum.user_role_relation })
   roles: RoleEntity[];
+  @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.user)
+  momentComments: MomentCommentEntity;
 }

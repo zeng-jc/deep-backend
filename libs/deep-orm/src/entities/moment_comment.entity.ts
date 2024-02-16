@@ -25,12 +25,10 @@ export class MomentCommentEntity {
   updateAt: Date;
   @ManyToOne(() => MomentEntity, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   moment: MomentEntity;
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   user: UserEntity;
 }

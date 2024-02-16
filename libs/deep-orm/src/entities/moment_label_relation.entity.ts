@@ -15,12 +15,10 @@ export class MomentLabelRelationEntity {
   createAt: Date;
   @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   public moment: MomentEntity;
   @ManyToOne(() => MomentLabelEntity, (momentLabelEntity) => momentLabelEntity.moments, {
     onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   public label: MomentLabelEntity;
 }

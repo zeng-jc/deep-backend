@@ -13,8 +13,12 @@ export class ArticleLabelRelationEntity {
   labelId: string;
   @CreateDateColumn()
   createAt: Date;
-  @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels)
+  @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels, {
+    onDelete: 'CASCADE',
+  })
   public article: ArticleEntity;
-  @ManyToOne(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
+  @ManyToOne(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles, {
+    onDelete: 'CASCADE',
+  })
   public label: ArticleLabelEntity;
 }
