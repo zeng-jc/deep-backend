@@ -65,7 +65,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  removeUser(@Param('id') id: string) {
     return this.userService.removeUser(+id);
   }
 
@@ -94,24 +94,37 @@ export class UserController {
   }
 
   // 粉丝列表
-  @Post('/followers')
+  @Get('/followers/:id')
   async getFollowers(
     @Headers() headers,
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
+    @Param('id') id: string,
   ) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
-    return this.userService.getFollowers(userId, query);
+    if (!userId) return null;
+    return this.userService.getFollowers(+id, query);
   }
 
   // 关注列表
-  @Post('/following')
+  @Get('/following/:id')
   async getFollowing(
     @Headers() headers,
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
+    @Param('id') id: string,
   ) {
-    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
-    return this.userService.getFollowing(userId, query);
+    return this.userService.getFollowing(+id, query);
+  }
+
+  // 点赞列表
+  @Get('/likes-list/:id')
+  async getLikesList(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+    @Param('id') id: string,
+  ) {
+    return this.userService.getLikesList(+id, query);
   }
 }

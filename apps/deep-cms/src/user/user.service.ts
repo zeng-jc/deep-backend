@@ -201,23 +201,64 @@ export class UserService {
     const curpage = +query.curpage;
     const pagesize = +query.pagesize;
     const sql = `
-    select u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
-    from user_follow uf
+    SELECT u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
+    FROM user_follow uf
     INNER JOIN user u ON uf.followId = u.id 
-    WHERE followId=${userId}
+    WHERE uf.followId=${userId}
     LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
-    return await this.database.entityManager.query(sql);
+    const result = await this.database.entityManager.query(sql);
+    // minio中取出文件
+    await Promise.all(
+      result.map(async (item) => {
+        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
+      }),
+    );
+    return result;
   }
 
   async getFollowing(userId: number, query: PaginationQueryDto) {
     const curpage = +query.curpage;
     const pagesize = +query.pagesize;
     const sql = `
-    select u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
-    from user_follow uf
+    SELECT u.nickname,u.username,u.level,u.school,u.avatar,u.gender 
+    FROM user_follow uf
     INNER JOIN user u ON uf.followingId = u.id 
-    WHERE followId=${userId}
+    WHERE uf.followId=${userId}
     LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
-    return await this.database.entityManager.query(sql);
+    const result = await this.database.entityManager.query(sql);
+    // minio中取出文件
+    await Promise.all(
+      result.map(async (item) => {
+        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
+      }),
+    );
+    return result;
+  }
+
+  async getLikesList(userId: number, query: PaginationQueryDto) {
+    const curpage = +query.curpage;
+    const pagesize = +query.pagesize;
+    const sql = `
+    SELECT  m.* ,JSON_OBJECT(
+      'id', u.id,
+      'username', u.username,
+      'level', u.level,
+      'avatar', u.avatar,
+      'gender', u.gender
+    ) AS user
+    FROM moment m
+    INNER JOIN moment_likes ml ON ml.momentId = m.id  
+    INNER JOIN user u ON ml.userId = u.id
+    WHERE ml.userId=${userId}
+    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    const result = await this.database.entityManager.query(sql);
+    // minio中取出文件
+    await Promise.all(
+      result.map(async (item) => {
+        item?.images && (item.images = await this.deepMinioService.getFileUrls(item.images.split(',')));
+        item.user?.avatar && (item.user.avatar = await this.deepMinioService.getFileUrls(item.user.avatar));
+      }),
+    );
+    return result;
   }
 }

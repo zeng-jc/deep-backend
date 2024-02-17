@@ -68,6 +68,7 @@ export class UserEntity {
   roles: RoleEntity[];
   @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.user)
   momentComments: MomentCommentEntity[];
+  // 用户点赞列表
   @OneToMany(() => MomentLikesEntity, (momentLikesEntity) => momentLikesEntity.user)
   momentLikes: MomentLikesEntity[];
   // 关注的用户
