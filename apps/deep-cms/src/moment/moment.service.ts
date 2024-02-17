@@ -61,12 +61,13 @@ export class MomentService {
     return momentInfo;
   }
 
+  // TODO: 需要优化sql
   async findMultiMoments(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const curpage = +paginationParams.curpage;
     const pagesize = +paginationParams.pagesize;
-    let query = this.database.momentRepo.createQueryBuilder('moment');
-    query = query
+    let query = this.database.momentRepo
+      .createQueryBuilder('moment')
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .orderBy('moment.id', 'DESC')
@@ -148,6 +149,7 @@ export class MomentService {
       return false;
     } else {
       return await this.database.momentLikesRepo.save({ userId, momentId });
+      return true;
     }
   }
 

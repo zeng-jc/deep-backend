@@ -66,8 +66,8 @@ export class UserService {
   async findMultiUser(query: PaginationQueryDto) {
     let { keywords } = query;
     keywords = keywords ?? '';
-    const curpage = Number.parseInt(query.curpage);
-    const pagesize = Number.parseInt(query.pagesize);
+    const curpage = +query.curpage;
+    const pagesize = +query.pagesize;
     const [data, total] = await this.database.userRepo.findAndCount({
       relations: ['roles'],
       where: [
@@ -172,5 +172,52 @@ export class UserService {
     } else {
       throw new DeepHttpException(CmsErrorMsg.USER_NOT_EXIST, CmsErrorCode.USER_NOT_EXIST);
     }
+  }
+
+  async followUser(followId: number, followingId: number) {
+    try {
+      const data = await this.database.userFollowRepo.findOne({ where: { followId, followingId } });
+      if (data) {
+        await this.database.userFollowRepo.delete({ followId, followingId });
+        return false;
+      } else {
+        await this.database.userFollowRepo.save({ followId, followingId });
+        return true;
+      }
+    } catch (error) {
+      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+    }
+  }
+
+  async getFollowerCount(userId: number) {
+    return this.database.userFollowRepo.count({ where: { followingId: userId } });
+  }
+
+  async getFollowingCount(userId: number) {
+    return this.database.userFollowRepo.count({ where: { followId: userId } });
+  }
+
+  async getFollowers(userId: number, query: PaginationQueryDto) {
+    const curpage = +query.curpage;
+    const pagesize = +query.pagesize;
+    const sql = `
+    select u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
+    from user_follow uf
+    INNER JOIN user u ON uf.followId = u.id 
+    WHERE followId=${userId}
+    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    return await this.database.entityManager.query(sql);
+  }
+
+  async getFollowing(userId: number, query: PaginationQueryDto) {
+    const curpage = +query.curpage;
+    const pagesize = +query.pagesize;
+    const sql = `
+    select u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
+    from user_follow uf
+    INNER JOIN user u ON uf.followingId = u.id 
+    WHERE followId=${userId}
+    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    return await this.database.entityManager.query(sql);
   }
 }

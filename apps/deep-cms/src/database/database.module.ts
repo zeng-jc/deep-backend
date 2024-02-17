@@ -15,6 +15,7 @@ import {
   MomentLabelRelationEntity,
   MenuEntity,
   MomentLikesEntity,
+  UserFollowEntity,
 } from '@app/deep-orm';
 
 @Global()
@@ -34,6 +35,7 @@ import {
       MomentLabelRelationEntity,
       MenuEntity,
       MomentLikesEntity,
+      UserFollowEntity,
     ]),
   ],
   providers: [DatabaseService],

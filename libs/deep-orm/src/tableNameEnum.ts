@@ -2,6 +2,7 @@
 export enum tableNameEnum {
   user = 'user',
   user_role_relation = 'user_role_relation',
+  user_follow = 'user_follow',
   role = 'role',
   role_menu_relation = 'role_menu_relation',
   role_permission_relation = 'role_permission_relation',

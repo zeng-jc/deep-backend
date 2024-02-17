@@ -13,6 +13,7 @@ import { RoleEntity } from './role.entity';
 import { MomentEntity } from './moment.entity';
 import { tableNameEnum } from '../tableNameEnum';
 import { MomentLikesEntity } from './moment_likes.entity';
+import { UserFollowEntity } from './user_follow.entity';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
@@ -66,7 +67,13 @@ export class UserEntity {
   @JoinTable({ name: tableNameEnum.user_role_relation })
   roles: RoleEntity[];
   @OneToMany(() => MomentCommentEntity, (momentCommentEntity) => momentCommentEntity.user)
-  momentComments: MomentCommentEntity;
+  momentComments: MomentCommentEntity[];
   @OneToMany(() => MomentLikesEntity, (momentLikesEntity) => momentLikesEntity.user)
-  momentLikes: MomentLikesEntity;
+  momentLikes: MomentLikesEntity[];
+  // 关注的用户
+  @OneToMany(() => UserFollowEntity, (userFollowEntity) => userFollowEntity.followUser)
+  userFollows: UserFollowEntity[];
+  // 被关注的用户（粉丝）
+  @OneToMany(() => UserFollowEntity, (userFollowEntity) => userFollowEntity.followingUser)
+  userFollowings: UserFollowEntity[];
 }

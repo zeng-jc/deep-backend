@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Headers,
   Query,
   UploadedFile,
   UseInterceptors,
@@ -68,8 +69,49 @@ export class UserController {
     return this.userService.removeUser(+id);
   }
 
-  @Post('/lockUser')
+  @Post('/lock-user')
   lockUser(@Body(new GetBodyIdPipe()) id: string) {
     return this.userService.lockUser(id);
+  }
+
+  // 关注用户
+  @Post('/follow-user/:id')
+  followUser(@Headers() headers, @Param('id') id: string) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.userService.followUser(+userId, +id);
+  }
+
+  // 粉丝人数
+  @Get('/follower-count/:id')
+  async getFollowerCount(@Param('id') id: string) {
+    return this.userService.getFollowerCount(+id);
+  }
+
+  // 关注人数
+  @Get('/following-count/:id')
+  async getFollowingCount(@Param('id') id: string) {
+    return this.userService.getFollowingCount(+id);
+  }
+
+  // 粉丝列表
+  @Post('/followers')
+  async getFollowers(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+  ) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.userService.getFollowers(userId, query);
+  }
+
+  // 关注列表
+  @Post('/following')
+  async getFollowing(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+  ) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.userService.getFollowing(userId, query);
   }
 }
