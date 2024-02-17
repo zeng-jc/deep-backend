@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MomentEntity } from './moment.entity';
 import { UserEntity } from './user.entity';
 import { tableNameEnum } from '../tableNameEnum';
@@ -11,8 +11,10 @@ export class MomentCommentEntity {
   momentId!: number;
   @Column()
   userId!: number;
-  @Column()
+  @Column({ nullable: true })
   replyId: number;
+  @Column({ nullable: true })
+  path: string;
   @Column({ type: 'varchar', length: 500 })
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
@@ -21,8 +23,6 @@ export class MomentCommentEntity {
   likes: string[];
   @CreateDateColumn()
   createAt: Date;
-  @UpdateDateColumn()
-  updateAt: Date;
   @ManyToOne(() => MomentEntity, {
     onDelete: 'CASCADE',
   })
