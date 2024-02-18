@@ -8,7 +8,7 @@ import { CacheModule } from '@app/deep-cache';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthGuard } from './common/guard/auth.guard';
-import { DeepDbModule } from '@app/deep-db';
+import { DeepDbModule } from '@app/deep-orm';
 import { DatabaseModule } from './database/database.module';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 import { verifyTokenMiddleware } from '@app/common';

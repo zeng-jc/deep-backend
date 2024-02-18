@@ -18,42 +18,16 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/deep-orm": [
-        "libs/deep-orm/src"
-      ],
-      "@app/deep-orm/*": [
-        "libs/deep-orm/src/*"
-      ],
-      "@app/deep-cache": [
-        "libs/deep-cache/src"
-      ],
-      "@app/deep-cache/*": [
-        "libs/deep-cache/src/*"
-      ],
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ],
-      "@app/deep-amqp": [
-        "libs/deep-amqp/src"
-      ],
-      "@app/deep-amqp/*": [
-        "libs/deep-amqp/src/*"
-      ],
-      "@app/deep-db": [
-        "libs/deep-db/src"
-      ],
-      "@app/deep-db/*": [
-        "libs/deep-db/src/*"
-      ],
-      "@app/deep-minio": [
-        "libs/deep-minio/src"
-      ],
-      "@app/deep-minio/*": [
-        "libs/deep-minio/src/*"
-      ]
+      "@app/deep-orm": ["libs/deep-orm/src"],
+      "@app/deep-orm/*": ["libs/deep-orm/src/*"],
+      "@app/deep-cache": ["libs/deep-cache/src"],
+      "@app/deep-cache/*": ["libs/deep-cache/src/*"],
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"],
+      "@app/deep-amqp": ["libs/deep-amqp/src"],
+      "@app/deep-amqp/*": ["libs/deep-amqp/src/*"],
+      "@app/deep-minio": ["libs/deep-minio/src"],
+      "@app/deep-minio/*": ["libs/deep-minio/src/*"]
     }
   }
 }

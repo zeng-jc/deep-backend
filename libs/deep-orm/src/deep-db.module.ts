@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DeepDbService } from './deep-db.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './deep-db.config';
 
@@ -9,7 +8,5 @@ import { dbConfig } from './deep-db.config';
       useFactory: () => dbConfig,
     }),
   ],
-  providers: [DeepDbService],
-  exports: [DeepDbService],
 })
 export class DeepDbModule {}

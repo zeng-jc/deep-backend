@@ -113,7 +113,6 @@
       "^@app/cache-xxx(|/.*)$": "<rootDir>/libs/cache-xxx/src/$1",
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
       "^@app/deep-amqp(|/.*)$": "<rootDir>/libs/deep-amqp/src/$1",
-      "^@app/deep-db(|/.*)$": "<rootDir>/libs/deep-db/src/$1",
       "^@app/deep-minio(|/.*)$": "<rootDir>/libs/deep-minio/src/$1"
     }
   }

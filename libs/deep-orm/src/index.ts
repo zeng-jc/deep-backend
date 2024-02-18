@@ -1,4 +1,4 @@
 export * from './entities';
-export * from './deep-orm.module';
-export * from './deep-orm.service';
 export * from './tableNameEnum';
+export * from './deep-db.module';
+export * from './deep-db.config';
