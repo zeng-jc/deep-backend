@@ -3,7 +3,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleEntity } from '@app/deep-orm';
 import { In } from 'typeorm';
-import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { AssignRoleDto } from './dto/assign-role.dto';
 
@@ -15,7 +15,7 @@ export class RoleService {
     const res = await this.database.roleRepo.findOne({
       where: { name: createRoleDto.name },
     });
-    if (res) throw new DeepHttpException(CmsErrorMsg.ROLE_EXIST, CmsErrorCode.ROLE_EXIST);
+    if (res) throw new DeepHttpException(ErrorMsg.ROLE_EXIST, ErrorCode.ROLE_EXIST);
     const role = new RoleEntity();
     role.name = createRoleDto.name;
     role.desc = createRoleDto.desc;
@@ -28,7 +28,7 @@ export class RoleService {
     const roles = await this.database.roleRepo.find({
       where: { id: In(roleIds) },
     });
-    if (!roles) throw new DeepHttpException(CmsErrorMsg.ROLE_NOT_EXIST, CmsErrorCode.ROLE_NOT_EXIST);
+    if (!roles) throw new DeepHttpException(ErrorMsg.ROLE_NOT_EXIST, ErrorCode.ROLE_NOT_EXIST);
     return this.database.userRepo.save({
       roles,
       id: userId,

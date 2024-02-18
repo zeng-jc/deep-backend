@@ -5,7 +5,7 @@ import { UserEntity } from '@app/deep-orm/entities';
 import { Like } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { CacheService } from '@app/deep-cache';
-import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
 import { extname } from 'path';
@@ -41,8 +41,8 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto) {
     const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
       createUserDto;
-    if (await this.userExist(username)) throw new DeepHttpException(CmsErrorMsg.USER_EXIST, CmsErrorCode.USER_EXIST);
-    if (await this.emailExist(email)) throw new DeepHttpException(CmsErrorMsg.EMAIL_EXIST, CmsErrorCode.EMAIL_EXIST);
+    if (await this.userExist(username)) throw new DeepHttpException(ErrorMsg.USER_EXIST, ErrorCode.USER_EXIST);
+    if (await this.emailExist(email)) throw new DeepHttpException(ErrorMsg.EMAIL_EXIST, ErrorCode.EMAIL_EXIST);
     const user = new UserEntity();
     user.username = username;
     user.password = password;
@@ -105,7 +105,7 @@ export class UserService {
       where: { id },
     });
     if (!user) {
-      throw new DeepHttpException(CmsErrorMsg.USER_ID_INVALID, CmsErrorCode.USER_ID_INVALID);
+      throw new DeepHttpException(ErrorMsg.USER_ID_INVALID, ErrorCode.USER_ID_INVALID);
     }
     user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
     this.cacheService.set(`user.findOneUser.${id}`, user, 60);
@@ -115,8 +115,8 @@ export class UserService {
   async updateUser(id: number, updateUserDto: UpdateUserDto, file: Express.Multer.File) {
     const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
       updateUserDto;
-    if (await this.emailExist(email, id)) throw new DeepHttpException(CmsErrorMsg.EMAIL_EXIST, CmsErrorCode.EMAIL_EXIST);
-    if (await this.userExist(email, id)) throw new DeepHttpException(CmsErrorMsg.USER_EXIST, CmsErrorCode.USER_EXIST);
+    if (await this.emailExist(email, id)) throw new DeepHttpException(ErrorMsg.EMAIL_EXIST, ErrorCode.EMAIL_EXIST);
+    if (await this.userExist(email, id)) throw new DeepHttpException(ErrorMsg.USER_EXIST, ErrorCode.USER_EXIST);
     const user = new UserEntity();
     user.username = username;
     user.password = password;
@@ -144,7 +144,7 @@ export class UserService {
       }
       return await this.database.userRepo.update(id, user);
     } catch (error) {
-      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
     }
   }
 
@@ -158,7 +158,7 @@ export class UserService {
       // 用户删除
       return await this.database.userRepo.delete(id);
     } catch (error) {
-      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
     }
   }
 
@@ -170,7 +170,7 @@ export class UserService {
       user.status = user.status === 0 ? 1 : 0;
       return this.database.userRepo.save(user);
     } else {
-      throw new DeepHttpException(CmsErrorMsg.USER_NOT_EXIST, CmsErrorCode.USER_NOT_EXIST);
+      throw new DeepHttpException(ErrorMsg.USER_NOT_EXIST, ErrorCode.USER_NOT_EXIST);
     }
   }
 
@@ -185,7 +185,7 @@ export class UserService {
         return true;
       }
     } catch (error) {
-      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
     }
   }
 

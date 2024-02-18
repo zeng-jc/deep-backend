@@ -3,7 +3,7 @@ import { SigninAuthDto } from './dto/signin-auth.dto';
 // import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import { TokenPayload } from '@app/common';
-import { AuthErrorCode, AuthErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
+import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { SecretKeyService } from '@app/common/secretKey/secretKey.service';
 
@@ -25,7 +25,7 @@ export class AuthService {
     });
 
     if (!userInfo) {
-      throw new DeepHttpException(AuthErrorMsg.INVALID_IDENTITY_INFORMATION, AuthErrorCode.INVALID_IDENTITY_INFORMATION);
+      throw new DeepHttpException(ErrorMsg.INVALID_IDENTITY_INFORMATION, ErrorCode.INVALID_IDENTITY_INFORMATION);
     }
 
     const TOKEN = this.createToken<TokenPayload>({
@@ -61,7 +61,7 @@ export class AuthService {
         algorithms: ['RS256'],
       });
     } catch (error) {
-      throw new DeepHttpException(AuthErrorMsg.TOKEN_INVALID, AuthErrorCode.TOKEN_INVALID);
+      throw new DeepHttpException(ErrorMsg.TOKEN_INVALID, ErrorCode.TOKEN_INVALID);
     }
     return result;
   }

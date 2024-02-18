@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Global, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { DeepHttpException, AuthErrorCode, AuthErrorMsg } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { Request } from 'express';
@@ -31,7 +31,7 @@ export class CheckResourceOwnershipGuard implements CanActivate {
 
     const cacheUserId: number | null = await this.cacheService.get<number>(cacheKey);
     if (cacheUserId && reqUserId !== cacheUserId) {
-      throw new DeepHttpException(AuthErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE, AuthErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE);
+      throw new DeepHttpException(ErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE, ErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE);
     }
     if (cacheUserId && reqUserId === cacheUserId) {
       return true;
@@ -42,7 +42,7 @@ export class CheckResourceOwnershipGuard implements CanActivate {
       },
     });
     if (reqUserId !== dbUserId) {
-      throw new DeepHttpException(AuthErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE, AuthErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE);
+      throw new DeepHttpException(ErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE, ErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE);
     }
     this.cacheService.set<number>(cacheKey, dbUserId, 60);
     return true;

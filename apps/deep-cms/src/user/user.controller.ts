@@ -21,7 +21,7 @@ import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { ApiTags } from '@nestjs/swagger';
 import { Permissions, Roles } from '../common/decorator/auth.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
+import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 
 @Roles('admin')
 @Controller('user')
@@ -59,7 +59,7 @@ export class UserController {
   )
   updateUser(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     if (file && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-      throw new DeepHttpException(CmsErrorMsg.AVATAR_UNSUPPORTED_FILE_TYPE, CmsErrorCode.AVATAR_UNSUPPORTED_FILE_TYPE);
+      throw new DeepHttpException(ErrorMsg.AVATAR_UNSUPPORTED_FILE_TYPE, ErrorCode.AVATAR_UNSUPPORTED_FILE_TYPE);
     }
     return this.userService.updateUser(+id, updateUserDto, file);
   }

@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Global, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { CacheService } from '@app/deep-cache';
 import { DataSource } from 'typeorm';
 import { UserEntity } from '@app/deep-orm';
@@ -56,13 +56,13 @@ export class AuthGuard implements CanActivate {
     const isContainRole: boolean = requiredRoles.every((item) => roles?.includes(item));
 
     if (!isContainRole) {
-      throw new DeepHttpException(CmsErrorMsg.ROLE_ACCESS_PROHIBITED, CmsErrorCode.ROLE_ACCESS_PROHIBITED);
+      throw new DeepHttpException(ErrorMsg.ROLE_ACCESS_PROHIBITED, ErrorCode.ROLE_ACCESS_PROHIBITED);
     }
 
     const isContainPermission: boolean = requiredPermissions.every((item) => permissions?.includes(item));
 
     if (!isContainPermission) {
-      throw new DeepHttpException(CmsErrorMsg.PERMISSION_DENIED, CmsErrorCode.PERMISSION_DENIED);
+      throw new DeepHttpException(ErrorMsg.PERMISSION_DENIED, ErrorCode.PERMISSION_DENIED);
     }
     return true;
   }

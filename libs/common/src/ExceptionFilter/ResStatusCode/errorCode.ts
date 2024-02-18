@@ -1,4 +1,8 @@
-export enum CmsErrorCode {
+export enum ErrorCode {
+  /** auth状态码 */
+  TOKEN_INVALID = '10000',
+  INVALID_IDENTITY_INFORMATION = '10001',
+  YOU_DO_NOT_OWN_THIS_RESOURCE = '10002',
   /** 用户状态码 **/
   UNKNOWN_ERROR = '100001', //未知错误
   USER_ID_INVALID = '100002', //用户id无效

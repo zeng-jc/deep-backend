@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
 import { DatabaseService } from '../database/database.service';
 import { MomentCommentEntity } from '@app/deep-orm';
-import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
+import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
@@ -24,7 +24,7 @@ export class MomentCommentService {
     if (replyId) {
       // 查询回复的评论是否存在
       const parentComment = await this.database.momentCommentRepo.findOne({ where: { id: +replyId } });
-      if (!parentComment) throw new DeepHttpException(CmsErrorMsg.REPLY_MOMENT_NOT_EXIST, CmsErrorCode.REPLY_MOMENT_NOT_EXIST);
+      if (!parentComment) throw new DeepHttpException(ErrorMsg.REPLY_MOMENT_NOT_EXIST, ErrorCode.REPLY_MOMENT_NOT_EXIST);
       // 存储评论并拿出评论信息
       const curComment = await this.database.momentCommentRepo.save(comment);
       // 重新计算评论路径
@@ -101,7 +101,7 @@ export class MomentCommentService {
       // 4. 返回点赞数量
       return likes.length;
     } catch (error) {
-      throw new DeepHttpException(CmsErrorMsg.DATABASE_HANDLE_ERROR, CmsErrorCode.DATABASE_HANDLE_ERROR);
+      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
     }
   }
 }

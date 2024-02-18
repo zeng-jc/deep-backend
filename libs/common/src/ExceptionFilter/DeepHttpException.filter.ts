@@ -1,10 +1,8 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { CmsErrorCode } from './resStatusCode/cms.ErrorCode';
-import { CmsErrorMsg } from './resStatusCode/cms.ErrorMsg';
-import { AuthErrorCode, AuthErrorMsg } from './resStatusCode';
+import { ErrorCode, ErrorMsg } from './resStatusCode';
 
-type ErrMsg = CmsErrorMsg | AuthErrorMsg;
-type ErrCode = CmsErrorCode | AuthErrorCode;
+type ErrMsg = ErrorMsg;
+type ErrCode = ErrorCode;
 
 export class DeepHttpException extends HttpException {
   private errMsg: ErrMsg;

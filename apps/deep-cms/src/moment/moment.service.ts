@@ -5,7 +5,7 @@ import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity } from '@app
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
-import { CmsErrorCode, CmsErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
+import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { CacheService } from '@app/deep-cache';
 const bucketName = 'deep-moment';
 @Injectable()
@@ -137,7 +137,7 @@ export class MomentService {
       moment.status = moment.status === 0 ? 1 : 0;
       return this.database.momentRepo.save(moment);
     } else {
-      throw new DeepHttpException(CmsErrorMsg.MOMENT_NOT_EXIST, CmsErrorCode.MOMENT_NOT_EXIST);
+      throw new DeepHttpException(ErrorMsg.MOMENT_NOT_EXIST, ErrorCode.MOMENT_NOT_EXIST);
     }
   }
 

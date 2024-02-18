@@ -3,7 +3,7 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { AssignPermissionDto } from './dto/assign-permission.dto';
 import { PermissionEntity } from '@app/deep-orm';
-import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { In } from 'typeorm';
 
@@ -35,8 +35,7 @@ export class PermissionService {
         id: In(permissionIds),
       },
     });
-    if (permissions.length === 0)
-      throw new DeepHttpException(CmsErrorMsg.PERMISSION_NOT_EXIST, CmsErrorCode.PERMISSION_NOT_EXIST);
+    if (permissions.length === 0) throw new DeepHttpException(ErrorMsg.PERMISSION_NOT_EXIST, ErrorCode.PERMISSION_NOT_EXIST);
     // TODO：还需要判断权限是否已经分配
     return this.database.roleRepo.save({
       permissions,
@@ -50,7 +49,7 @@ export class PermissionService {
         name: createPermissionDto.name,
       },
     });
-    if (res) throw new DeepHttpException(CmsErrorMsg.PERMISSION_EXIST, CmsErrorCode.PERMISSION_EXIST);
+    if (res) throw new DeepHttpException(ErrorMsg.PERMISSION_EXIST, ErrorCode.PERMISSION_EXIST);
     const permission = new PermissionEntity();
     permission.name = createPermissionDto.name;
     permission.desc = createPermissionDto.desc;

@@ -5,7 +5,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../common/decorator/auth.decorator';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import { DeepHttpException, CmsErrorMsg, CmsErrorCode } from '@app/common/exceptionFilter';
+import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { ApiTags } from '@nestjs/swagger';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 
@@ -26,10 +26,7 @@ export class MomentController {
   createMomentImages(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
     files.forEach((file) => {
       if (files.length && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-        throw new DeepHttpException(
-          CmsErrorMsg.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE,
-          CmsErrorCode.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE,
-        );
+        throw new DeepHttpException(ErrorMsg.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE, ErrorCode.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE);
       }
     });
     return this.momentService.create(files, createMomentDto, 'images');
@@ -45,10 +42,7 @@ export class MomentController {
   )
   createMomentVideo(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
     if (files.length && !files[0].originalname.match(/\.(mp4)$/)) {
-      throw new DeepHttpException(
-        CmsErrorMsg.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE,
-        CmsErrorCode.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE,
-      );
+      throw new DeepHttpException(ErrorMsg.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE, ErrorCode.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE);
     }
     return this.momentService.create(files, createMomentDto, 'video');
   }

@@ -1,4 +1,8 @@
-export enum CmsErrorMsg {
+export enum ErrorMsg {
+  /** auth状态码 */
+  TOKEN_INVALID = 'TOKEN INVALID',
+  INVALID_IDENTITY_INFORMATION = 'INVALID IDENTITY INFORMATION',
+  YOU_DO_NOT_OWN_THIS_RESOURCE = 'YOU DO NOT OWN THIS RESOURCE',
   /** 用户状态码 **/
   UNKNOWN_ERROR = 'UNKNOWN ERROR', //未知错误
   USER_ID_INVALID = 'USER ID INVALID', //用户id无效
