@@ -152,11 +152,4 @@ export class MomentService {
       return true;
     }
   }
-
-  async getUserTotalMomentViews(userId: number) {
-    return (await this.database.momentRepo.find({ where: { userId }, select: ['viewCount'] })).reduce(
-      (pre, cur) => (cur.viewCount += pre),
-      0,
-    );
-  }
 }

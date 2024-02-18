@@ -1,37 +1,122 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Query,
+  ParseIntPipe,
+  UseInterceptors,
+  UploadedFile,
+  Headers,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { tableName } from '../common/decorator/tableName.decorator';
 import { tableNameEnum } from '@app/deep-orm';
+import { PaginationPipe } from 'apps/deep-cms/src/common/pipe/pagination.pipe';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @tableName(tableNameEnum.user)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // 用户注册
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return this.userService.createUser(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
+  // 用户详情
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOneUser(@Param('id', new ParseIntPipe()) id: number) {
+    return this.userService.findOneUser(id);
   }
 
+  // 更新用户信息
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      limits: {
+        fileSize: 2 * 1024 * 1024,
+      },
+    }),
+  )
+  updateUser(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    if (file && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      throw new DeepHttpException(ErrorMsg.AVATAR_UNSUPPORTED_FILE_TYPE, ErrorCode.AVATAR_UNSUPPORTED_FILE_TYPE);
+    }
+    return this.userService.updateUser(+id, updateUserDto, file);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  // 关注用户
+  @Post('/follow-user/:id')
+  followUser(@Headers() headers, @Param('id') id: string) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.userService.followUser(+userId, +id);
+  }
+
+  // 粉丝人数
+  @Get('/follower-count/:id')
+  async getFollowerCount(@Param('id') id: string) {
+    return this.userService.getFollowerCount(+id);
+  }
+
+  // 关注人数
+  @Get('/following-count/:id')
+  async getFollowingCount(@Param('id') id: string) {
+    return this.userService.getFollowingCount(+id);
+  }
+
+  // 粉丝列表
+  @Get('/followers/:id')
+  async getFollowers(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+    @Param('id') id: string,
+  ) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    if (!userId) return null;
+    return this.userService.getFollowers(+id, query);
+  }
+
+  // 关注列表
+  @Get('/following/:id')
+  async getFollowing(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+    @Param('id') id: string,
+  ) {
+    return this.userService.getFollowing(+id, query);
+  }
+
+  // 点赞列表
+  @Get('/likes-list/:id')
+  async getLikesList(
+    @Headers() headers,
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+    @Param('id') id: string,
+  ) {
+    return this.userService.getLikesList(+id, query);
+  }
+
+  // 动态总浏览量
+  @Get('moment-total-views/:id')
+  getUserMomentTotalViews(@Param('id') id: string) {
+    return this.userService.getUserMomentTotalViews(+id);
+  }
+
+  // 动态总点赞量
+  @Get('moment-total-likes/:id')
+  getUserMomentTotalLikes(@Param('id') id: string) {
+    return this.userService.getUserMomentTotalLikes(+id);
   }
 }

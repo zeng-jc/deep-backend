@@ -261,4 +261,18 @@ export class UserService {
     );
     return result;
   }
+
+  async getUserTotalMomentViews(userId: number) {
+    return await this.database.momentRepo
+      .createQueryBuilder('user')
+      .select('SUM(user.viewCount) as totalViews')
+      .where('user.userId = :userId', { userId })
+      .getRawOne();
+  }
+
+  async getUserMomentTotalLikes(userId: number) {
+    const sql = `SELECT COUNT(ml.userId) AS totalLikes from moment m inner join moment_likes ml on m.id = ml.momentId where m.userId=${userId};`;
+    const result = await this.database.entityManager.query(sql);
+    return result;
+  }
 }

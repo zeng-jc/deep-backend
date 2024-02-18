@@ -73,10 +73,4 @@ export class MomentController {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.momentService.toggleLikes(userId, +id);
   }
-
-  // 用户发布动态的总浏览量
-  @Get('get-user-total-moment-views/:id')
-  getUserTotalMomentViews(@Param('id') id: string) {
-    return this.momentService.getUserTotalMomentViews(+id);
-  }
 }

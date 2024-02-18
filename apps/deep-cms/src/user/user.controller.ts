@@ -127,4 +127,16 @@ export class UserController {
   ) {
     return this.userService.getLikesList(+id, query);
   }
+
+  // 用户发布动态的总浏览量
+  @Get('/moment-total-views/:id')
+  getUserTotalMomentViews(@Param('id') id: string) {
+    return this.userService.getUserTotalMomentViews(+id);
+  }
+
+  // 动态总点赞量
+  @Get('/moment-total-likes/:id')
+  getUserMomentTotalLikes(@Param('id') id: string) {
+    return this.userService.getUserMomentTotalLikes(+id);
+  }
 }
