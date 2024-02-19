@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMomentDto } from './dto/create-moment.dto';
 import { DatabaseService } from '../database/database.service';
+import { CacheService } from '@app/deep-cache';
+import { DeepMinioService } from '@app/deep-minio';
 import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity } from '@app/deep-orm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import { DeepMinioService } from '@app/deep-minio';
+import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { extname } from 'path';
-import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
-import { CacheService } from '@app/deep-cache';
+
 const bucketName = 'deep-moment';
+
 @Injectable()
 export class MomentService {
   constructor(
@@ -61,7 +63,7 @@ export class MomentService {
     return momentInfo;
   }
 
-  // TODO: 需要优化sql
+  // TODO: 需要优化sql（还需要查询出点赞数量）
   async findMultiMoments(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const curpage = +paginationParams.curpage;
@@ -108,6 +110,7 @@ export class MomentService {
     if (!momentEntity) return null;
     // 动态标签处理
     momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
+    // 动态图片获取
     momentEntity.images = momentEntity.images && (await this.deepMinioService.getFileUrls(momentEntity.images, bucketName));
     // 增加浏览量
     await this.database.momentRepo

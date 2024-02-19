@@ -9,9 +9,11 @@ import { CheckResourceOwnershipGuard } from './common/guard/checkResourceOwnersh
 import { DeepDbModule } from '@app/deep-orm';
 import { CacheModule } from '@app/deep-cache';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
+import { MomentModule } from './moment/moment.module';
+import { DeepMinioModule } from '@app/deep-minio';
 
 @Module({
-  imports: [DeepDbModule, CacheModule, DatabaseModule, SecretKeyModule, UserModule],
+  imports: [DeepDbModule, CacheModule, DatabaseModule, DeepMinioModule, SecretKeyModule, UserModule, MomentModule],
   controllers: [AppController],
   providers: [
     AppService,
