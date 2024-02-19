@@ -21,13 +21,14 @@ export class CheckResourceOwnershipGuard implements CanActivate {
     const isWriteOperation = ['DELETE', 'PUT', 'PATCH'].includes(req.method);
     if (!isWriteOperation) return true;
 
-    // 从控制器的元数据中拿到表明
+    // 从控制器的元数据中拿到表名
     const tableName = this.reflector.get<string>('tableName', context.getClass());
 
     const { id: reqUserId }: TokenPayload = JSON.parse(req.headers.authorization);
+    // TODO：id后续都会携带在请求体中
     const resourceId: string = req.params.id;
 
-    const cacheKey = `checkResourceOwnership.guard.${reqUserId}`;
+    const cacheKey = `checkResourceOwnership.guard.${reqUserId}.${tableName},${resourceId}`;
 
     const cacheUserId: number | null = await this.cacheService.get<number>(cacheKey);
     if (cacheUserId && reqUserId !== cacheUserId) {
