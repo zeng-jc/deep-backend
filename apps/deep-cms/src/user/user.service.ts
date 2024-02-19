@@ -10,7 +10,10 @@ import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
 import { extname } from 'path';
 import { DeepMinioService } from '@app/deep-minio';
-const bucketName = 'deep-avatar';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+
+const bucketName = bucketNameEnum.deepAvatar;
+
 @Injectable()
 export class UserService {
   constructor(

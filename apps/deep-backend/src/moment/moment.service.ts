@@ -7,9 +7,9 @@ import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity } from '@app
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { extname } from 'path';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
 
-const bucketName = 'deep-moment';
-
+const bucketName = bucketNameEnum.deepMoment;
 @Injectable()
 export class MomentService {
   constructor(

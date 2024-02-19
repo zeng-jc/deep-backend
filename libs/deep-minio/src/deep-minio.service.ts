@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MinioClient, MinioService } from 'nestjs-minio-client';
+import { bucketNameEnum } from './deep-minio.buckName';
 
 @Injectable()
 export class DeepMinioService {
@@ -8,6 +9,21 @@ export class DeepMinioService {
   get client(): MinioClient {
     return this.minio.client;
   }
+
+  async createBucket(bucketName: string): Promise<void>;
+  async createBucket(bucketName: object): Promise<void>;
+  async createBucket(bucketName: string | object): Promise<void> {
+    if (typeof bucketName === 'string') {
+      !(await this.client.bucketExists(bucketName)) && (await this.client.makeBucket(bucketName));
+    } else {
+      await Promise.all(
+        Object.keys(bucketName).map(async (key) => {
+          !(await this.client.bucketExists(bucketNameEnum[key])) && (await this.client.makeBucket(bucketNameEnum[key]));
+        }),
+      );
+    }
+  }
+
   async uploadFile(file: Express.Multer.File, bucketName: string = this.bucketName): Promise<string> {
     const metaData = { 'Content-Type': file.mimetype };
     let res;

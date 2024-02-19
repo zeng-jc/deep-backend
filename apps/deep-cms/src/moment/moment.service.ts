@@ -7,7 +7,10 @@ import { DeepMinioService } from '@app/deep-minio';
 import { extname } from 'path';
 import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { CacheService } from '@app/deep-cache';
-const bucketName = 'deep-moment';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+
+const bucketName = bucketNameEnum.deepMoment;
+
 @Injectable()
 export class MomentService {
   constructor(

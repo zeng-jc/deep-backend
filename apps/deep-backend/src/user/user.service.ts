@@ -9,7 +9,10 @@ import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFil
 import { EmailService } from '@app/common/emailService/email.service';
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-const bucketName = 'deep-avatar';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+
+const bucketName = bucketNameEnum.deepAvatar;
+
 @SetMetadata('tableName', 'user')
 @Injectable()
 export class UserService {

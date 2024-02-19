@@ -6,7 +6,9 @@ import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFil
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
-const bucketName = 'deep-moment';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+
+const bucketName = bucketNameEnum.deepMoment;
 
 @Injectable()
 export class MomentCommentService {
