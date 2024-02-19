@@ -17,6 +17,7 @@ import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
 import { MenuModule } from './menu/menu.module';
 import { DeepMinioModule } from '@app/deep-minio';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { DeepMinioModule } from '@app/deep-minio';
     MomentCommentModule,
     ArticleCommentModule,
     MenuModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [

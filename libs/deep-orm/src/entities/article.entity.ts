@@ -12,6 +12,7 @@ import { UserEntity } from './user.entity';
 import { ArticleCommentEntity } from './article_comment.entity';
 import { ArticleLabelEntity } from './article_label.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { ArticleLikesEntity } from './article_likes.entity';
 
 @Entity({ name: tableNameEnum.article })
 export class ArticleEntity {
@@ -25,6 +26,8 @@ export class ArticleEntity {
   cover?: string;
   @Column({ default: '' })
   images?: string;
+  @Column({ default: 1 })
+  viewCount: number;
   @Column({ type: 'text' })
   content!: string;
   @CreateDateColumn()
@@ -39,4 +42,6 @@ export class ArticleEntity {
   comments: ArticleCommentEntity[];
   @ManyToMany(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
   labels: ArticleLabelEntity[];
+  @OneToMany(() => ArticleLikesEntity, (articleLikesEntity) => articleLikesEntity.user)
+  articleLikes: ArticleLikesEntity;
 }

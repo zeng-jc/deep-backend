@@ -15,6 +15,7 @@ import {
   MomentLabelRelationEntity,
   MomentLikesEntity,
   UserFollowEntity,
+  ArticleLikesEntity,
 } from '@app/deep-orm';
 import { MenuEntity } from '@app/deep-orm/entities/menu.entity';
 
@@ -36,6 +37,7 @@ import { MenuEntity } from '@app/deep-orm/entities/menu.entity';
       MenuEntity,
       MomentLikesEntity,
       UserFollowEntity,
+      ArticleLikesEntity,
     ]),
   ],
   providers: [DatabaseService],

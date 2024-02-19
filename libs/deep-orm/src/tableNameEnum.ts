@@ -12,6 +12,7 @@ export enum tableNameEnum {
   article_label_relation = 'article_label_relation',
   article_label = 'article_label',
   article = 'article',
+  article_likes = 'article_likes',
   moment_comment = 'moment_comment',
   moment_label_relation = 'moment_label_relation',
   moment_label = 'moment_label',

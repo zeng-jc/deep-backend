@@ -13,6 +13,7 @@ import {
   MenuEntity,
   MomentLikesEntity,
   UserFollowEntity,
+  ArticleLikesEntity,
 } from '@app/deep-orm';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -47,6 +48,8 @@ export class DatabaseService {
     public readonly momentLabelRelsRepo: Repository<MomentLabelRelationEntity>,
     @InjectRepository(MomentLikesEntity)
     public readonly momentLikesRepo: Repository<MomentLikesEntity>,
+    @InjectRepository(ArticleLikesEntity)
+    public readonly articleLikesRepo: Repository<ArticleLikesEntity>,
 
     @InjectRepository(MenuEntity)
     public readonly menuRepo: Repository<MenuEntity>,
