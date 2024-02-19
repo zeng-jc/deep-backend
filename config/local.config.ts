@@ -1,4 +1,12 @@
 export const localConfig = {
+  authService: {
+    host: '127.0.0.1',
+    port: 3001,
+  },
+  backendService: {
+    host: '127.0.0.1',
+    port: 3002,
+  },
   cmsService: {
     host: '127.0.0.1',
     port: 3003,

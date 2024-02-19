@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@app/common/exceptionFilter';
-import { ResponseInterceptor } from '@app/common';
+import { ResponseInterceptor, configLoader } from '@app/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-const PORT = process.env.PORT ?? 3001;
+const SERVICE_NAME = 'authService';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +19,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-docs', app, document);
-  await app.listen(PORT);
+  await app.listen(configLoader<{ port: number }>(SERVICE_NAME).port);
 }
 
 bootstrap();
