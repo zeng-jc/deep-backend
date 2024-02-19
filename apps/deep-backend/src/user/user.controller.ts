@@ -20,8 +20,10 @@ import { PaginationPipe } from 'apps/deep-cms/src/common/pipe/pagination.pipe';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @tableName(tableNameEnum.user)
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

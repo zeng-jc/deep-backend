@@ -8,8 +8,10 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 import { tableName } from '../common/decorator/tableName.decorator';
 import { tableNameEnum } from '@app/deep-orm';
+import { ApiTags } from '@nestjs/swagger';
 
 @tableName(tableNameEnum.moment)
+@ApiTags('moment')
 @Controller('moment')
 export class MomentController {
   constructor(private readonly momentService: MomentService) {}

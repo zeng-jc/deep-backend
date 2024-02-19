@@ -13,12 +13,14 @@ export class ArticleCommentEntity {
   userId!: number;
   @Column()
   replyId: number;
+  @Column({ nullable: true })
+  path: string;
   @Column({ type: 'varchar', length: 500 })
   content!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
-  @Column({ default: 0 })
-  likes: number;
+  @Column({ type: 'simple-array', nullable: true })
+  likes: string[];
   @Column()
   createAt: Date;
   @Column()

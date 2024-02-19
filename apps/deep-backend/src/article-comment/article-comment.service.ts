@@ -3,8 +3,6 @@ import { CreateArticleCommentDto } from './dto/create-article-comment.dto';
 import { DatabaseService } from '../database/database.service';
 import { ArticleCommentEntity } from '@app/deep-orm';
 import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
-import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
 import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
 
@@ -37,23 +35,6 @@ export class ArticleCommentService {
     } else {
       return await this.database.articleCommentRepo.save(comment);
     }
-  }
-
-  // 评论搜索（不查头像，影响性能）
-  async findMultiArticleComment(query: PaginationQueryDto) {
-    const { keywords, pagesize, curpage } = query;
-    const [data, total] = await this.database.articleCommentRepo.findAndCount({
-      where: {
-        content: Like(`%${keywords ?? ''}%`),
-      },
-      order: { id: 'DESC' },
-      skip: +pagesize * (+curpage - 1),
-      take: +pagesize,
-    });
-    return {
-      data,
-      total,
-    };
   }
 
   // 查询指定文章的所有评论

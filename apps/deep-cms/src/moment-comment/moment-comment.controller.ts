@@ -19,7 +19,7 @@ export class MomentCommentController {
   }
 
   @Get()
-  findMultiCommentComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
+  findMultiMomentComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
     return this.momentCommentService.findMultiMomentComment(query);
   }
 

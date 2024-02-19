@@ -90,8 +90,8 @@ export class MomentCommentService {
   async toggleLikes(userId: string, momentCommentId: string) {
     try {
       // 1. userId是否存在于likes中（likes存储的是所有点赞用户的id）
-      const momentEntity = await this.database.momentCommentRepo.findOne({ where: { id: +momentCommentId } });
-      const { likes } = momentEntity;
+      const momentCommetEntity = await this.database.momentCommentRepo.findOne({ where: { id: +momentCommentId } });
+      const { likes } = momentCommetEntity;
       // 2. 点赞判断
       if (likes.includes(userId)) {
         likes.splice(likes.indexOf(userId), 1);
@@ -99,7 +99,7 @@ export class MomentCommentService {
         likes.push(userId);
       }
       // 3. 更新数据库
-      await this.database.momentCommentRepo.save(momentEntity);
+      await this.database.momentCommentRepo.save(momentCommetEntity);
       // 4. 返回点赞数量
       return likes.length;
     } catch (error) {

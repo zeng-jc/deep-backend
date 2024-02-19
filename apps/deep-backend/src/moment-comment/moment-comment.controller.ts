@@ -1,7 +1,12 @@
 import { Controller, Get, Post, Body, Headers, Param, Delete } from '@nestjs/common';
 import { MomentCommentService } from './moment-comment.service';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
+import { tableName } from '../common/decorator/tableName.decorator';
+import { tableNameEnum } from '@app/deep-orm';
+import { ApiTags } from '@nestjs/swagger';
 
+@tableName(tableNameEnum.moment_comment)
+@ApiTags('moment-comment')
 @Controller('moment-comment')
 export class MomentCommentController {
   constructor(private readonly momentCommentService: MomentCommentService) {}

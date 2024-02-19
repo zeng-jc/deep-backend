@@ -12,9 +12,10 @@ import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 import { MomentModule } from './moment/moment.module';
 import { DeepMinioModule } from '@app/deep-minio';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
+import { ArticleCommentModule } from './article-comment/article-comment.module';
 
 @Module({
-  imports: [DeepDbModule, CacheModule, DatabaseModule, DeepMinioModule, SecretKeyModule, UserModule, MomentModule, MomentCommentModule],
+  imports: [DeepDbModule, CacheModule, DatabaseModule, DeepMinioModule, SecretKeyModule, UserModule, MomentModule, MomentCommentModule, ArticleCommentModule],
   controllers: [AppController],
   providers: [
     AppService,
