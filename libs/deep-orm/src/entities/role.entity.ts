@@ -20,9 +20,10 @@ export class RoleEntity {
     name: tableNameEnum.role_permission_relation,
   })
   permissions: PermissionEntity[];
+
   @ManyToMany(() => MenuEntity)
   @JoinTable({
     name: tableNameEnum.role_menu_relation,
   })
-  enums: MenuEntity[];
+  menus: MenuEntity[];
 }

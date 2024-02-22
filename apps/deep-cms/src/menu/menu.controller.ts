@@ -4,6 +4,7 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { Roles } from '../common/decorator/auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { AssignMenuDto } from './dto/assign-menu.dto';
 
 @Roles('admin')
 @ApiTags('menu')
@@ -12,27 +13,28 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
-    return this.menuService.create(createMenuDto);
+  createMenu(@Body() createMenuDto: CreateMenuDto) {
+    return this.menuService.createMenu(createMenuDto);
   }
 
   @Get()
-  findAll() {
-    return this.menuService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.menuService.findOne(+id);
+  findAllMenu() {
+    return this.menuService.findAllMenu();
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.update(+id, updateMenuDto);
+  updateMenu(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
+    return this.menuService.updateMenu(+id, updateMenuDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(+id);
+  removeMenu(@Param('id') id: string) {
+    return this.menuService.removeMenu(+id);
+  }
+
+  // 给角色分配菜单
+  @Post('assign-menu')
+  assignMenu(@Body() assignMenuDto: AssignMenuDto) {
+    return this.menuService.assignMenu(assignMenuDto);
   }
 }
