@@ -13,15 +13,48 @@ import { MomentModule } from './moment/moment.module';
 import { DeepMinioModule } from '@app/deep-minio';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
-  imports: [DeepDbModule, CacheModule, DatabaseModule, DeepMinioModule, SecretKeyModule, UserModule, MomentModule, MomentCommentModule, ArticleCommentModule],
+  imports: [
+    DeepDbModule,
+    CacheModule,
+    DatabaseModule,
+    DeepMinioModule,
+    SecretKeyModule,
+    UserModule,
+    MomentModule,
+    MomentCommentModule,
+    ArticleCommentModule,
+    // 定义多个节流阀
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 50,
+      },
+      {
+        name: 'medium',
+        ttl: 10 * 1000,
+        limit: 300,
+      },
+      {
+        name: 'long',
+        ttl: 60 * 1000,
+        limit: 900,
+      },
+    ]),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: CheckResourceOwnershipGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })
