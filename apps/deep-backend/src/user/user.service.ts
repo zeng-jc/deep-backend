@@ -1,5 +1,4 @@
 import { Injectable, SetMetadata } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CacheService } from '@app/deep-cache';
 import { DatabaseService } from '../database/database.service';
@@ -39,31 +38,6 @@ export class UserService {
       queryBuilder = queryBuilder.andWhere('user.id != :id', { id: excludeId });
     }
     return !!(await queryBuilder.getCount());
-  }
-  // TODO: 密码加密
-  async createUser(createUserDto: CreateUserDto) {
-    const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
-      createUserDto;
-    if (await this.userExist(username)) throw new DeepHttpException(ErrorMsg.USER_EXIST, ErrorCode.USER_EXIST);
-    if (await this.emailExist(email)) throw new DeepHttpException(ErrorMsg.EMAIL_EXIST, ErrorCode.EMAIL_EXIST);
-    const user = new UserEntity();
-    user.username = username;
-    user.password = password;
-    user.nickname = nickname;
-    user.gender = gender;
-    user.email = email;
-    user.status = status;
-    user.bio = bio;
-    user.level = level;
-    user.birthday = birthday;
-    user.phone = phone;
-    user.school = school;
-    user.major = major;
-    user.position = position;
-    user.github = github;
-    // 发送邮箱
-    this.emailService.sendMailCreateUser(email, nickname);
-    return this.database.userRepo.save(user);
   }
 
   async findOneUser(id: number) {

@@ -24,7 +24,7 @@ export class EmailService {
     }
   }
 
-  async sendMailCreateUser(to: string, name: string) {
+  async sendMailCreateUserNotify(to: string, name: string) {
     const mailOptions = {
       from: emailFrom,
       to: to,
@@ -38,6 +38,25 @@ export class EmailService {
     } catch (error) {
       // TODO
       console.log('邮箱发送失败');
+      return false;
+    }
+  }
+
+  async sendMailVerifyCode(to: string, name: string, text: string) {
+    const mailOptions = {
+      from: emailFrom,
+      to: to,
+      subject: '深谙',
+      html: `
+        <p>您的验证码是：“ <strong style="color:#165dff;">${text}</strong> ”<p>
+      `,
+    };
+    try {
+      return await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      // TODO
+      console.log('邮箱发送失败');
+      return false;
     }
   }
 }

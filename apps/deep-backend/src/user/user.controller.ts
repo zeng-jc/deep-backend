@@ -12,7 +12,6 @@ import {
   Headers,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { tableName } from '../common/decorator/tableName.decorator';
 import { tableNameEnum } from '@app/deep-orm';
@@ -21,18 +20,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { ApiTags } from '@nestjs/swagger';
-
 @tableName(tableNameEnum.user)
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  // 用户注册
-  @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
-  }
 
   // 用户详情
   @Get(':id')

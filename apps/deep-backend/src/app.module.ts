@@ -1,10 +1,10 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { verifyTokenMiddleware } from '@app/common';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { CheckResourceOwnershipGuard } from './common/guard/checkResourceOwnership.guard';
 import { DeepDbModule } from '@app/deep-orm';
 import { CacheModule } from '@app/deep-cache';
@@ -31,7 +31,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       {
         name: 'short',
         ttl: 1000,
-        limit: 50,
+        limit: 80,
       },
       {
         name: 'medium',
@@ -48,6 +48,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
     {
       provide: APP_GUARD,
       useClass: CheckResourceOwnershipGuard,
