@@ -42,13 +42,13 @@ export class EmailService {
     }
   }
 
-  async sendMailVerifyCode(to: string, name: string, text: string) {
+  async sendMailVerifyCode(to: string, text: string) {
     const mailOptions = {
       from: emailFrom,
       to: to,
       subject: '深谙',
       html: `
-        <p>您的验证码是：“ <strong style="color:#165dff;">${text}</strong> ”<p>
+        <p>您的验证码是：“ <strong style="color:#165dff;">${text}</strong> ，有效时间为3分钟”<p>
       `,
     };
     try {

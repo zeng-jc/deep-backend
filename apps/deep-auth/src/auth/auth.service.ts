@@ -6,7 +6,6 @@ import { TokenPayload } from '@app/common';
 import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { SecretKeyService } from '@app/common/secretKey/secretKey.service';
-import { SendEmailDto } from './dto/send-email.dot';
 import { generateEmailVerificationCode } from '../common/utils/generateEmailVerificationCode';
 import { CacheService } from '@app/deep-cache';
 import { EmailService } from '@app/common/emailService/email.service';
@@ -45,10 +44,9 @@ export class AuthService {
   }
 
   // 获取邮箱验证码
-  async getEmailVerifyCode(sendEmailDto: SendEmailDto) {
+  async getEmailVerifyCode(email: string) {
     const VerificationCode = generateEmailVerificationCode();
-    const { email, nickname } = sendEmailDto;
-    const res = await this.emailService.sendMailVerifyCode(email, nickname, VerificationCode);
+    const res = await this.emailService.sendMailVerifyCode(email, VerificationCode);
     if (!res) throw new DeepHttpException(ErrorMsg.VERIFICATION_CODE_SEND_FAILED, ErrorCode.VERIFICATION_CODE_SEND_FAILED);
     const uuid = uuidv4();
     this.cacheService.set(`${email}.${uuid}`, VerificationCode, 180);
@@ -76,7 +74,7 @@ export class AuthService {
     user.email = email;
     // 发送通知邮箱
     this.emailService.sendMailCreateUserNotify(email, nickname);
-    // 清空验证码
+    // 清空缓存验证码
     this.cacheService.del(`${email}.${uuid}`);
     return this.database.userRepo.save(user);
   }
@@ -106,9 +104,11 @@ export class AuthService {
 
   // 验证码登录
   async signinVerificationCode(emailVerificationCodeDto: EmailVerificationCodeDto) {
-    const { email } = emailVerificationCodeDto;
+    const { email, uuid } = emailVerificationCodeDto;
     if (!(await this.checkEmailVerificationCode(emailVerificationCodeDto)))
       throw new DeepHttpException(ErrorMsg.VERIFICATION_CODE_ERROR, ErrorCode.VERIFICATION_CODE_ERROR);
+    // 清空缓存验证码
+    this.cacheService.del(`${email}.${uuid}`);
     const userInfo = await this.database.userRepo.findOne({
       where: {
         email,

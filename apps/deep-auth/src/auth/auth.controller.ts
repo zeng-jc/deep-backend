@@ -3,7 +3,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { SigninAuthDto } from './dto/signin-auth.dto';
 import { AuthService } from './auth.service';
 import { HeadersAuthDto } from './dto/headers-auth.dto';
-import { SendEmailDto } from './dto/send-email.dot';
 import { EmailVerificationCodeDto } from './dto/email-verfication-code.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -41,9 +40,9 @@ export class AuthController {
   }
 
   // 获取邮箱验证码
-  @Post('email-verify-code')
-  getEmailVerifyCode(@Body() sendEmailDto: SendEmailDto) {
-    return this.authService.getEmailVerifyCode(sendEmailDto);
+  @Post('email-verify-code/:email')
+  getEmailVerifyCode(@Param('email') email: string) {
+    return this.authService.getEmailVerifyCode(email);
   }
 
   // 验证码检查接口
