@@ -23,6 +23,7 @@ export class AuthController {
   }
 
   // 用户注册
+  @Post('signup')
   signup(@Body() createUserDto: CreateUserDto) {
     return this.authService.signup(createUserDto);
   }
