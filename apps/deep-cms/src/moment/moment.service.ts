@@ -71,6 +71,7 @@ export class MomentService {
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo
       .createQueryBuilder('moment')
+      .leftJoinAndSelect('moment.user', 'user')
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .orderBy('moment.id', 'DESC')
@@ -105,6 +106,7 @@ export class MomentService {
     const momentEntity = await this.database.momentRepo
       .createQueryBuilder('moment')
       .where('moment.id = :id', { id })
+      .leftJoinAndSelect('moment.user', 'user')
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .getOne();

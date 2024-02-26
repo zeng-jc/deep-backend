@@ -19,7 +19,7 @@ export class MomentController {
   @UseInterceptors(
     FilesInterceptor('images', 9, {
       limits: {
-        fileSize: 2 * 1024 * 1024,
+        fileSize: 4 * 1024 * 1024,
       },
     }),
   )
