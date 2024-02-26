@@ -2,7 +2,7 @@ import { Global, Module, OnModuleInit } from '@nestjs/common';
 import { DeepMinioService } from './deep-minio.service';
 import { MinioModule } from 'nestjs-minio-client';
 import { minioConfig } from './minio-client.config';
-import { bucketNameEnum } from './deep-minio.buckName';
+import { bucketNameEnum } from './deep-minio.bucket-name';
 
 @Global()
 @Module({

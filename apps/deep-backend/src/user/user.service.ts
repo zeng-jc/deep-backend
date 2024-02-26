@@ -8,7 +8,7 @@ import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFil
 import { EmailService } from '@app/common/emailService/email.service';
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
 const bucketName = bucketNameEnum.deepAvatar;
 

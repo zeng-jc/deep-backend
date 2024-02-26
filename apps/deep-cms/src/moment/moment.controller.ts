@@ -8,6 +8,9 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { ApiTags } from '@nestjs/swagger';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
+
+const bucketName = bucketNameEnum.deepArticle;
 
 @Roles('admin')
 @ApiTags('moment')

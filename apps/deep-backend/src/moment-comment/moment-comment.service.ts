@@ -4,7 +4,7 @@ import { DatabaseService } from '../database/database.service';
 import { DeepMinioService } from '@app/deep-minio';
 import { MomentCommentEntity } from '@app/deep-orm';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
 const bucketName = bucketNameEnum.deepMoment;
 

@@ -4,7 +4,7 @@ import { DatabaseService } from '../database/database.service';
 import { ArticleCommentEntity } from '@app/deep-orm';
 import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFilter';
 import { DeepMinioService } from '@app/deep-minio';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
 const bucketName = bucketNameEnum.deepAvatar;
 

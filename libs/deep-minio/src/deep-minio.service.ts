@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MinioClient, MinioService } from 'nestjs-minio-client';
-import { bucketNameEnum } from './deep-minio.buckName';
+import { bucketNameEnum } from './deep-minio.bucket-name';
 
 @Injectable()
 export class DeepMinioService {

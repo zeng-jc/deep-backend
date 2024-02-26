@@ -6,7 +6,7 @@ import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFil
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { Like } from 'typeorm';
 import { DeepMinioService } from '@app/deep-minio';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
 const bucketName = bucketNameEnum.deepMoment;
 

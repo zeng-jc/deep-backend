@@ -10,7 +10,7 @@ import { EmailService } from '@app/common/emailService/email.service';
 import { DatabaseService } from '../database/database.service';
 import { extname } from 'path';
 import { DeepMinioService } from '@app/deep-minio';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.buckName';
+import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
 const bucketName = bucketNameEnum.deepAvatar;
 
@@ -62,7 +62,7 @@ export class UserService {
     user.position = position;
     user.github = github;
     // 发送邮箱
-    this.emailService.sendMailCreateUser(email, nickname);
+    this.emailService.sendMailCreateUserNotify(email, nickname);
     return this.database.userRepo.save(user);
   }
 
