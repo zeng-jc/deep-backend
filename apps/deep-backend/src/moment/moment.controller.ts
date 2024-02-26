@@ -63,7 +63,7 @@ export class MomentController {
     return this.momentService.remove(+id);
   }
 
-  @Post('lockMoment')
+  @Post('lock-moment')
   lockMoment(@Body(new GetBodyIdPipe()) id: string) {
     return this.momentService.lockMoment(id);
   }

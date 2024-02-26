@@ -39,6 +39,7 @@ export class AuthGuard implements CanActivate {
       roles = cacheRoles;
     } else {
       const user = await this.dataSource.getRepository(UserEntity).findOne({
+        select: ['id'],
         where: {
           id: reqUserId,
         },

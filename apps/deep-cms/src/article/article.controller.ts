@@ -1,9 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+  Query,
+  Headers,
+} from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/decorator/auth.decorator';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 
 @Roles('admin')
 @ApiTags('article')
@@ -12,27 +27,72 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articleService.create(createArticleDto);
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'images', maxCount: 9 },
+        { name: 'cover', maxCount: 1 },
+      ],
+      {
+        limits: {
+          fileSize: 4 * 1024 * 1024,
+        },
+      },
+    ),
+  )
+  createArticle(
+    @UploadedFiles() files: { images?: Express.Multer.File[]; cover?: Express.Multer.File[] },
+    @Body() createArticleDto: CreateArticleDto,
+  ) {
+    return this.articleService.createArticle(files, createArticleDto);
   }
 
   @Get()
-  findAll() {
-    return this.articleService.findAll();
+  findMultiArticle(@Query() paginationParams: PaginationQueryDto) {
+    return this.articleService.findMultiArticle(paginationParams);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articleService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articleService.update(+id, updateArticleDto);
+  findOneArticle(@Param('id') id: string) {
+    return this.articleService.findOneArticle(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.articleService.remove(+id);
+  removeArticle(@Param('id') id: string) {
+    return this.articleService.removeArticle(+id);
+  }
+
+  @Post('lock-article')
+  lockArticle(@Body(new GetBodyIdPipe()) id: string) {
+    return this.articleService.lockArticle(id);
+  }
+
+  // 切换点赞
+  @Post('toggle-likes/:id')
+  toggleLikes(@Headers() headers, @Param('id') id: string) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.articleService.toggleLikes(userId, +id);
+  }
+
+  @Patch(':id')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'images', maxCount: 9 },
+        { name: 'cover', maxCount: 1 },
+      ],
+      {
+        limits: {
+          fileSize: 4 * 1024 * 1024,
+        },
+      },
+    ),
+  )
+  updateArticle(
+    @Param('id') id: string,
+    @UploadedFiles() files: { images?: Express.Multer.File[]; cover?: Express.Multer.File[] },
+    @Body() updateArticleDto: UpdateArticleDto,
+  ) {
+    return this.articleService.updateArticle(+id, updateArticleDto, files);
   }
 }

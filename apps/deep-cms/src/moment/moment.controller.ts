@@ -8,9 +8,6 @@ import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { ApiTags } from '@nestjs/swagger';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
-import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
-
-const bucketName = bucketNameEnum.deepArticle;
 
 @Roles('admin')
 @ApiTags('moment')
@@ -20,7 +17,7 @@ export class MomentController {
 
   @Post('images')
   @UseInterceptors(
-    FilesInterceptor('images', 9, {
+    FilesInterceptor('images', 10, {
       limits: {
         fileSize: 4 * 1024 * 1024,
       },

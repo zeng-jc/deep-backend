@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
-import { ArticleLabelEntity } from './article_label.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { ArticleLabelEntity } from './article_label.entity';
 
 @Entity({ name: tableNameEnum.article_label_relation })
 export class ArticleLabelRelationEntity {

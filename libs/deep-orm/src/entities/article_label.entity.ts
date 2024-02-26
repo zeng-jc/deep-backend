@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ArticleEntity } from './article.entity';
 import { tableNameEnum } from '../tableNameEnum';
+import { ArticleLabelRelationEntity } from './article_label_relation.entity';
 
 @Entity({ name: tableNameEnum.article_label })
 export class ArticleLabelEntity {
@@ -10,6 +10,6 @@ export class ArticleLabelEntity {
   name!: string;
   @CreateDateColumn()
   createAt: Date;
-  @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.labels)
-  articles: ArticleEntity[];
+  @OneToMany(() => ArticleLabelRelationEntity, (articleLabelRelationEntity) => articleLabelRelationEntity.label)
+  articles: ArticleLabelRelationEntity[];
 }

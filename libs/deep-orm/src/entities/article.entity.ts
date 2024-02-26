@@ -1,31 +1,22 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { ArticleCommentEntity } from './article_comment.entity';
-import { ArticleLabelEntity } from './article_label.entity';
 import { tableNameEnum } from '../tableNameEnum';
 import { ArticleLikesEntity } from './article_likes.entity';
+import { ArticleLabelRelationEntity } from './article_label_relation.entity';
 
 @Entity({ name: tableNameEnum.article })
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'enum', enum: [0, 1], default: 0 })
+  @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
   @Column({ length: 30 })
-  name!: string;
+  title!: string;
+  @Column({ type: 'simple-array', nullable: true })
+  images?: string[];
   @Column()
   cover?: string;
-  @Column({ default: '' })
-  images?: string;
   @Column({ default: 1 })
   viewCount: number;
   @Column({ type: 'text' })
@@ -40,8 +31,8 @@ export class ArticleEntity {
   user: UserEntity;
   @OneToMany(() => ArticleCommentEntity, (articleCommentEntity) => articleCommentEntity.article)
   comments: ArticleCommentEntity[];
-  @ManyToMany(() => ArticleLabelEntity, (articleLabelEntity) => articleLabelEntity.articles)
-  labels: ArticleLabelEntity[];
+  @OneToMany(() => ArticleLabelRelationEntity, (articleLabelRelationEntity) => articleLabelRelationEntity.article)
+  labels: ArticleLabelRelationEntity[];
   @OneToMany(() => ArticleLikesEntity, (articleLikesEntity) => articleLikesEntity.user)
   articleLikes: ArticleLikesEntity;
 }
