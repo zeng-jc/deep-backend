@@ -6,11 +6,11 @@ import { PaginationPipe } from './common/pipe/pagination.pipe';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-  @Get('global/search')
+  @Get('global-search')
   globalSearch(
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
   ) {
-    return this.appService.globalSearch();
+    return this.appService.globalSearch(query);
   }
 }

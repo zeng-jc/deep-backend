@@ -1,13 +1,12 @@
-import { tableNameEnum } from '@app/deep-orm';
-
 export enum categoryEnum {
-  '文章' = tableNameEnum.article,
-  '动态' = tableNameEnum.moment,
-  '用户' = tableNameEnum.user,
+  '文章' = 'articleRepo',
+  '动态' = 'momentRepo',
+  '用户' = 'questionRepo',
+  '问题' = 'userRepo',
 }
 
 export enum sortEnum {
-  createTime = 'careteAt',
+  createTime = 'createAt',
   hot = 'hot',
 }
 
@@ -17,5 +16,5 @@ export class PaginationQueryDto {
   keywords?: string;
   labelId?: string;
   category?: categoryEnum;
-  sortMode?: string;
+  sortMode?: sortEnum;
 }
