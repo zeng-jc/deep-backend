@@ -8,9 +8,9 @@ export class ArticleLabelRelationEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  articleId: string;
+  articleId: number;
   @Column()
-  labelId: string;
+  labelId: number;
   @CreateDateColumn()
   createAt: Date;
   @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels, {

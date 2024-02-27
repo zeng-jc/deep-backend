@@ -14,6 +14,7 @@ import { DeepMinioModule } from '@app/deep-minio';
 import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         limit: 900,
       },
     ]),
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [
