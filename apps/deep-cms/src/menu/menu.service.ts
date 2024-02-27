@@ -29,7 +29,7 @@ export class MenuService {
 
   async findAllMenu() {
     const menus = await this.database.menuRepo.find();
-    return listToTree(menus, 'parentId', 'subMenu');
+    return listToTree(menus, 'parentId', 'children');
   }
 
   async updateMenu(id: number, updateMenuDto: UpdateMenuDto) {
