@@ -41,10 +41,12 @@ export class ArticleController {
     ),
   )
   createArticle(
+    @Headers() headers,
     @UploadedFiles() files: { images?: Express.Multer.File[]; cover?: Express.Multer.File[] },
     @Body() createArticleDto: CreateArticleDto,
   ) {
-    return this.articleService.createArticle(files, createArticleDto);
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.articleService.createArticle(userId, files, createArticleDto);
   }
 
   @Get()

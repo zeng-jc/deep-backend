@@ -18,10 +18,11 @@ export class MomentService {
     private readonly cacheService: CacheService,
     private readonly deepMinioService: DeepMinioService,
   ) {}
-  async create(files: Express.Multer.File[], createMomentDto: CreateMomentDto, type: string) {
+  async create(userId: number, files: Express.Multer.File[], createMomentDto: CreateMomentDto, type: string) {
+    const { content, labels } = createMomentDto;
     const user = await this.database.userRepo.findOne({
       where: {
-        id: Number(createMomentDto.userId) || 0,
+        id: Number(userId) || 0,
       },
     });
     const moment = new MomentEntity();
@@ -33,11 +34,11 @@ export class MomentService {
       if (type === 'images') moment.images = filenames;
       if (type === 'video') moment.video = filenames;
     }
-    moment.content = createMomentDto.content;
+    moment.content = content;
     moment.user = user;
     // 1. 获取lable的id
     const momentLableIds = await Promise.all(
-      createMomentDto.labels?.map(async (tag) => {
+      labels?.map(async (tag) => {
         const momentLabelExisting = await this.database.entityManager.findOne(MomentLabelEntity, {
           where: {
             name: tag,

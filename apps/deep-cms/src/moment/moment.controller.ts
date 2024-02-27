@@ -23,13 +23,18 @@ export class MomentController {
       },
     }),
   )
-  createMomentImages(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
+  createMomentImages(
+    @Headers() headers,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() createMomentDto: CreateMomentDto,
+  ) {
     files.forEach((file) => {
       if (files.length && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
         throw new DeepHttpException(ErrorMsg.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE, ErrorCode.MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE);
       }
     });
-    return this.momentService.create(files, createMomentDto, 'images');
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.momentService.create(userId, files, createMomentDto, 'images');
   }
 
   @Post('video')
@@ -40,11 +45,12 @@ export class MomentController {
       },
     }),
   )
-  createMomentVideo(@UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
+  createMomentVideo(@Headers() headers, @UploadedFiles() files: Express.Multer.File[], @Body() createMomentDto: CreateMomentDto) {
     if (files.length && !files[0].originalname.match(/\.(mp4)$/)) {
       throw new DeepHttpException(ErrorMsg.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE, ErrorCode.MOMENT_UNSUPPORTED_VIDEO_FILE_TYPE);
     }
-    return this.momentService.create(files, createMomentDto, 'video');
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.momentService.create(userId, files, createMomentDto, 'video');
   }
 
   @Get()

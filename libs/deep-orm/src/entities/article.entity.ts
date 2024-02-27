@@ -13,7 +13,7 @@ export class ArticleEntity {
   status!: number;
   @Column({ length: 30 })
   title!: string;
-  @Column({ type: 'simple-array', nullable: true })
+  @Column({ type: 'simple-array', nullable: true, select: false })
   images?: string[];
   @Column()
   cover?: string;

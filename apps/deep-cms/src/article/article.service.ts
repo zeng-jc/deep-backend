@@ -20,10 +20,11 @@ export class ArticleService {
   ) {}
   // TODO：sql需要优化
   async createArticle(
+    userId: number,
     files: { images?: Express.Multer.File[]; cover?: Express.Multer.File[] },
     createArticleDto: CreateArticleDto,
   ) {
-    const { userId, content, labels, title } = createArticleDto;
+    const { content, labels, title } = createArticleDto;
     const { images, cover } = files;
     const article = new ArticleEntity();
 
@@ -176,11 +177,13 @@ export class ArticleService {
     updateArticleDto: UpdateArticleDto,
     files: { images?: Express.Multer.File[]; cover?: Express.Multer.File[] },
   ) {
+    const {} = updateArticleDto;
     const res = await this.database.articleRepo.find({
       where: {
         id,
       },
     });
+    this.database.articleRepo.update(id, {});
     console.log(updateArticleDto, files);
     return res;
   }
