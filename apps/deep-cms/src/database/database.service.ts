@@ -14,6 +14,8 @@ import {
   MomentLikesEntity,
   UserFollowEntity,
   ArticleLikesEntity,
+  QuestionEntity,
+  AnswerEntity,
 } from '@app/deep-orm';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -50,6 +52,10 @@ export class DatabaseService {
     public readonly momentLikesRepo: Repository<MomentLikesEntity>,
     @InjectRepository(ArticleLikesEntity)
     public readonly articleLikesRepo: Repository<ArticleLikesEntity>,
+    @InjectRepository(QuestionEntity)
+    public readonly questionRepo: Repository<QuestionEntity>,
+    @InjectRepository(AnswerEntity)
+    public readonly answerRepo: Repository<AnswerEntity>,
 
     @InjectRepository(MenuEntity)
     public readonly menuRepo: Repository<MenuEntity>,

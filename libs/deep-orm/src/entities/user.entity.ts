@@ -14,6 +14,8 @@ import { MomentEntity } from './moment.entity';
 import { tableNameEnum } from '../tableNameEnum';
 import { MomentLikesEntity } from './moment_likes.entity';
 import { UserFollowEntity } from './user_follow.entity';
+import { AnswerEntity } from './answer.entity';
+import { QuestionEntity } from './question.entity';
 // enum UserStatus {
 //   lock = 0,
 //   unLock = 1,
@@ -77,4 +79,10 @@ export class UserEntity {
   // 被关注的用户（粉丝）
   @OneToMany(() => UserFollowEntity, (userFollowEntity) => userFollowEntity.followingUser)
   userFollowings: UserFollowEntity[];
+  // 回答问题表
+  @OneToMany(() => AnswerEntity, (answerEntity) => answerEntity.user)
+  userAnswer: AnswerEntity[];
+  // 提出问题表
+  @OneToMany(() => QuestionEntity, (questionEntity) => questionEntity.user)
+  questionEntity: QuestionEntity[];
 }

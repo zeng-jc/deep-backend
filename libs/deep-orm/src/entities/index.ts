@@ -14,3 +14,5 @@ export * from './menu.entity';
 export * from './moment_likes.entity';
 export * from './user_follow.entity';
 export * from './article_likes.entity';
+export * from './question.entity';
+export * from './answer.entity';

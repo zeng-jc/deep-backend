@@ -18,7 +18,6 @@ export class UserService {
   constructor(
     private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
-    private readonly emailService: EmailService,
     private readonly deepMinioService: DeepMinioService,
   ) {}
 

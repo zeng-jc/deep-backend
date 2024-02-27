@@ -13,11 +13,13 @@ import {
   MomentCommentEntity,
   MomentLabelEntity,
   MomentLabelRelationEntity,
+  MenuEntity,
   MomentLikesEntity,
   UserFollowEntity,
   ArticleLikesEntity,
+  QuestionEntity,
+  AnswerEntity,
 } from '@app/deep-orm';
-import { MenuEntity } from '@app/deep-orm/entities/menu.entity';
 
 @Global()
 @Module({
@@ -38,6 +40,8 @@ import { MenuEntity } from '@app/deep-orm/entities/menu.entity';
       MomentLikesEntity,
       UserFollowEntity,
       ArticleLikesEntity,
+      QuestionEntity,
+      AnswerEntity,
     ]),
   ],
   providers: [DatabaseService],

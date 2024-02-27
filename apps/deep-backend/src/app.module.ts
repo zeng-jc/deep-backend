@@ -15,6 +15,7 @@ import { MomentCommentModule } from './moment-comment/moment-comment.module';
 import { ArticleCommentModule } from './article-comment/article-comment.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ArticleModule } from './article/article.module';
+import { QuestionAnswerModule } from './question-answer/question-answer.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ArticleModule } from './article/article.module';
       },
     ]),
     ArticleModule,
+    QuestionAnswerModule,
   ],
   controllers: [AppController],
   providers: [
