@@ -58,8 +58,8 @@ INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,lin
 	 (17,'permission','权限管理','/system/permission',NULL,'2024-02-28 02:39:36.714687','2024-02-28 02:39:36.714687','/system/permission/index',NULL,NULL,15),
 	 (18,'menu','菜单管理','/system/menu',NULL,'2024-02-28 02:39:36.777877','2024-02-28 02:39:36.777877','/system/menu/index',NULL,NULL,15),
 	 (19,'link','外部链接','/link',NULL,'2024-02-22 09:37:55.088743','2024-02-22 09:44:54.418579',NULL,NULL,NULL,NULL),
-	 (20,'github','github','/link/github',NULL,'2024-02-22 09:38:49.018395','2024-02-27 12:19:04.591809',NULL,'https://github.com/zeng-jc',NULL,20),
-	 (21,'juejin','掘金','/link/juejin',NULL,'2024-02-22 09:39:40.602020','2024-02-27 12:19:04.648822',NULL,'https://juejin.cn/user/1548551276737191',NULL,20);
+	 (20,'github','github','/link/github',NULL,'2024-02-22 09:38:49.018395','2024-02-27 12:19:04.591809',NULL,'https://github.com/zeng-jc',NULL,19),
+	 (21,'juejin','掘金','/link/juejin',NULL,'2024-02-22 09:39:40.602020','2024-02-27 12:19:04.648822',NULL,'https://juejin.cn/user/1548551276737191',NULL,19);
 
 INSERT INTO deep.role_menu_relation (roleId,menuId) VALUES
 	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16), (1,17),(1,18),(1,19),(1,20),(1,21);
