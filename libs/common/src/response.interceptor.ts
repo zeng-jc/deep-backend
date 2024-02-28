@@ -10,6 +10,6 @@ export interface Response<T> {
 export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   intercept(ctx: ExecutionContext, next: CallHandler): Observable<Response<T>> {
     if (ctx.getType() !== 'http') return next.handle();
-    return next.handle().pipe(map((data) => ({ success: true, data })));
+    return next.handle().pipe(map((data) => ({ success: true, code: 200, data })));
   }
 }
