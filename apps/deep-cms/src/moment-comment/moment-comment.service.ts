@@ -41,13 +41,13 @@ export class MomentCommentService {
 
   // 评论搜索（不查头像，影响性能）
   async findMultiMomentComment(query: PaginationQueryDto) {
-    const { keywords, pagesize, curpage } = query;
+    const { keywords, pagesize, pagenum } = query;
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         content: Like(`%${keywords ?? ''}%`),
       },
       order: { id: 'DESC' },
-      skip: +pagesize * (+curpage - 1),
+      skip: +pagesize * (+pagenum - 1),
       take: +pagesize,
     });
     return {

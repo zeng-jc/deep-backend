@@ -21,11 +21,11 @@ export class QuestionAnswerService {
   }
 
   async findMultiQuestion(paginationParams: PaginationQueryDto) {
-    const { curpage, pagesize, keywords } = paginationParams;
+    const { pagenum, pagesize, keywords } = paginationParams;
     let query = this.database.questionRepo
       .createQueryBuilder('question')
       .orderBy('question.id', 'DESC')
-      .skip(+pagesize * (+curpage - 1))
+      .skip(+pagesize * (+pagenum - 1))
       .take(+pagesize);
     if (keywords) {
       query = query.where('question.content LIKE :keywords', { keywords: `%${keywords}%` });
@@ -39,11 +39,11 @@ export class QuestionAnswerService {
   }
 
   async findQuestionAnswer(questionId: number, paginationParams: PaginationQueryDto) {
-    const { curpage, pagesize, keywords } = paginationParams;
+    const { pagenum, pagesize, keywords } = paginationParams;
     let query = this.database.answerRepo
       .createQueryBuilder('answer')
       .orderBy('answer.id', 'DESC')
-      .skip(+pagesize * (+curpage - 1))
+      .skip(+pagesize * (+pagenum - 1))
       .take(+pagesize);
     if (keywords) {
       query = query.where('answer.content LIKE :keywords', { keywords: `%${keywords}%` });

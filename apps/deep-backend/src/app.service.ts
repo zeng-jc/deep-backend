@@ -6,8 +6,8 @@ import { PaginationQueryDto } from './common/dto/paginationQuery.dto';
 export class AppService {
   constructor(private readonly database: DatabaseService) {}
   globalSearch(query: PaginationQueryDto) {
-    const { curpage, pagesize, keywords, category, sortMode } = query;
+    const { pagenum, pagesize, keywords, category, sortMode } = query;
 
-    return { curpage, pagesize, keywords, category, sortMode };
+    return { pagenum, pagesize, keywords, category, sortMode };
   }
 }

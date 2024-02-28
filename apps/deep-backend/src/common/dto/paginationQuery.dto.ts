@@ -11,7 +11,7 @@ export enum sortEnum {
 }
 
 export class PaginationQueryDto {
-  curpage!: string;
+  pagenum!: string;
   pagesize!: string;
   keywords?: string;
   labelId?: string;

@@ -69,7 +69,7 @@ export class UserService {
   async findMultiUser(query: PaginationQueryDto) {
     let { keywords } = query;
     keywords = keywords ?? '';
-    const curpage = +query.curpage;
+    const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const [data, total] = await this.database.userRepo.findAndCount({
       relations: ['roles'],
@@ -85,7 +85,7 @@ export class UserService {
         },
       ],
       order: { id: 'DESC' },
-      skip: pagesize * (curpage - 1),
+      skip: pagesize * (pagenum - 1),
       take: pagesize,
     });
     await Promise.all(
@@ -201,14 +201,14 @@ export class UserService {
   }
 
   async getFollowers(userId: number, query: PaginationQueryDto) {
-    const curpage = +query.curpage;
+    const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
     SELECT u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
     FROM user_follow uf
     INNER JOIN user u ON uf.followId = u.id 
     WHERE uf.followId=${userId}
-    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    LIMIT ${pagesize} OFFSET ${pagesize * (pagenum - 1)};`;
     const result = await this.database.entityManager.query(sql);
     // minio中取出文件
     await Promise.all(
@@ -220,14 +220,14 @@ export class UserService {
   }
 
   async getFollowing(userId: number, query: PaginationQueryDto) {
-    const curpage = +query.curpage;
+    const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
     SELECT u.nickname,u.username,u.level,u.school,u.avatar,u.gender 
     FROM user_follow uf
     INNER JOIN user u ON uf.followingId = u.id 
     WHERE uf.followId=${userId}
-    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    LIMIT ${pagesize} OFFSET ${pagesize * (pagenum - 1)};`;
     const result = await this.database.entityManager.query(sql);
     // minio中取出文件
     await Promise.all(
@@ -239,7 +239,7 @@ export class UserService {
   }
 
   async getLikesList(userId: number, query: PaginationQueryDto) {
-    const curpage = +query.curpage;
+    const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
     SELECT  m.* ,JSON_OBJECT(
@@ -253,7 +253,7 @@ export class UserService {
     INNER JOIN moment_likes ml ON ml.momentId = m.id  
     INNER JOIN user u ON ml.userId = u.id
     WHERE ml.userId=${userId}
-    LIMIT ${pagesize} OFFSET ${pagesize * (curpage - 1)};`;
+    LIMIT ${pagesize} OFFSET ${pagesize * (pagenum - 1)};`;
     const result = await this.database.entityManager.query(sql);
     // minio中取出文件
     await Promise.all(

@@ -68,7 +68,7 @@ export class MomentService {
   // TODO: 需要优化sql
   async findMultiMoments(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
-    const curpage = +paginationParams.curpage;
+    const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo
       .createQueryBuilder('moment')
@@ -76,7 +76,7 @@ export class MomentService {
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .orderBy('moment.id', 'DESC')
-      .skip(pagesize * (curpage - 1))
+      .skip(pagesize * (pagenum - 1))
       .take(pagesize);
     if (keywords) {
       query = query.where('moment.content LIKE :keywords', { keywords: `%${keywords}%` });
