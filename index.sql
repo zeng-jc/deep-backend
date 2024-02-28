@@ -53,7 +53,7 @@ INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,lin
 	 (12,'momentComment','动态评论','/moment/momentComment',NULL,'2024-02-28 02:16:52.500150','2024-02-28 02:19:27.428023','/moment/momentComment/index',NULL,NULL,10),
 	 (13,'momentLabel','动态标签','/moment/momentLabel',NULL,'2024-02-28 02:19:27.161734','2024-02-28 02:19:34.020299','/moment/momentLabel/index',NULL,NULL,10),
 	 (14,'questionAnswer','问答管理','/questionAnswer',NULL,'2024-02-28 02:21:32.667130','2024-02-28 02:21:32.667130',NULL,NULL,NULL,NULL),
-	 (15,'questionAnswerList','问答列表','/questionAnswer/questionAnswerList',NULL,'2024-02-28 02:22:22.837577','2024-02-28 02:22:22.837577','/questionAnswer/questionAnswerList/index',NULL,NULL,13),
+	 (15,'questionAnswerList','问答列表','/questionAnswer/questionAnswerList',NULL,'2024-02-28 02:22:22.837577','2024-02-28 02:22:22.837577','/questionAnswer/questionAnswerList/index',NULL,NULL,14),
 	 (16,'system','系统管理','/system',NULL,'2024-02-28 02:27:54.582931','2024-02-28 02:27:54.582931',NULL,NULL,NULL,NULL),
 	 (17,'role','角色管理','/system/role',NULL,'2024-02-28 02:39:36.652607','2024-02-28 02:39:36.652607','/system/role/index',NULL,NULL,16),
 	 (18,'permission','权限管理','/system/permission',NULL,'2024-02-28 02:39:36.714687','2024-02-28 02:39:36.714687','/system/permission/index',NULL,NULL,16),

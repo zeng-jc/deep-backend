@@ -25,7 +25,6 @@ export function listToTree(
   }, {});
   return list.filter((node) => {
     info[node[parentFiledName]] && info[node[parentFiledName]][subFiledName].push(node);
-    delete node[parentFiledName];
     return !node[parentFiledName];
   });
 }
