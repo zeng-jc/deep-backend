@@ -23,10 +23,9 @@ export function listToTree(
     node.meta = obj;
     return (map[node.id] = node), (node[subFiledName] = []), map;
   }, {});
-
   return list.filter((node) => {
     info[node[parentFiledName]] && info[node[parentFiledName]][subFiledName].push(node);
-    delete node.parentId;
+    delete node[parentFiledName];
     return !node[parentFiledName];
   });
 }
