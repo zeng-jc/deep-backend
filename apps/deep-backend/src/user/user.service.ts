@@ -5,7 +5,6 @@ import { DatabaseService } from '../database/database.service';
 import { DeepMinioService } from '@app/deep-minio';
 import { UserEntity } from '@app/deep-orm';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
-import { EmailService } from '@app/common/emailService/email.service';
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
