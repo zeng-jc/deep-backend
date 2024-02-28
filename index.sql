@@ -39,27 +39,28 @@ INSERT INTO deep.role_menu_relation (roleId,menuId) VALUES
 
 
 INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,link,`order`,parentId) VALUES
-	 (1,'stats','数据统计','/stats',NULL,'2024-02-22 09:36:48.975092','2024-02-22 09:48:24',NULL,NULL,NULL,NULL),
-	 (2,'user','用户管理','/user',NULL,'2024-02-28 02:29:14.175838','2024-02-28 02:29:14.175838',NULL,NULL,NULL,NULL),
-	 (3,'userList','用户列表','/user/userList',NULL,'2024-02-28 02:29:14.239855','2024-02-28 02:29:14.239855','/user/userList/index',NULL,NULL,2),
-	 (4,'userFeedback','用户反馈','/user/userFeedback',NULL,'2024-02-28 02:35:53.893017','2024-02-28 02:35:53.893017','/user/userFeedback/index',NULL,NULL,2),
-	 (5,'article','文章管理','/article',NULL,'2024-02-28 01:53:12.773258','2024-02-28 01:53:12.773258','',NULL,NULL,NULL),
-	 (6,'articleList','文章列表','/article/articleList',NULL,'2024-02-28 01:57:36.051796','2024-02-28 01:57:36.051796','/article/articleList/index',NULL,NULL,5),
-	 (7,'articleComment','文章评论','/article/articleComment',NULL,'2024-02-28 02:12:40.759089','2024-02-28 02:12:40.759089','/article/articleComment/index',NULL,NULL,5),
-	 (8,'articleLabel','文章标签','/article/articleLabel',NULL,'2024-02-28 02:12:40.824086','2024-02-28 02:19:27.237941','/article/articleLabel/index',NULL,NULL,5),
-	 (9,'moment','动态管理','/moment',NULL,'2024-02-28 02:16:52.373723','2024-02-28 02:16:52.373723',NULL,NULL,NULL,NULL),
-	 (10,'momentList','动态列表','/moment/momentList',NULL,'2024-02-28 02:16:52.436517','2024-02-28 02:19:27.361619','/moment/momentList/index',NULL,NULL,9),
-	 (11,'momentComment','动态评论','/moment/momentComment',NULL,'2024-02-28 02:16:52.500150','2024-02-28 02:19:27.428023','/moment/momentComment/index',NULL,NULL,9),
-	 (12,'momentLabel','动态标签','/moment/momentLabel',NULL,'2024-02-28 02:19:27.161734','2024-02-28 02:19:34.020299','/moment/momentLabel/index',NULL,NULL,9),
-	 (13,'questionAnswer','问答管理','/questionAnswer',NULL,'2024-02-28 02:21:32.667130','2024-02-28 02:21:32.667130',NULL,NULL,NULL,NULL),
-	 (14,'questionAnswerList','问答列表','/questionAnswer/questionAnswerList',NULL,'2024-02-28 02:22:22.837577','2024-02-28 02:22:22.837577','/questionAnswer/questionAnswerList/index',NULL,NULL,13),
-	 (15,'system','系统管理','/system',NULL,'2024-02-28 02:27:54.582931','2024-02-28 02:27:54.582931',NULL,NULL,NULL,NULL),
-	 (16,'role','角色管理','/system/role',NULL,'2024-02-28 02:39:36.652607','2024-02-28 02:39:36.652607','/system/role/index',NULL,NULL,15),
-	 (17,'permission','权限管理','/system/permission',NULL,'2024-02-28 02:39:36.714687','2024-02-28 02:39:36.714687','/system/permission/index',NULL,NULL,15),
-	 (18,'menu','菜单管理','/system/menu',NULL,'2024-02-28 02:39:36.777877','2024-02-28 02:39:36.777877','/system/menu/index',NULL,NULL,15),
-	 (19,'link','外部链接','/link',NULL,'2024-02-22 09:37:55.088743','2024-02-22 09:44:54.418579',NULL,NULL,NULL,NULL),
-	 (20,'github','github','/link/github',NULL,'2024-02-22 09:38:49.018395','2024-02-27 12:19:04.591809',NULL,'https://github.com/zeng-jc',NULL,19),
-	 (21,'juejin','掘金','/link/juejin',NULL,'2024-02-22 09:39:40.602020','2024-02-27 12:19:04.648822',NULL,'https://juejin.cn/user/1548551276737191',NULL,19);
+	 (1,'home','首页','/home/index',NULL,'2024-02-22 09:36:48.975092','2024-02-22 09:48:24','/home/index',NULL,NULL,NULL),
+	 (2,'stats','数据统计','/stats/index',NULL,'2024-02-22 09:36:48.975092','2024-02-22 09:48:24','/stats/index',NULL,NULL,NULL),
+	 (3,'user','用户管理','/user',NULL,'2024-02-28 02:29:14.175838','2024-02-28 02:29:14.175838',NULL,NULL,NULL,NULL),
+	 (4,'userList','用户列表','/user/userList',NULL,'2024-02-28 02:29:14.239855','2024-02-28 02:29:14.239855','/user/userList/index',NULL,NULL,3),
+	 (5,'userFeedback','用户反馈','/user/userFeedback',NULL,'2024-02-28 02:35:53.893017','2024-02-28 02:35:53.893017','/user/userFeedback/index',NULL,NULL,3),
+	 (6,'article','文章管理','/article',NULL,'2024-02-28 01:53:12.773258','2024-02-28 01:53:12.773258','',NULL,NULL,NULL),
+	 (7,'articleList','文章列表','/article/articleList',NULL,'2024-02-28 01:57:36.051796','2024-02-28 01:57:36.051796','/article/articleList/index',NULL,NULL,6),
+	 (8,'articleComment','文章评论','/article/articleComment',NULL,'2024-02-28 02:12:40.759089','2024-02-28 02:12:40.759089','/article/articleComment/index',NULL,NULL,6),
+	 (9,'articleLabel','文章标签','/article/articleLabel',NULL,'2024-02-28 02:12:40.824086','2024-02-28 02:19:27.237941','/article/articleLabel/index',NULL,NULL,6),
+	 (10,'moment','动态管理','/moment',NULL,'2024-02-28 02:16:52.373723','2024-02-28 02:16:52.373723',NULL,NULL,NULL,NULL),
+	 (11,'momentList','动态列表','/moment/momentList',NULL,'2024-02-28 02:16:52.436517','2024-02-28 02:19:27.361619','/moment/momentList/index',NULL,NULL,10),
+	 (12,'momentComment','动态评论','/moment/momentComment',NULL,'2024-02-28 02:16:52.500150','2024-02-28 02:19:27.428023','/moment/momentComment/index',NULL,NULL,10),
+	 (13,'momentLabel','动态标签','/moment/momentLabel',NULL,'2024-02-28 02:19:27.161734','2024-02-28 02:19:34.020299','/moment/momentLabel/index',NULL,NULL,10),
+	 (14,'questionAnswer','问答管理','/questionAnswer',NULL,'2024-02-28 02:21:32.667130','2024-02-28 02:21:32.667130',NULL,NULL,NULL,NULL),
+	 (15,'questionAnswerList','问答列表','/questionAnswer/questionAnswerList',NULL,'2024-02-28 02:22:22.837577','2024-02-28 02:22:22.837577','/questionAnswer/questionAnswerList/index',NULL,NULL,13),
+	 (16,'system','系统管理','/system',NULL,'2024-02-28 02:27:54.582931','2024-02-28 02:27:54.582931',NULL,NULL,NULL,NULL),
+	 (17,'role','角色管理','/system/role',NULL,'2024-02-28 02:39:36.652607','2024-02-28 02:39:36.652607','/system/role/index',NULL,NULL,16),
+	 (18,'permission','权限管理','/system/permission',NULL,'2024-02-28 02:39:36.714687','2024-02-28 02:39:36.714687','/system/permission/index',NULL,NULL,16),
+	 (19,'menu','菜单管理','/system/menu',NULL,'2024-02-28 02:39:36.777877','2024-02-28 02:39:36.777877','/system/menu/index',NULL,NULL,16),
+	 (20,'link','外部链接','/link',NULL,'2024-02-22 09:37:55.088743','2024-02-22 09:44:54.418579',NULL,NULL,NULL,NULL),
+	 (21,'github','github','/link/github',NULL,'2024-02-22 09:38:49.018395','2024-02-27 12:19:04.591809',NULL,'https://github.com/zeng-jc',NULL,20),
+	 (22,'juejin','掘金','/link/juejin',NULL,'2024-02-22 09:39:40.602020','2024-02-27 12:19:04.648822',NULL,'https://juejin.cn/user/1548551276737191',NULL,20);
 
 INSERT INTO deep.role_menu_relation (roleId,menuId) VALUES
-	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16), (1,17),(1,18),(1,19),(1,20),(1,21);
+	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16), (1,17),(1,18),(1,19),(1,20),(1,21),(1,22);
