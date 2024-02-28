@@ -192,7 +192,7 @@ export class ArticleService {
       // 2. 不存在的标签插入到标签表中(求差集)
       const dbExistLabelNames = dbExistLabels?.map((item) => item.name);
       const dbNotExistLabelNames = labels?.filter((item) => !dbExistLabelNames.includes(item));
-      let articleLabels = dbNotExistLabelNames.length
+      const articleLabels = dbNotExistLabelNames.length
         ? await articleLabelRepo.save(dbNotExistLabelNames.map((item) => ({ name: item })))
         : undefined;
       // 3. 更新关系表
