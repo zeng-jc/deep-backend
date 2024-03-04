@@ -9,10 +9,10 @@ export class StatsService {
     private readonly cacheService: CacheService,
   ) {}
   async userStats() {
-    const cacheUserStats = await this.cacheService.get(`stats.momentStats`);
+    const cacheUserStats = await this.cacheService.get(`stats.userStats`);
     if (cacheUserStats) return cacheUserStats;
     const result = await this.database.userRepo.count();
-    this.cacheService.set(`stats.momentStats`, result, 30);
+    this.cacheService.set(`stats.userStats`, result, 30);
     return result;
   }
 

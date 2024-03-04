@@ -5,6 +5,6 @@ export class SigninAuthDto {
   @Length(3, 20)
   username?: string;
   @IsNotEmpty()
-  @Length(3, 20)
+  @Length(3)
   password!: string;
 }
