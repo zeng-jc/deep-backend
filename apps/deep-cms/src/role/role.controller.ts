@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/decorator/auth.decorator';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
 
 @Roles('admin')
 @Controller('role')
@@ -22,9 +24,12 @@ export class RoleController {
     return this.roleService.assignRole(assignRoleDto);
   }
 
-  @Get()
-  findAllRole() {
-    return this.roleService.findAllRole();
+  @Get('/list')
+  findRoleList(
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+  ) {
+    return this.roleService.findRoleList(query);
   }
 
   @Get(':id')

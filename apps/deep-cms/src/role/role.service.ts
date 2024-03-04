@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleEntity } from '@app/deep-orm';
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Injectable()
 export class RoleService {
@@ -35,8 +36,29 @@ export class RoleService {
     });
   }
 
-  findAllRole() {
-    return this.database.roleRepo.find({ relations: ['permissions'] });
+  async findRoleList(query: PaginationQueryDto) {
+    const { keywords, pagenum, pagesize } = query;
+    const [list, total] = await this.database.userRepo.findAndCount({
+      relations: ['roles'],
+      where: [
+        {
+          nickname: Like(`%${keywords ?? ''}%`),
+        },
+        {
+          username: Like(`%${keywords}%`),
+        },
+        {
+          email: Like(`%${keywords}%`),
+        },
+      ],
+      order: { id: 'DESC' },
+      skip: pagesize * (pagenum - 1),
+      take: pagesize,
+    });
+    return {
+      list,
+      total,
+    };
   }
 
   findOneRole(id: number) {
