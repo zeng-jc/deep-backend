@@ -1,6 +1,6 @@
 export class PaginationQueryDto {
-  pagenum!: string;
-  pagesize!: string;
+  pagenum!: number;
+  pagesize!: number;
   keywords?: string;
   labelId?: string;
 }
