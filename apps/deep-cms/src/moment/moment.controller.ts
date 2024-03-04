@@ -53,9 +53,9 @@ export class MomentController {
     return this.momentService.create(userId, files, createMomentDto, 'video');
   }
 
-  @Get()
-  findMultiMoments(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
-    return this.momentService.findMultiMoments(paginationParams);
+  @Get('/list')
+  findMomentList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
+    return this.momentService.findMomentList(paginationParams);
   }
 
   @Get(':id')

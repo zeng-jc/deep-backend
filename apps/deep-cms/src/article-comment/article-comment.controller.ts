@@ -18,9 +18,9 @@ export class ArticleCommentController {
     return this.articleCommentService.create(createArticleCommentDto, userId);
   }
 
-  @Get()
-  findMultiArticleComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
-    return this.articleCommentService.findMultiArticleComment(query);
+  @Get('/list')
+  findArticleCommentList(@Param(new PaginationPipe()) query: PaginationQueryDto) {
+    return this.articleCommentService.findArticleCommentList(query);
   }
 
   @Get(':id')

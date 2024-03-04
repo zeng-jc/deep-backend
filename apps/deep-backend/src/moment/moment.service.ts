@@ -65,7 +65,7 @@ export class MomentService {
   }
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
-  async findMultiMoments(paginationParams: PaginationQueryDto) {
+  async findMomentList(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;

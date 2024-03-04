@@ -40,7 +40,7 @@ export class MomentCommentService {
   }
 
   // 评论搜索（不查头像，影响性能）
-  async findMultiMomentComment(query: PaginationQueryDto) {
+  async findMomentCommentList(query: PaginationQueryDto) {
     const { keywords, pagesize, pagenum } = query;
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {

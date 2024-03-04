@@ -24,9 +24,9 @@ export class QuestionAnswerController {
   }
 
   // 多个问题
-  @Get('question')
-  findMultiQuestion(@Query() paginationParams: PaginationQueryDto) {
-    return this.questionAnswerService.findMultiQuestion(paginationParams);
+  @Get('/question/list')
+  findQuestionList(@Query() paginationParams: PaginationQueryDto) {
+    return this.questionAnswerService.findQuestionList(paginationParams);
   }
 
   // 查询单个问题

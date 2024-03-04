@@ -40,7 +40,7 @@ export class ArticleCommentService {
   }
 
   // 评论搜索（不查头像，影响性能）
-  async findMultiArticleComment(query: PaginationQueryDto) {
+  async findArticleCommentList(query: PaginationQueryDto) {
     const { keywords, pagesize, pagenum } = query;
     const [data, total] = await this.database.articleCommentRepo.findAndCount({
       where: {

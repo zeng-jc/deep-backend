@@ -66,7 +66,7 @@ export class UserService {
     return this.database.userRepo.save(user);
   }
 
-  async findMultiUser(query: PaginationQueryDto) {
+  async findUserList(query: PaginationQueryDto) {
     let { keywords } = query;
     keywords = keywords ?? '';
     const pagenum = +query.pagenum;

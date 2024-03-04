@@ -20,7 +20,7 @@ export class QuestionAnswerService {
     return this.database.answerRepo.save({ userId, questionId, content });
   }
 
-  async findMultiQuestion(paginationParams: PaginationQueryDto) {
+  async findQuestionList(paginationParams: PaginationQueryDto) {
     const { pagenum, pagesize, keywords } = paginationParams;
     let query = this.database.questionRepo
       .createQueryBuilder('question')

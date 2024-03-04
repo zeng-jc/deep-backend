@@ -8,6 +8,7 @@ import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFil
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
+import { Like } from 'typeorm';
 
 const bucketName = bucketNameEnum.deepAvatar;
 
@@ -36,6 +37,40 @@ export class UserService {
       queryBuilder = queryBuilder.andWhere('user.id != :id', { id: excludeId });
     }
     return !!(await queryBuilder.getCount());
+  }
+
+  async findUserList(query: PaginationQueryDto) {
+    let { keywords } = query;
+    keywords = keywords ?? '';
+    const pagenum = +query.pagenum;
+    const pagesize = +query.pagesize;
+    const [data, total] = await this.database.userRepo.findAndCount({
+      relations: ['roles'],
+      where: [
+        {
+          nickname: Like(`%${keywords}%`),
+        },
+        {
+          username: Like(`%${keywords}%`),
+        },
+        {
+          email: Like(`%${keywords}%`),
+        },
+      ],
+      order: { id: 'DESC' },
+      skip: pagesize * (pagenum - 1),
+      take: pagesize,
+    });
+    await Promise.all(
+      data.map(
+        async (userEntity) =>
+          (userEntity.avatar = userEntity.avatar && (await this.deepMinioService.getFileUrl(userEntity.avatar, bucketName))),
+      ),
+    );
+    return {
+      data,
+      total,
+    };
   }
 
   async findOneUser(id: number) {

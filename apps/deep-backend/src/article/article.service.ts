@@ -81,7 +81,7 @@ export class ArticleService {
   }
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
-  async findMultiArticle(paginationParams: PaginationQueryDto) {
+  async findArticleList(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
