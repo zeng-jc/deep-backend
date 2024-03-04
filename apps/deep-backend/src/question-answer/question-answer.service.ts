@@ -30,8 +30,8 @@ export class QuestionAnswerService {
     if (keywords) {
       query = query.where('question.content LIKE :keywords', { keywords: `%${keywords}%` });
     }
-    const [questions, total] = await query.getManyAndCount();
-    return { questions, total };
+    const [list, total] = await query.getManyAndCount();
+    return { list, total };
   }
 
   findOneQuestion(id: number) {

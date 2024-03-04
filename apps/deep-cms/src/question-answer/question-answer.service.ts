@@ -48,8 +48,8 @@ export class QuestionAnswerService {
     if (keywords) {
       query = query.where('answer.content LIKE :keywords', { keywords: `%${keywords}%` });
     }
-    const [answers, total] = await query.getManyAndCount();
-    return { answers, total };
+    const [list, total] = await query.getManyAndCount();
+    return { list, total };
   }
 
   removeQuestion(id: number) {
