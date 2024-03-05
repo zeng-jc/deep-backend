@@ -19,6 +19,7 @@ import { Roles } from '../common/decorator/auth.decorator';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
 
 @Roles('admin')
 @ApiTags('article')
@@ -50,7 +51,7 @@ export class ArticleController {
   }
 
   @Get('/list')
-  findArticleList(@Query() paginationParams: PaginationQueryDto) {
+  findArticleList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
     return this.articleService.findArticleList(paginationParams);
   }
 
