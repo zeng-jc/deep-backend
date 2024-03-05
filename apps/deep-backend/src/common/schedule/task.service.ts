@@ -18,7 +18,7 @@ export class TasksService {
     const count = await this.cacheService.getCounter(DAILY_VISITS);
     // 2.同步到数据
     const dailyVisits = await this.database.dailyVisitsRepo.findOne({ where: { date: DAILY_VISITS } });
-    const countRes = BigInt(dailyVisits?.count ?? 0) + BigInt(count);
+    const countRes = dailyVisits?.count ?? 0 + count;
     this.database.dailyVisitsRepo.update({ date: DAILY_VISITS }, { count: countRes });
     // 3.删除缓存
     this.cacheService.del(DAILY_VISITS);

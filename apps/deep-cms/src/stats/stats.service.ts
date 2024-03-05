@@ -51,13 +51,15 @@ export class StatsService {
   }
 
   async visits() {
-    const cacheKey = `dailyVisits.${new Date().toISOString().split('T')[0]}`;
+    const today = new Date().toISOString().split('T')[0];
+    const cacheKey = `dailyVisits.${today}`;
     const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     const cacheCount = await this.cacheService.getCounter(cacheKey);
     // 今日访问量
     const todayVisits =
-      BigInt(cacheCount) + (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: cacheKey } })).count;
-    const cacheVal = this.cacheService.get<{ yesterdayVisits: number; todayVisits: number }>('stats.visits');
+      cacheCount + (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: today } }))?.count ?? 0;
+    // 查缓存
+    const cacheVal = await this.cacheService.get<{ yesterdayVisits: number; todayVisits: number }>('stats.visits');
     if (cacheVal)
       return {
         ...cacheVal,
@@ -65,12 +67,12 @@ export class StatsService {
       };
     // 昨日访问量
     const yesterdayVisits =
-      (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: yesterday } })).count ?? 0;
+      (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: yesterday } }))?.count ?? 0;
     // 总访问量
-    const totalVisits = await this.database.dailyVisitsRepo
+    const { count: totalVisits } = await this.database.dailyVisitsRepo
       .createQueryBuilder('dailyVisits')
-      .select('SUM(dailyVisits.count)', 'sum')
-      .getMany();
+      .select('SUM(dailyVisits.count)', 'count')
+      .getRawOne();
     // 缓存30分钟
     this.cacheService.set('stats.visits', { yesterdayVisits, todayVisits }, 60 * 30);
     return {

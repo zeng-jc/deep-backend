@@ -5,8 +5,9 @@ import { tableNameEnum } from '../tableNameEnum';
 export class DailyVisitsEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'bigint' })
-  count: bigint;
+  // TODO: 考虑使用bigint
+  @Column()
+  count: number;
   @Column({ unique: true })
   date: string;
 }
