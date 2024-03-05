@@ -5,6 +5,15 @@ import { REDIS_CLIENT } from './constant';
 @Injectable()
 export class CacheService {
   constructor(@Inject(REDIS_CLIENT) private redisClient: RedisClientType) {}
+  async incrCounter(key: string): Promise<number> {
+    return await this.redisClient.incr(key);
+  }
+
+  async getCounter(key: string): Promise<number> {
+    const value = await this.redisClient.get(key);
+    return value ? parseInt(value, 10) : 0;
+  }
+
   //获取值
   async get<T>(key: string): Promise<T> {
     let value = await this.redisClient.get(key);

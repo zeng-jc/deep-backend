@@ -49,4 +49,34 @@ export class StatsService {
     this.cacheService.set(`stats.ArticleStats`, result, 30);
     return result;
   }
+
+  async visits() {
+    const cacheKey = `dailyVisits.${new Date().toISOString().split('T')[0]}`;
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const cacheCount = await this.cacheService.getCounter(cacheKey);
+    // 今日访问量
+    const todayVisits =
+      BigInt(cacheCount) + (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: cacheKey } })).count;
+    const cacheVal = this.cacheService.get<{ yesterdayVisits: number; todayVisits: number }>('stats.visits');
+    if (cacheVal)
+      return {
+        ...cacheVal,
+        todayVisits,
+      };
+    // 昨日访问量
+    const yesterdayVisits =
+      (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: yesterday } })).count ?? 0;
+    // 总访问量
+    const totalVisits = await this.database.dailyVisitsRepo
+      .createQueryBuilder('dailyVisits')
+      .select('SUM(dailyVisits.count)', 'sum')
+      .getMany();
+    // 缓存30分钟
+    this.cacheService.set('stats.visits', { yesterdayVisits, todayVisits }, 60 * 30);
+    return {
+      yesterdayVisits,
+      todayVisits,
+      totalVisits,
+    };
+  }
 }

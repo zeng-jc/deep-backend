@@ -23,4 +23,9 @@ export class StatsController {
   articleStats() {
     return this.statsService.articleStats();
   }
+
+  @Get('visits')
+  visits() {
+    return this.statsService.visits();
+  }
 }
