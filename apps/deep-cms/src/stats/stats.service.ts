@@ -8,7 +8,8 @@ export class StatsService {
     private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
   ) {}
-  async getUserCount() {
+  // 统计用户模块
+  async statsUser() {
     const total = await this.database.userRepo.count();
     const today = new Date();
     today.setHours(0, 0, 0, 0); // 设置时间为当天的0点
@@ -25,7 +26,8 @@ export class StatsService {
     };
   }
 
-  async getMomentCount() {
+  // 统计动态模块
+  async statsMoment() {
     const total = await this.database.momentRepo.count();
     const commentCount = await this.database.momentCommentRepo.count();
     const likesCount = await this.database.momentLikesRepo.count();
@@ -37,7 +39,9 @@ export class StatsService {
       viewsCount,
     };
   }
-  async getArticleCount() {
+
+  // 统计文章模块
+  async statsArticle() {
     const total = await this.database.articleRepo.count();
     const commentCount = await this.database.articleCommentRepo.count();
     const likesCount = await this.database.articleLikesRepo.count();
@@ -50,6 +54,15 @@ export class StatsService {
     };
   }
 
+  // 统计问答模块
+  async statsQuestionAnswer() {
+    const questionTotal = await this.database.questionRepo.count();
+    return {
+      questionTotal,
+    };
+  }
+
+  // 统计访问量
   async getVisits() {
     const todayDate = new Date().toISOString().split('T')[0];
     const yesterdayDate = new Date(Date.now() - 86400000).toISOString().split('T')[0];
@@ -78,15 +91,17 @@ export class StatsService {
     const cacheKey = 'stats.all';
     const cacheStatsAll = await this.cacheService.get(cacheKey);
     if (cacheStatsAll) return cacheStatsAll;
-    const user = await this.getUserCount();
-    const moment = await this.getMomentCount();
-    const article = await this.getArticleCount();
+    const user = await this.statsUser();
+    const moment = await this.statsMoment();
+    const article = await this.statsArticle();
     const visits = await this.getVisits();
+    const questionAnswer = await this.statsQuestionAnswer();
     const allData = {
       user,
       moment,
       article,
       visits,
+      questionAnswer,
     };
     // 缓存5分钟
     this.cacheService.set(cacheKey, allData, 60 * 5);
