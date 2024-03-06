@@ -12,7 +12,8 @@ export class TasksService {
   ) {}
   private readonly logger = new Logger(TasksService.name);
 
-  @Cron('0 1 * * * *')
+  // 每小时的第59分59秒触发
+  @Cron('59 59 * * * *')
   async dailyVisitsHandle() {
     // 1.拿到缓存
     const count = await this.cacheService.getCounter(DAILY_VISITS);
