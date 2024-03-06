@@ -8,25 +8,42 @@ export class StatsService {
     private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
   ) {}
+  async getUserCount() {
+    const total = await this.database.userRepo.count();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 设置时间为当天的0点
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // 设置时间为第二天的0点
+    const todayCount = await this.database.userRepo
+      .createQueryBuilder('user')
+      .where('user.createAt >= :startOfDay', { startOfDay: today })
+      .andWhere('user.createAt < :endOfDay', { endOfDay: tomorrow })
+      .getCount();
+    return {
+      total,
+      todayCount,
+    };
+  }
+
   async getMomentCount() {
-    const count = await this.database.momentRepo.count();
+    const total = await this.database.momentRepo.count();
     const commentCount = await this.database.momentCommentRepo.count();
     const likesCount = await this.database.momentLikesRepo.count();
     const viewsCount = await this.database.momentRepo.sum('viewCount');
     return {
-      count,
+      total,
       commentCount,
       likesCount,
       viewsCount,
     };
   }
   async getArticleCount() {
-    const count = await this.database.articleRepo.count();
+    const total = await this.database.articleRepo.count();
     const commentCount = await this.database.articleCommentRepo.count();
     const likesCount = await this.database.articleLikesRepo.count();
     const viewsCount = await this.database.articleRepo.sum('viewCount');
     return {
-      count,
+      total,
       commentCount,
       likesCount,
       viewsCount,
@@ -61,12 +78,12 @@ export class StatsService {
     const cacheKey = 'stats.all';
     const cacheStatsAll = await this.cacheService.get(cacheKey);
     if (cacheStatsAll) return cacheStatsAll;
-    const userCount = await this.database.userRepo.count();
+    const user = await this.getUserCount();
     const moment = await this.getMomentCount();
     const article = await this.getArticleCount();
     const visits = await this.getVisits();
     const allData = {
-      userCount,
+      user,
       moment,
       article,
       visits,
