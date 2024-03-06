@@ -8,78 +8,71 @@ export class StatsService {
     private readonly database: DatabaseService,
     private readonly cacheService: CacheService,
   ) {}
-  async userStats() {
-    const cacheUserStats = await this.cacheService.get(`stats.userStats`);
-    if (cacheUserStats) return cacheUserStats;
-    const result = await this.database.userRepo.count();
-    this.cacheService.set(`stats.userStats`, result, 30);
-    return result;
-  }
-
-  async momentStats() {
-    const cacheMomentStats = await this.cacheService.get(`stats.momentStats`);
-    if (cacheMomentStats) return cacheMomentStats;
-    const momentCount = await this.database.momentRepo.count();
-    const momentCommentCount = await this.database.momentCommentRepo.count();
-    const momentLikesCount = await this.database.momentLikesRepo.count();
-    const momentViewsCount = await this.database.momentRepo.sum('viewCount');
-    const result = {
-      momentCount,
-      momentCommentCount,
-      momentLikesCount,
-      momentViewsCount,
+  async getMomentCount() {
+    const count = await this.database.momentRepo.count();
+    const commentCount = await this.database.momentCommentRepo.count();
+    const likesCount = await this.database.momentLikesRepo.count();
+    const viewsCount = await this.database.momentRepo.sum('viewCount');
+    return {
+      count,
+      commentCount,
+      likesCount,
+      viewsCount,
     };
-    this.cacheService.set(`stats.momentStats`, result, 30);
-    return result;
   }
-
-  async articleStats() {
-    const cacheArticleStats = await this.cacheService.get(`stats.ArticleStats`);
-    if (cacheArticleStats) return cacheArticleStats;
-    const articleCount = await this.database.articleRepo.count();
-    const articleCommentCount = await this.database.articleCommentRepo.count();
-    const articleLikesCount = await this.database.articleLikesRepo.count();
-    const articleViewsCount = await this.database.articleRepo.sum('viewCount');
-    const result = {
-      articleCount,
-      articleCommentCount,
-      articleLikesCount,
-      articleViewsCount,
+  async getArticleCount() {
+    const count = await this.database.articleRepo.count();
+    const commentCount = await this.database.articleCommentRepo.count();
+    const likesCount = await this.database.articleLikesRepo.count();
+    const viewsCount = await this.database.articleRepo.sum('viewCount');
+    return {
+      count,
+      commentCount,
+      likesCount,
+      viewsCount,
     };
-    this.cacheService.set(`stats.ArticleStats`, result, 30);
-    return result;
   }
 
-  async visits() {
-    const today = new Date().toISOString().split('T')[0];
-    const cacheKey = `dailyVisits.${today}`;
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  async getVisits() {
+    const todayDate = new Date().toISOString().split('T')[0];
+    const yesterdayDate = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const cacheKey = `dailyVisits.${todayDate}`;
     const cacheCount = await this.cacheService.getCounter(cacheKey);
     // 今日访问量
-    const todayVisits =
-      cacheCount + ((await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: today } }))?.count ?? 0);
-    // 查缓存
-    const cacheVal = await this.cacheService.get<{ yesterdayVisits: number; todayVisits: number }>('stats.visits');
-
-    if (cacheVal)
-      return {
-        todayVisits,
-        ...cacheVal,
-      };
+    const today =
+      cacheCount + ((await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: todayDate } }))?.count ?? 0);
     // 昨日访问量
-    const yesterdayVisits =
-      (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: yesterday } }))?.count ?? 0;
+    const yesterday =
+      (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: yesterdayDate } }))?.count ?? 0;
     // 总访问量
-    const { count: totalVisits } = await this.database.dailyVisitsRepo
+    let { count: total } = await this.database.dailyVisitsRepo
       .createQueryBuilder('dailyVisits')
       .select('SUM(dailyVisits.count)', 'count')
       .getRawOne();
-    // 缓存30分钟
-    this.cacheService.set('stats.visits', { yesterdayVisits, totalVisits }, 60 * 30);
+    total = parseInt(total, 10);
     return {
-      todayVisits,
-      yesterdayVisits,
-      totalVisits,
+      today,
+      yesterday,
+      total,
     };
+  }
+
+  async statsAll() {
+    const cacheKey = 'stats.all';
+    const cacheStatsAll = await this.cacheService.get(cacheKey);
+    if (cacheStatsAll) return cacheStatsAll;
+    const userCount = await this.database.userRepo.count();
+    const moment = await this.getMomentCount();
+    const article = await this.getArticleCount();
+    const visits = await this.getVisits();
+    const allData = {
+      userCount,
+      moment,
+      article,
+      visits,
+    };
+    // 缓存5分钟
+    this.cacheService.set(cacheKey, allData, 60 * 5);
+    return allData;
   }
 }

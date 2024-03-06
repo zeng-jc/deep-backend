@@ -9,23 +9,8 @@ import { Roles } from '../common/decorator/auth.decorator';
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
-  @Get('user')
-  userStats() {
-    return this.statsService.userStats();
-  }
-
-  @Get('moment')
-  momentStats() {
-    return this.statsService.momentStats();
-  }
-
-  @Get('article')
-  articleStats() {
-    return this.statsService.articleStats();
-  }
-
-  @Get('visits')
-  visits() {
-    return this.statsService.visits();
+  @Get('/all')
+  statsAll() {
+    return this.statsService.statsAll();
   }
 }
