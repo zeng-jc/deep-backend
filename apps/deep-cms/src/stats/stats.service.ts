@@ -57,13 +57,14 @@ export class StatsService {
     const cacheCount = await this.cacheService.getCounter(cacheKey);
     // 今日访问量
     const todayVisits =
-      cacheCount + (await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: today } }))?.count ?? 0;
+      cacheCount + ((await this.database.dailyVisitsRepo.findOne({ select: ['count'], where: { date: today } }))?.count ?? 0);
     // 查缓存
     const cacheVal = await this.cacheService.get<{ yesterdayVisits: number; todayVisits: number }>('stats.visits');
+
     if (cacheVal)
       return {
-        ...cacheVal,
         todayVisits,
+        ...cacheVal,
       };
     // 昨日访问量
     const yesterdayVisits =
@@ -74,10 +75,10 @@ export class StatsService {
       .select('SUM(dailyVisits.count)', 'count')
       .getRawOne();
     // 缓存30分钟
-    this.cacheService.set('stats.visits', { yesterdayVisits, todayVisits }, 60 * 30);
+    this.cacheService.set('stats.visits', { yesterdayVisits, totalVisits }, 60 * 30);
     return {
-      yesterdayVisits,
       todayVisits,
+      yesterdayVisits,
       totalVisits,
     };
   }
