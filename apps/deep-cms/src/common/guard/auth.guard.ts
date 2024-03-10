@@ -54,7 +54,7 @@ export class AuthGuard implements CanActivate {
       this.cacheService.set<string[]>(permissionCacheKey, permissions ?? [], 60);
     }
 
-    const isContainRole: boolean = requiredRoles.every((item) => roles?.includes(item));
+    const isContainRole: boolean = requiredRoles.every((item) => roles?.includes(item) || roles.includes('superAdmin'));
 
     if (!isContainRole) {
       throw new DeepHttpException(ErrorMsg.ROLE_ACCESS_PROHIBITED, ErrorCode.ROLE_ACCESS_PROHIBITED);
