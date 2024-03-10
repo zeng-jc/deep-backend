@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { StatsService } from './stats.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from '../common/decorator/auth.decorator';
+import { Permissions, Roles } from '../common/decorator/auth.decorator';
 
 @Roles('admin')
 @ApiTags('stats')
@@ -9,6 +9,7 @@ import { Roles } from '../common/decorator/auth.decorator';
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
+  @Permissions('query-stats')
   @Get('/all')
   statsAll() {
     return this.statsService.statsAll();
