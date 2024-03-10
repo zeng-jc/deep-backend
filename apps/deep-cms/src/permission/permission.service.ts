@@ -30,6 +30,10 @@ export class PermissionService {
 
   async assignPermissions(assignPermissionDto: AssignPermissionDto) {
     const { roleId, permissionIds } = assignPermissionDto;
+    const name = (await this.database.roleRepo.findOne({ where: { id: roleId } })).name;
+    if (name === 'superAdmin') {
+      throw new DeepHttpException(ErrorMsg.SUPER_ADMIN_READ_ONLY, ErrorCode.SUPER_ADMIN_READ_ONLY);
+    }
     const permissions = await this.database.permissionRepo.find({
       where: {
         id: In(permissionIds),

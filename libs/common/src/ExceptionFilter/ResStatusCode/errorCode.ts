@@ -17,9 +17,10 @@ export enum ErrorCode {
   PERMISSION_EXIST = '200002', //权限已存在
   PERMISSION_NOT_EXIST = '200003', // 权限不存在
   /** 角色状态码 **/
-  ROLE_ACCESS_PROHIBITED = '300001', //角色禁止访问
-  ROLE_EXIST = '300002', //角色已存在
-  ROLE_NOT_EXIST = '300003', //角色不存在
+  SUPER_ADMIN_READ_ONLY = '300001', // superAdmin只读，禁止任何处理
+  ROLE_ACCESS_PROHIBITED = '300002', //角色禁止访问
+  ROLE_EXIST = '300003', //角色已存在
+  ROLE_NOT_EXIST = '300004', //角色不存在
   /** 动态状态码 */
   MOMENT_PARAMETER_VALUE_ERROR = '400001',
   MOMENT_UNSUPPORTED_IMAGE_FILE_TYPE = '400002',

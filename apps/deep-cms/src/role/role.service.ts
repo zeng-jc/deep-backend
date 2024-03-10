@@ -63,14 +63,22 @@ export class RoleService {
     });
   }
 
-  updateRole(id: number, updateRoleDto: UpdateRoleDto) {
+  async updateRole(id: number, updateRoleDto: UpdateRoleDto) {
+    const name = (await this.database.roleRepo.findOne({ where: { id } })).name;
+    if (name === 'superAdmin') {
+      throw new DeepHttpException(ErrorMsg.SUPER_ADMIN_READ_ONLY, ErrorCode.SUPER_ADMIN_READ_ONLY);
+    }
     const role = new RoleEntity();
     role.name = updateRoleDto.name;
     role.desc = updateRoleDto.desc;
     return this.database.roleRepo.update(id, role);
   }
 
-  removeRole(id: number) {
+  async removeRole(id: number) {
+    const name = (await this.database.roleRepo.findOne({ where: { id } })).name;
+    if (name === 'superAdmin') {
+      throw new DeepHttpException(ErrorMsg.SUPER_ADMIN_READ_ONLY, ErrorCode.SUPER_ADMIN_READ_ONLY);
+    }
     return this.database.roleRepo.delete(id);
   }
 }

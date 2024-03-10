@@ -11,7 +11,7 @@ export class RoleEntity {
   name!: string;
   @Column({ type: 'enum', enum: [0, 1], default: 1 })
   status!: number;
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
   desc: string;
   @CreateDateColumn()
   createAt!: Date;

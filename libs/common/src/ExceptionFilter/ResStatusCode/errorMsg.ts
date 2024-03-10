@@ -17,6 +17,7 @@ export enum ErrorMsg {
   PERMISSION_EXIST = 'PERMISSION EXIST', //权限已存在
   PERMISSION_NOT_EXIST = 'PERMISSION_NOT EXIST', // 权限不存在
   /** 角色状态码 **/
+  SUPER_ADMIN_READ_ONLY = 'SUPER ADMIN READ ONLY', // superAdmin只读，禁止任何处理
   ROLE_ACCESS_PROHIBITED = 'ROLE ACCESS PROHIBITED', //角色禁止访问
   ROLE_EXIST = 'ROLE EXIST', //角色已存在
   ROLE_NOT_EXIST = 'ROLE NOT EXIST', //角色不存在
