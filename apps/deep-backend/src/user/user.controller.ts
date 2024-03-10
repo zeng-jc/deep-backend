@@ -55,18 +55,6 @@ export class UserController {
     return this.userService.followUser(+userId, +id);
   }
 
-  // 粉丝人数
-  @Get('/follower-count/:id')
-  async getFollowerCount(@Param('id') id: string) {
-    return this.userService.getFollowerCount(+id);
-  }
-
-  // 关注人数
-  @Get('/following-count/:id')
-  async getFollowingCount(@Param('id') id: string) {
-    return this.userService.getFollowingCount(+id);
-  }
-
   // 粉丝列表
   @Get('/followers/:id')
   async getFollowers(

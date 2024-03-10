@@ -41,12 +41,18 @@ export class UserService {
   async findOneUser(id: number) {
     const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
-    const user = await this.database.userRepo.findOne({
+    const user: { [prop: string]: any } = await this.database.userRepo.findOne({
       where: { id },
     });
     if (!user) {
       throw new DeepHttpException(ErrorMsg.USER_ID_INVALID, ErrorCode.USER_ID_INVALID);
     }
+    // 粉丝数量
+    const followingCount = await this.database.userFollowRepo.count({ where: { followingId: id } });
+    // 关注人数
+    const followCount = await this.database.userFollowRepo.count({ where: { followId: id } });
+    user.userFollowings = followingCount;
+    user.userFollows = followCount;
     user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
     this.cacheService.set(`user.findOneUser.${id}`, user, 60);
     return user;

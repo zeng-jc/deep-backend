@@ -28,13 +28,13 @@ import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFil
 @ApiTags('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Permissions('create')
+  @Permissions('create-user')
   @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
 
-  @Permissions('query')
+  @Permissions('query-user-list')
   @Get()
   findMultiUser(
     @Query(new PaginationPipe())
@@ -43,12 +43,13 @@ export class UserController {
     return this.userService.findMultiUser(query);
   }
 
-  @Permissions('query')
+  @Permissions('query-user')
   @Get(':id')
   findOneUser(@Param('id', new ParseIntPipe()) id: number) {
     return this.userService.findOneUser(id);
   }
 
+  @Permissions('update-user')
   @Patch(':id')
   @UseInterceptors(
     FileInterceptor('avatar', {
@@ -64,36 +65,20 @@ export class UserController {
     return this.userService.updateUser(+id, updateUserDto, file);
   }
 
+  @Permissions('delete-user')
   @Delete(':id')
   removeUser(@Param('id') id: string) {
     return this.userService.removeUser(+id);
   }
 
+  @Permissions('set-user-status')
   @Post('/lock-user')
   lockUser(@Body(new GetBodyIdPipe()) id: string) {
     return this.userService.lockUser(id);
   }
 
-  // 关注用户
-  @Post('/follow-user/:id')
-  followUser(@Headers() headers, @Param('id') id: string) {
-    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
-    return this.userService.followUser(+userId, +id);
-  }
-
-  // 粉丝人数
-  @Get('/follower-count/:id')
-  async getFollowerCount(@Param('id') id: string) {
-    return this.userService.getFollowerCount(+id);
-  }
-
-  // 关注人数
-  @Get('/following-count/:id')
-  async getFollowingCount(@Param('id') id: string) {
-    return this.userService.getFollowingCount(+id);
-  }
-
   // 粉丝列表
+  @Permissions('query-user')
   @Get('/followers/:id')
   async getFollowers(
     @Headers() headers,
@@ -107,6 +92,7 @@ export class UserController {
   }
 
   // 关注列表
+  @Permissions('query-user')
   @Get('/following/:id')
   async getFollowing(
     @Headers() headers,
@@ -118,6 +104,7 @@ export class UserController {
   }
 
   // 点赞列表
+  @Permissions('query-user')
   @Get('/likes-list/:id')
   async getLikesList(
     @Headers() headers,

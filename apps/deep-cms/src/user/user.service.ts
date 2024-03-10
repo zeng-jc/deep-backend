@@ -103,13 +103,20 @@ export class UserService {
   async findOneUser(id: number) {
     const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
-    const user = await this.database.userRepo.findOne({
+    const user: { [prop: string]: any } = await this.database.userRepo.findOne({
       relations: ['roles', 'roles.permissions'],
       where: { id },
     });
     if (!user) {
       throw new DeepHttpException(ErrorMsg.USER_ID_INVALID, ErrorCode.USER_ID_INVALID);
     }
+    this.database.userFollowRepo.createQueryBuilder('userFollow').select().where({ followingId: id }).orWhere({ followId: id });
+    // 粉丝数量
+    const followingCount = await this.database.userFollowRepo.count({ where: { followingId: id } });
+    // 关注人数
+    const followCount = await this.database.userFollowRepo.count({ where: { followId: id } });
+    user.userFollowings = followingCount;
+    user.userFollows = followCount;
     user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
     this.cacheService.set(`user.findOneUser.${id}`, user, 60);
     return user;
@@ -175,29 +182,6 @@ export class UserService {
     } else {
       throw new DeepHttpException(ErrorMsg.USER_NOT_EXIST, ErrorCode.USER_NOT_EXIST);
     }
-  }
-
-  async followUser(followId: number, followingId: number) {
-    try {
-      const data = await this.database.userFollowRepo.findOne({ where: { followId, followingId } });
-      if (data) {
-        await this.database.userFollowRepo.delete({ followId, followingId });
-        return false;
-      } else {
-        await this.database.userFollowRepo.save({ followId, followingId });
-        return true;
-      }
-    } catch (error) {
-      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
-    }
-  }
-
-  async getFollowerCount(userId: number) {
-    return this.database.userFollowRepo.count({ where: { followingId: userId } });
-  }
-
-  async getFollowingCount(userId: number) {
-    return this.database.userFollowRepo.count({ where: { followId: userId } });
   }
 
   async getFollowers(userId: number, query: PaginationQueryDto) {
