@@ -66,12 +66,12 @@ export class UserService {
     return this.database.userRepo.save(user);
   }
 
-  async findMultiUser(query: PaginationQueryDto) {
+  async findUserList(query: PaginationQueryDto) {
     let { keywords } = query;
     keywords = keywords ?? '';
     const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
-    const [data, total] = await this.database.userRepo.findAndCount({
+    const [list, total] = await this.database.userRepo.findAndCount({
       relations: ['roles'],
       where: [
         {
@@ -89,13 +89,13 @@ export class UserService {
       take: pagesize,
     });
     await Promise.all(
-      data.map(
+      list.map(
         async (userEntity) =>
           (userEntity.avatar = userEntity.avatar && (await this.deepMinioService.getFileUrl(userEntity.avatar, bucketName))),
       ),
     );
     return {
-      data,
+      list,
       total,
     };
   }

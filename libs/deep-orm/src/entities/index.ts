@@ -16,3 +16,4 @@ export * from './user_follow.entity';
 export * from './article_likes.entity';
 export * from './question.entity';
 export * from './answer.entity';
+export * from './daily_visits.entity';

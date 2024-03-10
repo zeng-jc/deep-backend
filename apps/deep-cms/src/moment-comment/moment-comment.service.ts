@@ -40,9 +40,9 @@ export class MomentCommentService {
   }
 
   // 评论搜索（不查头像，影响性能）
-  async findMultiMomentComment(query: PaginationQueryDto) {
+  async findMomentCommentList(query: PaginationQueryDto) {
     const { keywords, pagesize, pagenum } = query;
-    const [data, total] = await this.database.momentCommentRepo.findAndCount({
+    const [list, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         content: Like(`%${keywords ?? ''}%`),
       },
@@ -51,28 +51,28 @@ export class MomentCommentService {
       take: +pagesize,
     });
     return {
-      data,
+      list,
       total,
     };
   }
 
   // 查询指定动态的所有评论
   async findOneMomentComment(momentId: number) {
-    const [data, total] = await this.database.momentCommentRepo.findAndCount({
+    const [list, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         momentId,
       },
       relations: ['user'],
     });
     await Promise.all(
-      data.map(
+      list.map(
         async (comment) =>
           (comment.user.avatar =
             comment.user.avatar && (await this.deepMinioService.getFileUrl(comment.user.avatar, bucketName))),
       ),
     );
     return {
-      data,
+      list,
       total,
     };
   }

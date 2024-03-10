@@ -26,6 +26,14 @@ import { ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get('/list')
+  findUserList(
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+  ) {
+    return this.userService.findUserList(query);
+  }
+
   // 用户详情
   @Get(':id')
   findOneUser(@Param('id', new ParseIntPipe()) id: number) {

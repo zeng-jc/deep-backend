@@ -19,6 +19,7 @@ import {
   ArticleLikesEntity,
   QuestionEntity,
   AnswerEntity,
+  DailyVisitsEntity,
 } from '@app/deep-orm';
 
 @Global()
@@ -42,6 +43,7 @@ import {
       ArticleLikesEntity,
       QuestionEntity,
       AnswerEntity,
+      DailyVisitsEntity,
     ]),
   ],
   providers: [DatabaseService],

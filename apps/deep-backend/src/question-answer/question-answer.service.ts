@@ -20,7 +20,7 @@ export class QuestionAnswerService {
     return this.database.answerRepo.save({ userId, questionId, content });
   }
 
-  async findMultiQuestion(paginationParams: PaginationQueryDto) {
+  async findQuestionList(paginationParams: PaginationQueryDto) {
     const { pagenum, pagesize, keywords } = paginationParams;
     let query = this.database.questionRepo
       .createQueryBuilder('question')
@@ -30,8 +30,8 @@ export class QuestionAnswerService {
     if (keywords) {
       query = query.where('question.content LIKE :keywords', { keywords: `%${keywords}%` });
     }
-    const [questions, total] = await query.getManyAndCount();
-    return { questions, total };
+    const [list, total] = await query.getManyAndCount();
+    return { list, total };
   }
 
   findOneQuestion(id: number) {

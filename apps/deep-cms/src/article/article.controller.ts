@@ -19,6 +19,7 @@ import { Roles } from '../common/decorator/auth.decorator';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
 
 @Roles('admin')
 @ApiTags('article')
@@ -49,9 +50,9 @@ export class ArticleController {
     return this.articleService.createArticle(userId, files, createArticleDto);
   }
 
-  @Get()
-  findMultiArticle(@Query() paginationParams: PaginationQueryDto) {
-    return this.articleService.findMultiArticle(paginationParams);
+  @Get('/list')
+  findArticleList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
+    return this.articleService.findArticleList(paginationParams);
   }
 
   @Get(':id')

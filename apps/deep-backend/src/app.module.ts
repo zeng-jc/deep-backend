@@ -16,9 +16,13 @@ import { ArticleCommentModule } from './article-comment/article-comment.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ArticleModule } from './article/article.module';
 import { QuestionAnswerModule } from './question-answer/question-answer.module';
+import { dailyVisitsMiddleware } from './common/middleware/dailyVisits.middleware';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './common/schedule/task.service';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     DeepDbModule,
     CacheModule,
     DatabaseModule,
@@ -52,6 +56,8 @@ import { QuestionAnswerModule } from './question-answer/question-answer.module';
   controllers: [AppController],
   providers: [
     AppService,
+    // 定时任务
+    TasksService,
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
@@ -77,5 +83,7 @@ export class AppModule implements NestModule {
         { path: '*', method: RequestMethod.PATCH },
         { path: '*', method: RequestMethod.POST },
       );
+    // 访问量统计中间件
+    consumer.apply(dailyVisitsMiddleware).forRoutes({ path: '*', method: RequestMethod.GET });
   }
 }

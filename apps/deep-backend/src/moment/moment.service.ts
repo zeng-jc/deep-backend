@@ -65,7 +65,7 @@ export class MomentService {
   }
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
-  async findMultiMoments(paginationParams: PaginationQueryDto) {
+  async findMomentList(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
@@ -82,19 +82,19 @@ export class MomentService {
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
     }
-    const [moments, total] = await query.getManyAndCount();
+    const [list, total] = await query.getManyAndCount();
     // 动态标签处理
-    moments.forEach((momentEntity) => {
+    list.forEach((momentEntity) => {
       momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
     });
     await Promise.all(
-      moments.map(async (item) => {
+      list.map(async (item) => {
         item.images = await this.deepMinioService.getFileUrls(item.images, bucketName);
       }),
     );
 
     return {
-      moments,
+      list,
       total,
     };
   }

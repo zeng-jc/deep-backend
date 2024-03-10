@@ -40,9 +40,9 @@ export class ArticleCommentService {
   }
 
   // 评论搜索（不查头像，影响性能）
-  async findMultiArticleComment(query: PaginationQueryDto) {
+  async findArticleCommentList(query: PaginationQueryDto) {
     const { keywords, pagesize, pagenum } = query;
-    const [data, total] = await this.database.articleCommentRepo.findAndCount({
+    const [list, total] = await this.database.articleCommentRepo.findAndCount({
       where: {
         content: Like(`%${keywords ?? ''}%`),
       },
@@ -51,28 +51,28 @@ export class ArticleCommentService {
       take: +pagesize,
     });
     return {
-      data,
+      list,
       total,
     };
   }
 
   // 查询指定文章的所有评论
   async findOneArticleComment(articleId: number) {
-    const [data, total] = await this.database.articleCommentRepo.findAndCount({
+    const [list, total] = await this.database.articleCommentRepo.findAndCount({
       where: {
         articleId,
       },
       relations: ['user'],
     });
     await Promise.all(
-      data.map(
+      list.map(
         async (article) =>
           (article.user.avatar =
             article.user.avatar && (await this.deepMinioService.getFileUrl(article.user.avatar, bucketName))),
       ),
     );
     return {
-      data,
+      list,
       total,
     };
   }

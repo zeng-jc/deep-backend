@@ -35,12 +35,12 @@ export class UserController {
   }
 
   @Permissions('query-user-list')
-  @Get()
-  findMultiUser(
+  @Get('/list')
+  findUserList(
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
   ) {
-    return this.userService.findMultiUser(query);
+    return this.userService.findUserList(query);
   }
 
   @Permissions('query-user')

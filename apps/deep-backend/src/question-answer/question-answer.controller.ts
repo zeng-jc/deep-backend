@@ -3,6 +3,7 @@ import { QuestionAnswerService } from './question-answer.service';
 import { CreateQuestionAnswerDto } from './dto/create-question-answer.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
 
 @ApiTags('question-answer')
 @Controller('question-answer')
@@ -24,9 +25,9 @@ export class QuestionAnswerController {
   }
 
   // 多个问题
-  @Get('question')
-  findMultiQuestion(@Query() paginationParams: PaginationQueryDto) {
-    return this.questionAnswerService.findMultiQuestion(paginationParams);
+  @Get('/question/list')
+  findQuestionList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
+    return this.questionAnswerService.findQuestionList(paginationParams);
   }
 
   // 查询单个问题
@@ -37,7 +38,7 @@ export class QuestionAnswerController {
 
   // 分页查询指定问题的答案
   @Get('answer/:id')
-  findQuestionAnswer(@Param('id') id: string, @Query() paginationParams: PaginationQueryDto) {
+  findQuestionAnswer(@Param('id') id: string, @Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
     return this.questionAnswerService.findQuestionAnswer(+id, paginationParams);
   }
 

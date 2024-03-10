@@ -18,9 +18,9 @@ export class MomentCommentController {
     return this.momentCommentService.create(createMomentCommentDto, userId);
   }
 
-  @Get()
-  findMultiMomentComment(@Param(new PaginationPipe()) query: PaginationQueryDto) {
-    return this.momentCommentService.findMultiMomentComment(query);
+  @Get('/list')
+  findMomentCommentList(@Param(new PaginationPipe()) query: PaginationQueryDto) {
+    return this.momentCommentService.findMomentCommentList(query);
   }
 
   @Get(':id')

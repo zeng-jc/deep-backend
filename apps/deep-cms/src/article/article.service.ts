@@ -81,7 +81,7 @@ export class ArticleService {
   }
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
-  async findMultiArticle(paginationParams: PaginationQueryDto) {
+  async findArticleList(paginationParams: PaginationQueryDto) {
     const { keywords, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
@@ -98,20 +98,20 @@ export class ArticleService {
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
     }
-    const [articles, total] = await query.getManyAndCount();
+    const [list, total] = await query.getManyAndCount();
     // 文章标签处理
-    articles.forEach((articleEntity) => {
+    list.forEach((articleEntity) => {
       articleEntity.labels = articleEntity.labels.map((item) => item.label.name) as unknown as ArticleLabelRelationEntity[];
     });
 
     await Promise.all(
-      articles.map(async (item) => {
+      list.map(async (item) => {
         item.cover = await this.deepMinioService.getFileUrl(item.cover, bucketName);
       }),
     );
 
     return {
-      articles,
+      list,
       total,
     };
   }

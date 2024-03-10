@@ -47,9 +47,9 @@ export class ArticleController {
     return this.articleService.createArticle(userId, files, createArticleDto);
   }
 
-  @Get()
-  findMultiArticle(@Query() paginationParams: PaginationQueryDto) {
-    return this.articleService.findMultiArticle(paginationParams);
+  @Get('/list')
+  findArticleList(@Query() paginationParams: PaginationQueryDto) {
+    return this.articleService.findArticleList(paginationParams);
   }
 
   @Get(':id')
