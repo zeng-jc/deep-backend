@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from '@app/deep-orm/entities';
+import { ArticleLikesEntity, MomentLikesEntity, UserEntity } from '@app/deep-orm/entities';
 import { Like } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { CacheService } from '@app/deep-cache';
@@ -113,10 +113,44 @@ export class UserService {
     this.database.userFollowRepo.createQueryBuilder('userFollow').select().where({ followingId: id }).orWhere({ followId: id });
     // 粉丝数量
     const followingCount = await this.database.userFollowRepo.count({ where: { followingId: id } });
+    user.userFollowings = followingCount;
     // 关注人数
     const followCount = await this.database.userFollowRepo.count({ where: { followId: id } });
-    user.userFollowings = followingCount;
     user.userFollows = followCount;
+    // 动态总浏览量
+    const momentTotalViews = await this.database.momentRepo
+      .createQueryBuilder('user')
+      .select('SUM(user.viewCount) as totalViews')
+      .where('user.userId = :userId', { userId: id })
+      .getRawOne();
+    user.momentTotalViews = momentTotalViews.totalViews;
+    // 动态总点赞量
+    const momentTotalLikes = await this.database.momentRepo
+      .createQueryBuilder('m')
+      .innerJoin(MomentLikesEntity, 'ml', 'm.id = ml.momentId') // 联表条件
+      .select('COUNT(ml.userId)', 'totalLikes') // 计算总的点赞数
+      .where('m.userId = :userId', { userId: id })
+      .getRawOne();
+    user.momentTotalLikes = momentTotalLikes.totalLikes;
+
+    // 查询文章浏览量
+    const articleTotalViews = await this.database.articleRepo
+      .createQueryBuilder('user')
+      .select('SUM(user.viewCount) as totalViews')
+      .where('user.userId = :userId', { userId: id })
+      .getRawOne();
+    user.articleTotalViews = articleTotalViews.totalViews;
+
+    // 文章总点赞量
+    const articleTotalLikes = await this.database.articleRepo
+      .createQueryBuilder('m')
+      .innerJoin(ArticleLikesEntity, 'ml', 'm.id = ml.articleId') // 联表条件
+      .select('COUNT(ml.userId)', 'totalLikes') // 计算总的点赞数
+      .where('m.userId = :userId', { userId: id })
+      .getRawOne();
+    user.articleTotalLikes = articleTotalLikes.totalLikes;
+
+    // 查询用户头像地址
     user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
     this.cacheService.set(`user.findOneUser.${id}`, user, 60);
     return user;
@@ -246,20 +280,6 @@ export class UserService {
         item.user?.avatar && (item.user.avatar = await this.deepMinioService.getFileUrls(item.user.avatar));
       }),
     );
-    return result;
-  }
-
-  async getUserTotalMomentViews(userId: number) {
-    return await this.database.momentRepo
-      .createQueryBuilder('user')
-      .select('SUM(user.viewCount) as totalViews')
-      .where('user.userId = :userId', { userId })
-      .getRawOne();
-  }
-
-  async getUserMomentTotalLikes(userId: number) {
-    const sql = `SELECT COUNT(ml.userId) AS totalLikes from moment m inner join moment_likes ml on m.id = ml.momentId where m.userId=${userId};`;
-    const result = await this.database.entityManager.query(sql);
     return result;
   }
 }

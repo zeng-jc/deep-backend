@@ -89,16 +89,4 @@ export class UserController {
   ) {
     return this.userService.getLikesList(+id, query);
   }
-
-  // 动态总浏览量
-  @Get('moment-total-views/:id')
-  getUserMomentTotalViews(@Param('id') id: string) {
-    return this.userService.getUserMomentTotalViews(+id);
-  }
-
-  // 动态总点赞量
-  @Get('moment-total-likes/:id')
-  getUserMomentTotalLikes(@Param('id') id: string) {
-    return this.userService.getUserMomentTotalLikes(+id);
-  }
 }

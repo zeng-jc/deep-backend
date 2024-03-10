@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { tableNameEnum } from '../tableNameEnum';
 import { MomentEntity } from './moment.entity';
 import { UserEntity } from './user.entity';
 
 @Entity({ name: tableNameEnum.moment_likes })
+@Unique(['userId', 'momentId']) // 组合唯一索引
 export class MomentLikesEntity {
   @PrimaryGeneratedColumn()
   id: number;
