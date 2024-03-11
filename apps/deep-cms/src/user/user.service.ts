@@ -205,7 +205,7 @@ export class UserService {
     return await this.database.userRepo.delete(id);
   }
 
-  async lockUser(id: string) {
+  async changeStatus(id: string) {
     const user = await this.database.userRepo.findOne({
       where: { id: +id },
     });

@@ -71,10 +71,10 @@ export class UserController {
     return this.userService.removeUser(+id);
   }
 
-  @Permissions('set-user-status')
-  @Post('/lock-user')
-  lockUser(@Body(new GetBodyIdPipe()) id: string) {
-    return this.userService.lockUser(id);
+  @Permissions('change-user-status')
+  @Post('/change-status')
+  changeStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.userService.changeStatus(id);
   }
 
   // 粉丝列表
