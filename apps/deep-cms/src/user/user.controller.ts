@@ -66,7 +66,7 @@ export class UserController {
   }
 
   @Permissions('delete-user')
-  @Delete(':id')
+  @Delete('/delete/:id')
   removeUser(@Param('id') id: string) {
     return this.userService.removeUser(+id);
   }
