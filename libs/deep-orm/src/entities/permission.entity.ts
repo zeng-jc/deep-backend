@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { tableNameEnum } from '../tableNameEnum';
+import { MenuEntity } from './menu.entity';
 
 @Entity({ name: tableNameEnum.permission })
 export class PermissionEntity {
@@ -9,8 +10,15 @@ export class PermissionEntity {
   name!: string;
   @Column()
   desc: string;
+  @Column({ nullable: false })
+  @Column()
+  menuId: number;
   @CreateDateColumn()
   createAt!: Date;
   @UpdateDateColumn()
   updateAt!: Date;
+  // 权限对应的菜单
+  @ManyToOne(() => MenuEntity, (menu) => menu.permissions, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'menuId' })
+  menu: MenuEntity;
 }

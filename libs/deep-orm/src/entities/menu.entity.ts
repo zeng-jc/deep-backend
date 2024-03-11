@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { tableNameEnum } from '../tableNameEnum';
+import { PermissionEntity } from './permission.entity';
 
 @Entity({ name: tableNameEnum.menu })
 export class MenuEntity {
@@ -39,4 +40,6 @@ export class MenuEntity {
   menu: MenuEntity;
   @OneToMany(() => MenuEntity, (menu) => menu.parentId)
   subMenus: MenuEntity[];
+  @OneToMany(() => PermissionEntity, (permission) => permission.menu)
+  permissions: PermissionEntity[];
 }
