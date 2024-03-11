@@ -52,6 +52,20 @@ export class AuthController {
     return this.authService.checkEmailVerificationCode(emailVerificationCodeDto);
   }
 
+  // 为啥不写在cms的中，从设计角度普通管理员没权限调用系统管理的接口（角色、权限、菜单）
+  @Post('menu')
+  getMenu(@Headers() headers: HeadersAuthDto) {
+    const token = headers.authorization?.split(' ')[1];
+    return this.authService.getMenu(token);
+  }
+
+  @Post('permission')
+  getPermission(@Headers() headers: HeadersAuthDto) {
+    const token = headers.authorization?.split(' ')[1];
+    return this.authService.getPermission(token);
+  }
+
+  // token刷新
   @Post('refresh-token')
   refreshToken(@Headers() headers: HeadersAuthDto) {
     const token = headers.authorization?.split(' ')[1];

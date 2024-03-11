@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from '@app/deep-orm';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailVerificationCodeDto } from './dto/email-verfication-code.dto';
+import { listToTree } from '../common/utils/listToTree';
 
 @Injectable()
 export class AuthService {
@@ -128,6 +129,60 @@ export class AuthService {
     return data;
   }
 
+  async getMenu(token: string) {
+    const { id: userId } = this.verifyToken(token);
+    const sql = `SELECT DISTINCT  
+       menu.id AS id,  
+       menu.name AS name,
+       menu.path AS path,
+       menu.component AS component,
+       menu.parentId AS parentId,
+       menu.title AS title,
+       menu.link AS link,
+       menu.icon AS icon
+    FROM  
+       menu  
+    WHERE  
+       EXISTS (  
+           SELECT 1  
+           FROM user_role_relation user_role 
+           JOIN role role ON role.id = user_role.roleId  
+           JOIN role_menu_relation role_menu ON role_menu.roleId = role.id  
+           WHERE  
+               user_role.userId = ? AND  
+               menu.id = role_menu.menuId  
+       );`;
+    return listToTree(await this.database.entityManager.query(sql, [userId]), 'parentId', 'children');
+  }
+
+  async getPermission(token: string) {
+    const { id: userId } = this.verifyToken(token);
+    const sql = `SELECT DISTINCT        
+        menu.name AS name,
+        (    
+            SELECT JSON_ARRAYAGG(permission.name)    
+            FROM permission    
+            WHERE permission.menuId = menu.id    
+        ) AS permissions    
+    FROM      
+        menu      
+    WHERE      
+        EXISTS (      
+            SELECT 1      
+            FROM user_role_relation user_role     
+            JOIN role_menu_relation role_menu ON role_menu.roleId = user_role.roleId      
+            WHERE      
+                user_role.userId = ? AND      
+                menu.id = role_menu.menuId      
+        );`;
+    const resArr = await this.database.entityManager.query(sql, [userId]);
+    const resObj = {};
+    resArr.forEach((item) => {
+      item.permissions && (resObj[item.name] = item.permissions);
+    });
+    return resObj;
+  }
+
   createToken<T>(payload: T): string {
     return jwt.sign(payload, this.secretKey.getPrivateKey(), {
       algorithm: 'RS256',
@@ -146,7 +201,7 @@ export class AuthService {
   verifyToken(token: string): TokenPayload {
     let result;
     try {
-      result = jwt.verifyToken(token, this.secretKey.getPublicKey(), {
+      result = jwt.verify(token, this.secretKey.getPublicKey(), {
         algorithms: ['RS256'],
       });
     } catch (error) {
