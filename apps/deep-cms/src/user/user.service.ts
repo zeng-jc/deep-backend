@@ -184,7 +184,7 @@ export class UserService {
         // 对象存储
         await this.deepMinioService.uploadFile(file, bucketName);
         // 对象删除
-        await this.deepMinioService.deleteFile(userEntity.avatar, bucketName);
+        await this.deepMinioService.deleteFile(userEntity?.avatar, bucketName);
       }
       return await this.database.userRepo.update(id, user);
     } catch (error) {

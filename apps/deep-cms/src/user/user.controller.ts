@@ -29,7 +29,7 @@ import { ErrorCode, ErrorMsg, DeepHttpException } from '@app/common/exceptionFil
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Permissions('create-user')
-  @Post()
+  @Post('/create')
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
@@ -50,7 +50,7 @@ export class UserController {
   }
 
   @Permissions('update-user')
-  @Patch(':id')
+  @Patch('/update/:id')
   @UseInterceptors(
     FileInterceptor('avatar', {
       limits: {

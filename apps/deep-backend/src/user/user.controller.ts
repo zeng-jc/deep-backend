@@ -41,7 +41,7 @@ export class UserController {
   }
 
   // 更新用户信息
-  @Patch(':id')
+  @Patch('/update/:id')
   @UseInterceptors(
     FileInterceptor('avatar', {
       limits: {
