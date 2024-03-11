@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { AssignPermissionDto } from './dto/assign-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles, Permissions } from '../common/decorator/auth.decorator';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { PaginationPipe } from '../common/pipe/pagination.pipe';
 
 @Roles('superAdmin')
 @Controller('permission')
@@ -26,8 +28,11 @@ export class PermissionController {
 
   @Permissions('find-permission-list')
   @Get()
-  findAllPermission() {
-    return this.permissionService.findAllPermission();
+  findAllPermission(
+    @Query(new PaginationPipe())
+    query: PaginationQueryDto,
+  ) {
+    return this.permissionService.findAllPermission(query);
   }
 
   @Permissions('find-permission')

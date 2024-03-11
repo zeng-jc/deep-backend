@@ -6,6 +6,7 @@ import { PermissionEntity } from '@app/deep-orm';
 import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
 import { In } from 'typeorm';
+import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Injectable()
 export class PermissionService {
@@ -61,8 +62,14 @@ export class PermissionService {
     return this.database.permissionRepo.save(permission);
   }
 
-  findAllPermission() {
-    return this.database.permissionRepo.find();
+  findAllPermission(query: PaginationQueryDto) {
+    const { keywords } = query;
+    return this.database.permissionRepo
+      .createQueryBuilder('p')
+      .leftJoinAndSelect('p.menu', 'menu')
+      .select(['p.id', 'p.name', 'p.desc', 'menu.id', 'menu.name'])
+      .where('p.name LIKE :keywords', { keywords: `%${keywords}%` })
+      .getMany();
   }
 
   findOnePermission(id: number) {
