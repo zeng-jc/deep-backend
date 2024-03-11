@@ -19,8 +19,8 @@ export class AnswerEntity {
   })
   user: UserEntity;
   // 问题
-  @ManyToOne(() => QuestionEntity, (QuestionEntity) => QuestionEntity.answer, {
+  @ManyToOne(() => QuestionEntity, (questionEntity) => questionEntity.answer, {
     onDelete: 'CASCADE',
   })
-  question: QuestionEntity[];
+  question: QuestionEntity;
 }
