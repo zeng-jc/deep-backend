@@ -57,6 +57,7 @@ export class PermissionService {
     const permission = new PermissionEntity();
     permission.name = createPermissionDto.name;
     permission.desc = createPermissionDto.desc;
+    permission.menuId = createPermissionDto.menuId;
     return this.database.permissionRepo.save(permission);
   }
 
