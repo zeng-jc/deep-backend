@@ -193,17 +193,16 @@ export class UserService {
   }
 
   async removeUser(id: number) {
-    try {
-      const userEntity = await this.database.userRepo.findOne({ where: { id }, select: ['avatar'] });
-      // 清除缓存
-      await this.cacheService.del(`user.findOneUser.${id}`);
-      // 对象删除
-      await this.deepMinioService.deleteFile(userEntity.avatar, bucketName);
-      // 用户删除
-      return await this.database.userRepo.delete(id);
-    } catch (error) {
-      throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
+    const userEntity = await this.database.userRepo.findOne({ where: { id }, select: ['avatar', 'username'] });
+    if (userEntity.username === 'superAdmin') {
+      throw new DeepHttpException(ErrorMsg.SUPER_ADMIN_READ_ONLY, ErrorCode.SUPER_ADMIN_READ_ONLY);
     }
+    // 清除缓存
+    await this.cacheService.del(`user.findOneUser.${id}`);
+    // 对象删除
+    await this.deepMinioService.deleteFile(userEntity?.avatar, bucketName);
+    // 用户删除
+    return await this.database.userRepo.delete(id);
   }
 
   async lockUser(id: string) {
