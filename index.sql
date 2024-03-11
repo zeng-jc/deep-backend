@@ -48,7 +48,7 @@ INSERT INTO deep.role_permission_relation (roleId,permissionId) VALUES
 -- 创建菜单
 INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,link,`order`,parentId) VALUES
 	 (1,'home','首页','/home/index','HomeFilled','2024-02-22 09:36:48.975092','2024-02-28 06:46:31.405894','/home/index',NULL,NULL,NULL),
-	 (2,'stats','数据统计','/stats/index','DataBoard','2024-02-22 09:36:48.975092','2024-02-28 06:48:12.412514','/stats/index',NULL,NULL,NULL),
+	 (2,'stats','数据统计','/stats','DataBoard','2024-02-22 09:36:48.975092','2024-02-28 06:48:12.412514','/stats/index',NULL,NULL,NULL),
 	 (3,'user','用户管理','/user','User','2024-02-28 02:29:14.175838','2024-02-28 06:44:40.699412',NULL,NULL,NULL,NULL),
 	 (4,'userList','用户列表','/user/userList','Menu','2024-02-28 02:29:14.239855','2024-02-28 06:48:37.287999','/user/userList/index',NULL,NULL,3),
 	 (5,'userFeedback','用户反馈','/user/userFeedback','Menu','2024-02-28 02:35:53.893017','2024-02-28 06:48:37.349086','/user/userFeedback/index',NULL,NULL,3),
