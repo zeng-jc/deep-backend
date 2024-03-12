@@ -27,7 +27,9 @@
       "@app/deep-amqp": ["libs/deep-amqp/src"],
       "@app/deep-amqp/*": ["libs/deep-amqp/src/*"],
       "@app/deep-minio": ["libs/deep-minio/src"],
-      "@app/deep-minio/*": ["libs/deep-minio/src/*"]
+      "@app/deep-minio/*": ["libs/deep-minio/src/*"],
+      "@config": ["config"],
+      "@config/*": ["config/*"]
     }
   }
 }

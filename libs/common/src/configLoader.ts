@@ -1,4 +1,4 @@
-import { localConfig, prodConfig } from '../../../config';
+import { localConfig, prodConfig } from '@config';
 
 const config = {
   development: localConfig,
