@@ -26,21 +26,13 @@ ENV NODE_ENV=${APP_ENV}
 
 WORKDIR /app
 
-COPY --from=build-stage /app/dist/apps/deep-cms /app/dist/apps/deep-cms
-COPY --from=build-stage /app/dist/apps/deep-auth /app/dist/apps/deep-auth
-COPY --from=build-stage /app/dist/apps/deep-backend /app/dist/apps/deep-backend
-
-COPY --from=build-stage /app/package.json /app/package.json
-
-COPY --from=build-stage /app/ecosystem.config.js /app/ecosystem.config.js
-
-COPY --from=build-stage /app/secretKey /app/secretKey
-
+COPY --from=build-stage /app/dist/apps/ ./dist/apps/
+COPY --from=build-stage /app/package.json ./
+COPY --from=build-stage /app/ecosystem.config.js ./
+COPY --from=build-stage /app/secretKey ./secretKey
 
 RUN npm config set registry https://registry.npmmirror.com/
-
-RUN npm install --production
-
+RUN npm install --only=--production
 RUN npm install -g pm2
 
 EXPOSE 3001 3002 3003 
