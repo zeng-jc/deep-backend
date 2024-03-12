@@ -11,7 +11,7 @@ export class MomentEntity {
   id: number;
   @Column()
   userId: number;
-  @Column({ type: 'enum', enum: [0, 1], default: 1 })
+  @Column({ default: 1 })
   status!: number;
   @Column({ type: 'simple-array', nullable: true })
   images?: string[];

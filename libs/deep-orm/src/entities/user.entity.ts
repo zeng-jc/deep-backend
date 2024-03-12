@@ -34,11 +34,12 @@ export class UserEntity {
   password!: string;
   @Column({ type: 'varchar', length: 10 })
   nickname!: string;
-  @Column({ type: 'enum', enum: [0, 1, 2], default: 2 })
+  // 0: 女生，1：男生，2：未知
+  @Column({ default: 2 })
   gender?: number;
   @Column({ type: 'varchar', length: 255, unique: true })
   email?: string;
-  @Column({ type: 'enum', enum: [0, 1], default: 1 })
+  @Column({ default: 1 })
   status!: number;
   @Column({ type: 'varchar', length: 255, nullable: true })
   bio?: string;

@@ -9,7 +9,7 @@ import { ArticleLabelRelationEntity } from './article_label_relation.entity';
 export class ArticleEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ type: 'enum', enum: [0, 1], default: 1 })
+  @Column({ default: 1 })
   status!: number;
   @Column({ length: 30 })
   title!: string;
