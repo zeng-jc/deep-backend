@@ -3,4 +3,6 @@ export class PaginationQueryDto {
   pagesize!: number;
   keywords?: string;
   labelId?: string;
+  username?: string;
+  gender?: number;
 }

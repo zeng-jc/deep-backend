@@ -67,23 +67,13 @@ export class UserService {
   }
 
   async findUserList(query: PaginationQueryDto) {
-    let { keywords } = query;
-    keywords = keywords ?? '';
-    const pagenum = +query.pagenum;
-    const pagesize = +query.pagesize;
+    const { pagenum, pagesize, username, gender } = query;
     const [list, total] = await this.database.userRepo.findAndCount({
       relations: ['roles'],
-      where: [
-        {
-          nickname: Like(`%${keywords}%`),
-        },
-        {
-          username: Like(`%${keywords}%`),
-        },
-        {
-          email: Like(`%${keywords}%`),
-        },
-      ],
+      where: {
+        username: Like(`%${username}%`),
+        gender: gender,
+      },
       order: { id: 'DESC' },
       skip: pagesize * (pagenum - 1),
       take: pagesize,
@@ -94,6 +84,7 @@ export class UserService {
           (userEntity.avatar = userEntity.avatar && (await this.deepMinioService.getFileUrl(userEntity.avatar, bucketName))),
       ),
     );
+
     return {
       list,
       total,
