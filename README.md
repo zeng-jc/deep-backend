@@ -10,7 +10,7 @@
 
 - `pnpm i `、`npm i -g cross-env` (node版本 ≥ 20.10.0)
 
-- mysql中创建deep数据库，执行 index.sql 中的sql，数据库第一个用户是管理员，有后台接口权限不要删除
+- mysql中创建deep数据库，从上到下执行 index.sql 中的sql，数据库第一个用户是超级管理员，拥有后台接口权限不要删除
 
 - 公钥和私钥需要自己生成项目根目录下创建`secretKey`目录，`secretKey`目录下需要生成`private.key`和`public.key`文件
 
