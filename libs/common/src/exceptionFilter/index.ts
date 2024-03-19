@@ -1,3 +1,3 @@
 export * from './resStatusCode';
-export * from './deepHttpException.filter';
+export * from './deepHttpException';
 export * from './httpException.filter';
