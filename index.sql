@@ -1,5 +1,5 @@
 -- 创建菜单
-INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,link,`order`,parentId) VALUES
+INSERT INTO deep.menu (id,name,title,`path`,icon,createTime,updateTime,component,link,`order`,parentId) VALUES
 	 (1,'home','首页','/home/index','HomeFilled','2024-02-22 09:36:48.975092','2024-02-28 06:46:31.405894','/home/index',NULL,NULL,NULL),
 	 (2,'stats','数据统计','/stats','DataBoard','2024-02-22 09:36:48.975092','2024-02-28 06:48:12.412514','/stats/index',NULL,NULL,NULL),
 	 (3,'user','用户管理','/user','User','2024-02-28 02:29:14.175838','2024-02-28 06:44:40.699412',NULL,NULL,NULL,NULL),
@@ -24,19 +24,19 @@ INSERT INTO deep.menu (id,name,title,`path`,icon,createAt,updateAt,component,lin
 	 (22,'juejin','掘金','/link/juejin','Menu','2024-02-22 09:39:40.602020','2024-02-28 06:48:57.001155',NULL,'https://juejin.cn/user/1548551276737191',NULL,20);
 
 -- 创建用户
-INSERT INTO deep.user (username,password,nickname,email,bio,`level`,birthday,school,major,`position`,github,createAt,updateAt,gender,status,phone) VALUES
+INSERT INTO deep.user (username,password,nickname,email,bio,`level`,birthday,school,major,`position`,github,createTime,updateTime,gender,status,phone) VALUES
 	 ('superAdmin','123456','231234','1231231223@qq.com','123123123',5,'2000-07-22','123213','123213','233','xxx','2023-12-16 23:23:41.773728','2024-01-09 09:41:00.767741',1,1,'1234566'),
 	 ('admin','123456','nick','1231223@qq.com','',1,NULL,'','','','','2023-12-17 11:39:48.129221','2023-12-17 11:39:48.129221',1,1,''),
 	 ('213123','12345','xxx','123123@qq.com','',1,NULL,'','','','','2023-12-24 21:32:20.157905','2024-01-21 12:37:58.990967',2,1,''),
 	 ('213214123','12345','xxx','123213123@qq.com','',1,NULL,'','','','','2024-01-07 21:36:04.177533','2024-01-21 12:37:58.996543',0,1,'');
 
 -- 创建角色
-INSERT INTO deep.`role` (name,`desc`,createAt,updateAt,status) VALUES
+INSERT INTO deep.`role` (name,`desc`,createTime,updateTime,status) VALUES
 	 ('superAdmin','只有超级管理员才能对角色、权限、菜单进行处理','2023-12-23 17:50:32.934344','2024-03-10 10:24:33.553973',1),
 	 ('admin','普通管理员','2024-01-21 11:49:26.256443','2024-03-10 10:24:45.564081',1);
 
 -- 创建权限
-INSERT INTO deep.permission (name,`desc`,menuId,createAt,updateAt) VALUES
+INSERT INTO deep.permission (name,`desc`,menuId,createTime,updateTime) VALUES
 	 ('query-stats','查询统计数据',2,'2024-03-10 09:07:28.115841','2024-03-10 09:07:28.115841'),
 	 ('query-user-list','查询用户列表',3,'2023-12-23 18:17:45.396137','2024-03-10 06:44:06.602369'),
 	 ('create-user','创建用户',3,'2023-12-23 17:49:09.848291','2024-03-10 06:44:06.542402'),
