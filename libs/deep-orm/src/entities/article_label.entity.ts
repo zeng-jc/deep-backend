@@ -9,7 +9,7 @@ export class ArticleLabelEntity {
   @Column({ unique: true })
   name!: string;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @OneToMany(() => ArticleLabelRelationEntity, (articleLabelRelationEntity) => articleLabelRelationEntity.label)
   articles: ArticleLabelRelationEntity[];
 }

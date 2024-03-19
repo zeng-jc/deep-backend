@@ -58,9 +58,9 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   github?: string;
   @CreateDateColumn({ type: 'timestamp' })
-  createAt: Date;
+  createTime: Date;
   @UpdateDateColumn({ type: 'timestamp' })
-  updateAt: Date;
+  updateTime: Date;
   // 设置双向（反向）关系(设置后可以通过主表联系附表查询)
   @OneToMany(() => ArticleEntity, (articleEntity) => articleEntity.user)
   articles: ArticleEntity[];

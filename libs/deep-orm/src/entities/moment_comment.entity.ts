@@ -22,7 +22,7 @@ export class MomentCommentEntity {
   @Column({ type: 'simple-array', nullable: true })
   likes: string[];
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @ManyToOne(() => MomentEntity, {
     onDelete: 'CASCADE',
   })

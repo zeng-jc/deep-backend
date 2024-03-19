@@ -15,7 +15,7 @@ export class UserFollowEntity {
   followingId: number;
   // 关注时间
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   // 关注的用户
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',

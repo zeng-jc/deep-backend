@@ -14,9 +14,9 @@ export class PermissionEntity {
   @Column()
   menuId: number;
   @CreateDateColumn()
-  createAt!: Date;
+  createTime!: Date;
   @UpdateDateColumn()
-  updateAt!: Date;
+  updateTime!: Date;
   // 权限对应的菜单
   @ManyToOne(() => MenuEntity, (menu) => menu.permissions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'menuId' })

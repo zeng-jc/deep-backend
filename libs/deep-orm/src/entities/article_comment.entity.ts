@@ -22,9 +22,9 @@ export class ArticleCommentEntity {
   @Column({ type: 'simple-array', nullable: true })
   likes: string[];
   @Column()
-  createAt: Date;
+  createTime: Date;
   @Column()
-  updateAt: Date;
+  updateTime: Date;
   @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.comments, {
     onDelete: 'CASCADE',
   })

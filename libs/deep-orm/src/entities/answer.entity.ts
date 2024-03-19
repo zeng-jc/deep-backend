@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { tableNameEnum } from '../tableNameEnum';
 import { QuestionEntity } from './question.entity';
 import { UserEntity } from './user.entity';
@@ -13,6 +13,8 @@ export class AnswerEntity {
   userId: number;
   @Column()
   questionId: number;
+  @CreateDateColumn()
+  createAt: Date;
   // 用户
   @ManyToOne(() => UserEntity, (userEntity) => userEntity.userAnswer, {
     onDelete: 'CASCADE',

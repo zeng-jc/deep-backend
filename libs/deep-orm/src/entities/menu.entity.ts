@@ -32,9 +32,9 @@ export class MenuEntity {
   @Column({ nullable: true })
   parentId: number;
   @CreateDateColumn({ select: false })
-  createAt: Date;
+  createTime: Date;
   @UpdateDateColumn({ select: false })
-  updateAt: Date;
+  updateTime: Date;
   @ManyToOne(() => MenuEntity, (menu) => menu.subMenus, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'parentId' })
   menu: MenuEntity;

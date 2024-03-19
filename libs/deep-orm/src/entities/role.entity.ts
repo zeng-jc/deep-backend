@@ -14,9 +14,9 @@ export class RoleEntity {
   @Column()
   desc: string;
   @CreateDateColumn()
-  createAt!: Date;
+  createTime!: Date;
   @UpdateDateColumn()
-  updateAt!: Date;
+  updateTime!: Date;
   @ManyToMany(() => PermissionEntity)
   @JoinTable({
     name: tableNameEnum.role_permission_relation,

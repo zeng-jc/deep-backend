@@ -22,9 +22,9 @@ export class ArticleEntity {
   @Column({ type: 'text' })
   content!: string;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @UpdateDateColumn()
-  updateAt: Date;
+  updateTime: Date;
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
   })

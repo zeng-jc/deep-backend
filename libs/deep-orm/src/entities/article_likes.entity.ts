@@ -13,7 +13,7 @@ export class ArticleLikesEntity {
   @Column()
   articleId: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @ManyToOne(() => ArticleEntity, {
     onDelete: 'CASCADE',
   })

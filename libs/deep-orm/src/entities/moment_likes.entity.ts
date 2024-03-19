@@ -13,7 +13,7 @@ export class MomentLikesEntity {
   @Column()
   momentId: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @ManyToOne(() => MomentEntity, {
     onDelete: 'CASCADE',
   })

@@ -9,7 +9,7 @@ export class MomentLabelEntity {
   @Column({ unique: true })
   name!: string;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @OneToMany(() => MomentLabelRelationEntity, (momentLabelRelationEntity) => momentLabelRelationEntity.label)
   moments: MomentLabelRelationEntity[];
 }

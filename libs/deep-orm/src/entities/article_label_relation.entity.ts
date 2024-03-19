@@ -12,7 +12,7 @@ export class ArticleLabelRelationEntity {
   @Column()
   labelId: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.labels, {
     onDelete: 'CASCADE',
   })

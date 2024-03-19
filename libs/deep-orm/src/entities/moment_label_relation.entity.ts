@@ -12,7 +12,7 @@ export class MomentLabelRelationEntity {
   @Column()
   labelId: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @ManyToOne(() => MomentEntity, (momentEntity) => momentEntity.labels, {
     onDelete: 'CASCADE',
   })

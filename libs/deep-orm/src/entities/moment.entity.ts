@@ -22,9 +22,9 @@ export class MomentEntity {
   @Column({ default: 1 })
   viewCount: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   @UpdateDateColumn()
-  updateAt: Date;
+  updateTime: Date;
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
   })
