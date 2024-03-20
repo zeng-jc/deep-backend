@@ -1,7 +1,9 @@
 export enum ErrorCode {
+  /** http权限状态码 **/
+  INVALID_IDENTITY_INFORMATION = '401',
+  PERMISSION_DENIED = '403',
   /** auth状态码 */
   TOKEN_INVALID = '10000',
-  INVALID_IDENTITY_INFORMATION = '10001',
   YOU_DO_NOT_OWN_THIS_RESOURCE = '10002',
   VERIFICATION_CODE_ERROR = '10003',
   VERIFICATION_CODE_SEND_FAILED = '10004',
@@ -13,7 +15,6 @@ export enum ErrorCode {
   EMAIL_EXIST = '100005',
   AVATAR_UNSUPPORTED_FILE_TYPE = '100006',
   /** 权限状态码 **/
-  PERMISSION_DENIED = '200001', //权限不足
   PERMISSION_EXIST = '200002', //权限已存在
   PERMISSION_NOT_EXIST = '200003', // 权限不存在
   /** 角色状态码 **/
