@@ -147,9 +147,10 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto, file: Express.Multer.File) {
+  async updateUser(updateUserDto: UpdateUserDto, file: Express.Multer.File) {
     const { username, password, nickname, gender, email, status, bio, level, birthday, phone, school, major, position, github } =
       updateUserDto;
+    const id = +updateUserDto.id;
     if (await this.emailExist(email, id)) throw new DeepHttpException(ErrorMsg.EMAIL_EXIST, ErrorCode.EMAIL_EXIST);
     if (await this.userExist(email, id)) throw new DeepHttpException(ErrorMsg.USER_EXIST, ErrorCode.USER_EXIST);
     const user = new UserEntity();
@@ -177,7 +178,10 @@ export class UserService {
         // 对象删除
         await this.deepMinioService.deleteFile(userEntity?.avatar, bucketName);
       }
-      return await this.database.userRepo.update(id, user);
+      await this.database.userRepo.update(id, user);
+      const resUser = await this.database.userRepo.findOne({ where: { id } });
+      resUser.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
+      return resUser;
     } catch (error) {
       throw new DeepHttpException(ErrorMsg.DATABASE_HANDLE_ERROR, ErrorCode.DATABASE_HANDLE_ERROR);
     }
