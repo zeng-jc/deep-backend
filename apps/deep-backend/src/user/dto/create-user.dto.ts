@@ -20,6 +20,6 @@ export class CreateUserDto {
   major?: string;
   position?: string;
   github?: string;
-  createAt?: Date;
-  updateAt?: Date;
+  createTime?: Date;
+  updateTime?: Date;
 }

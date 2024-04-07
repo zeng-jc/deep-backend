@@ -17,8 +17,8 @@ export class StatsService {
     tomorrow.setDate(today.getDate() + 1); // 设置时间为第二天的0点
     const todayCount = await this.database.userRepo
       .createQueryBuilder('user')
-      .where('user.createAt >= :startOfDay', { startOfDay: today })
-      .andWhere('user.createAt < :endOfDay', { endOfDay: tomorrow })
+      .where('user.createTime >= :startOfDay', { startOfDay: today })
+      .andWhere('user.createTime < :endOfDay', { endOfDay: tomorrow })
       .getCount();
     return {
       total,

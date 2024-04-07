@@ -12,7 +12,7 @@ export class QuestionEntity {
   @Column()
   userId: number;
   @CreateDateColumn()
-  createAt: Date;
+  createTime: Date;
   // 用户
   @ManyToOne(() => UserEntity, (userEntity) => userEntity.questionEntity, {
     onDelete: 'CASCADE',

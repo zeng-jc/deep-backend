@@ -6,7 +6,7 @@ export enum categoryEnum {
 }
 
 export enum sortEnum {
-  createTime = 'createAt',
+  createTime = 'createTime',
   hot = 'hot',
 }
 
