@@ -41,7 +41,7 @@ export class UserController {
   }
 
   // 更新用户信息
-  @Patch('/update/:id')
+  @Patch('/update')
   @UseInterceptors(
     FileInterceptor('avatar', {
       limits: {
@@ -49,11 +49,11 @@ export class UserController {
       },
     }),
   )
-  updateUser(@UploadedFile() file: Express.Multer.File, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  updateUser(@UploadedFile() file: Express.Multer.File, @Body() updateUserDto: UpdateUserDto) {
     if (file && !file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
       throw new DeepHttpException(ErrorMsg.AVATAR_UNSUPPORTED_FILE_TYPE, ErrorCode.AVATAR_UNSUPPORTED_FILE_TYPE);
     }
-    return this.userService.updateUser(+id, updateUserDto, file);
+    return this.userService.updateUser(updateUserDto, file);
   }
 
   // 关注用户
