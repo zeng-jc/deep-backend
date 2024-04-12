@@ -152,7 +152,7 @@ export class ArticleService {
     return this.database.articleRepo.delete(id);
   }
 
-  async lockArticle(id: string) {
+  async changeArticleStatus(id: string) {
     const article = await this.database.articleRepo.findOne({
       where: { id: +id },
     });

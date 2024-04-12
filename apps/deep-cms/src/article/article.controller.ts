@@ -15,7 +15,7 @@ import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from '../common/decorator/auth.decorator';
+import { Roles, Permissions } from '../common/decorator/auth.decorator';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
@@ -65,9 +65,9 @@ export class ArticleController {
     return this.articleService.removeArticle(+id);
   }
 
-  @Post('lock-article')
-  lockArticle(@Body(new GetBodyIdPipe()) id: string) {
-    return this.articleService.lockArticle(id);
+  @Post('change-status')
+  changeArticleStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.articleService.changeArticleStatus(id);
   }
 
   // 切换点赞
