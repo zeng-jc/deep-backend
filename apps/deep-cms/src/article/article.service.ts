@@ -8,6 +8,7 @@ import { DeepMinioService } from '@app/deep-minio';
 import { ArticleEntity, ArticleLabelEntity, ArticleLabelRelationEntity } from '@app/deep-orm';
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
+import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 
 const bucketName = bucketNameEnum.deepArticle;
 
@@ -49,6 +50,7 @@ export class ArticleService {
         if (articleLabelExisting) return articleLabelExisting.id;
         const articleLable = new ArticleLabelEntity();
         articleLable.name = tag;
+        articleLable.userId = userId;
         const articleLabel = await this.database.entityManager.save(ArticleLabelEntity, articleLable);
         return articleLabel.id;
       }),
@@ -226,5 +228,34 @@ export class ArticleService {
       // 5. 更新文章表
       await articleRepo.update(id, updateFiled);
     });
+  }
+
+  async findArticleLabelList(paginationParams: PaginationQueryDto) {
+    const { name, pagenum, pagesize } = paginationParams;
+    let query = this.database.articleLabelRepo
+      .createQueryBuilder('articleLable')
+      .leftJoinAndSelect('articleLable.user', 'user')
+      .orderBy('articleLable.id', 'DESC')
+      .skip(pagesize * (pagenum - 1))
+      .take(pagesize);
+    if (name) {
+      query = query.where('articleLable.name LIKE :name', { name: `%${name}%` });
+    }
+    const [list, total] = await query.getManyAndCount();
+    return {
+      list,
+      total,
+    };
+  }
+
+  async deleteArticleLabelList(id: number) {
+    await this.database.articleLabelRepo.delete({ id });
+  }
+  async createArticleLabelList(userId: number, name: string) {
+    try {
+      await this.database.articleLabelRepo.save({ userId, name });
+    } catch (error) {
+      throw new DeepHttpException(ErrorMsg.ARTICLE_LABEL_EXIST, ErrorCode.ARTICLE_LABEL_EXIST);
+    }
   }
 }

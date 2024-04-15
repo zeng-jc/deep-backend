@@ -77,7 +77,7 @@ export class ArticleController {
     return this.articleService.toggleLikes(userId, +id);
   }
 
-  @Patch(':id')
+  @Patch('/update/:id')
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -97,5 +97,21 @@ export class ArticleController {
     @Body() updateArticleDto: UpdateArticleDto,
   ) {
     return this.articleService.updateArticle(+id, updateArticleDto, files);
+  }
+
+  @Get('/label/list')
+  findArticleLabelList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
+    return this.articleService.findArticleLabelList(paginationParams);
+  }
+
+  @Delete('/label/delete/:id')
+  deleteArticleLabelList(@Param('id') id: string) {
+    return this.articleService.deleteArticleLabelList(+id);
+  }
+
+  @Post('/label/create')
+  createArticleLabelList(@Headers() headers, @Body() { name }: { name: string }) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.articleService.createArticleLabelList(+userId, name);
   }
 }

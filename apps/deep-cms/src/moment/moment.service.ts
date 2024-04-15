@@ -47,6 +47,7 @@ export class MomentService {
         if (momentLabelExisting) return momentLabelExisting.id;
         const momentLable = new MomentLabelEntity();
         momentLable.name = tag;
+        momentLable.userId = userId;
         const momentLabel = await this.database.entityManager.save(MomentLabelEntity, momentLable);
         return momentLabel.id;
       }),
@@ -156,6 +157,35 @@ export class MomentService {
     } else {
       await this.database.momentLikesRepo.save({ userId, momentId });
       return true;
+    }
+  }
+
+  async findMomentLabelList(paginationParams: PaginationQueryDto) {
+    const { name, pagenum, pagesize } = paginationParams;
+    let query = this.database.momentLabelRepo
+      .createQueryBuilder('momentLable')
+      .leftJoinAndSelect('momentLable.user', 'user')
+      .orderBy('momentLable.id', 'DESC')
+      .skip(pagesize * (pagenum - 1))
+      .take(pagesize);
+    if (name) {
+      query = query.where('momentLable.name LIKE :name', { name: `%${name}%` });
+    }
+    const [list, total] = await query.getManyAndCount();
+    return {
+      list,
+      total,
+    };
+  }
+
+  async deleteMomentLabelList(id: number) {
+    await this.database.momentLabelRepo.delete({ id });
+  }
+  async createMomentLabelList(userId: number, name: string) {
+    try {
+      await this.database.momentLabelRepo.save({ userId, name });
+    } catch (error) {
+      throw new DeepHttpException(ErrorMsg.ARTICLE_LABEL_EXIST, ErrorCode.ARTICLE_LABEL_EXIST);
     }
   }
 }

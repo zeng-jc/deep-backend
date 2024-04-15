@@ -49,6 +49,7 @@ export class ArticleService {
         if (articleLabelExisting) return articleLabelExisting.id;
         const articleLable = new ArticleLabelEntity();
         articleLable.name = tag;
+        articleLable.userId = userId;
         const articleLabel = await this.database.entityManager.save(ArticleLabelEntity, articleLable);
         return articleLabel.id;
       }),

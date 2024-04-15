@@ -46,6 +46,7 @@ export class MomentService {
         if (momentLabelExisting) return momentLabelExisting.id;
         const momentLable = new MomentLabelEntity();
         momentLable.name = tag;
+        momentLable.userId = userId;
         const momentLabel = await this.database.entityManager.save(MomentLabelEntity, momentLable);
         return momentLabel.id;
       }),

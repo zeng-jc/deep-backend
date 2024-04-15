@@ -79,4 +79,20 @@ export class MomentController {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.momentService.toggleLikes(userId, +id);
   }
+
+  @Get('/label/list')
+  findMomentLabelList(@Query(new PaginationPipe()) paginationParams: PaginationQueryDto) {
+    return this.momentService.findMomentLabelList(paginationParams);
+  }
+
+  @Delete('/label/delete/:id')
+  deleteMomentLabelList(@Param('id') id: string) {
+    return this.momentService.deleteMomentLabelList(+id);
+  }
+
+  @Post('/label/create')
+  createMomentLabelList(@Headers() headers, @Body() { name }: { name: string }) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.momentService.createMomentLabelList(+userId, name);
+  }
 }

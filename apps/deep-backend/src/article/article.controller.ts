@@ -74,7 +74,7 @@ export class ArticleController {
     return this.articleService.toggleLikes(userId, +id);
   }
 
-  @Patch(':id')
+  @Patch('/update/:id')
   @UseInterceptors(
     FileFieldsInterceptor(
       [
