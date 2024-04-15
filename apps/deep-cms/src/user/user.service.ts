@@ -95,7 +95,8 @@ export class UserService {
     const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
     if (cacheUser) return cacheUser;
     const user: { [prop: string]: any } = await this.database.userRepo.findOne({
-      relations: ['roles', 'roles.permissions'],
+      // relations: ['roles', 'roles.permissions'],
+      relations: ['roles'],
       where: { id },
     });
     if (!user) {

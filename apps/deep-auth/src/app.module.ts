@@ -7,9 +7,10 @@ import { DatabaseModule } from './database/database.module';
 import { SecretKeyModule } from '@app/common/secretKey/secretKey.module';
 import { CacheModule } from '@app/deep-cache';
 import { APP_PIPE } from '@nestjs/core';
+import { DeepMinioModule } from '@app/deep-minio';
 
 @Module({
-  imports: [DeepDbModule, DatabaseModule, AuthModule, SecretKeyModule, CacheModule],
+  imports: [DeepDbModule, DatabaseModule, AuthModule, SecretKeyModule, CacheModule, DeepMinioModule],
   controllers: [AppController],
   providers: [
     AppService,
