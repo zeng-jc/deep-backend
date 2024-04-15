@@ -35,7 +35,8 @@ export class MomentCommentService {
       // 更新评论路径
       return await this.database.momentCommentRepo.update({ id: curComment.id }, curComment);
     } else {
-      return await this.database.momentCommentRepo.save(comment);
+      await this.database.momentCommentRepo.save(comment);
+      return true;
     }
   }
 
@@ -83,7 +84,7 @@ export class MomentCommentService {
     return this.database.momentCommentRepo
       .createQueryBuilder('momentComment')
       .delete()
-      .where(`path LIKE '${curComment.path}%' OR path = '${curComment.path}'`)
+      .where(`path LIKE '${curComment.path ?? curComment.id + ''}%' OR id = '${curComment.id}'`)
       .execute();
   }
 
