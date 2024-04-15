@@ -67,18 +67,19 @@ export class MomentService {
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
   async findMomentList(paginationParams: PaginationQueryDto) {
-    const { keywords, labelId } = paginationParams;
+    const { content, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo
       .createQueryBuilder('moment')
+      .leftJoinAndSelect('moment.user', 'user')
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .orderBy('moment.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
-    if (keywords) {
-      query = query.where('moment.content LIKE :keywords', { keywords: `%${keywords}%` });
+    if (content) {
+      query = query.where('moment.content LIKE :content', { content: `%${content}%` });
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });

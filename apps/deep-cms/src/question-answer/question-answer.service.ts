@@ -24,6 +24,7 @@ export class QuestionAnswerService {
     const { pagenum, pagesize, keywords } = paginationParams;
     let query = this.database.questionRepo
       .createQueryBuilder('question')
+      .leftJoinAndSelect('question.user', 'user')
       .orderBy('question.id', 'DESC')
       .skip(+pagesize * (+pagenum - 1))
       .take(+pagesize);
