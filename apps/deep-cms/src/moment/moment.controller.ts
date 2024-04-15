@@ -63,7 +63,7 @@ export class MomentController {
     return this.momentService.findOneMoment(+id);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   remove(@Param('id') id: string) {
     return this.momentService.remove(+id);
   }
