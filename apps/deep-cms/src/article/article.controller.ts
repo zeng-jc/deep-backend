@@ -15,7 +15,7 @@ import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles, Permissions } from '../common/decorator/auth.decorator';
+import { Roles } from '../common/decorator/auth.decorator';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
@@ -27,7 +27,7 @@ import { PaginationPipe } from '../common/pipe/pagination.pipe';
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post()
+  @Post('/create')
   @UseInterceptors(
     FileFieldsInterceptor(
       [

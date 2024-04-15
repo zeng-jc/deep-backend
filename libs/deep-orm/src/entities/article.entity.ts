@@ -15,7 +15,7 @@ export class ArticleEntity {
   title!: string;
   @Column({ type: 'simple-array', nullable: true })
   images?: string[];
-  @Column()
+  @Column({ nullable: true })
   cover?: string;
   @Column({ default: 1 })
   viewCount: number;

@@ -55,7 +55,7 @@ export class ArticleService {
     );
 
     // 2.图片处理存储到minio
-    if (images.length) {
+    if (images?.length) {
       await this.deepMinioService.uploadFiles(images, bucketName);
       article.images = images.map((item) => item.originalname);
     }
@@ -82,7 +82,7 @@ export class ArticleService {
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
   async findArticleList(paginationParams: PaginationQueryDto) {
-    const { keywords, labelId } = paginationParams;
+    const { title, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.articleRepo
@@ -92,8 +92,8 @@ export class ArticleService {
       .orderBy('article.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
-    if (keywords) {
-      query = query.where('article.content LIKE :keywords', { keywords: `%${keywords}%` });
+    if (title) {
+      query = query.where('article.title LIKE :title', { title: `%${title}%` });
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
@@ -106,7 +106,7 @@ export class ArticleService {
 
     await Promise.all(
       list.map(async (item) => {
-        item.cover = await this.deepMinioService.getFileUrl(item.cover, bucketName);
+        item.cover = item.cover ? await this.deepMinioService.getFileUrl(item.cover, bucketName) : '';
       }),
     );
 
@@ -129,8 +129,8 @@ export class ArticleService {
     if (!articleEntity) return null;
     // 文章标签处理
     articleEntity.labels = articleEntity.labels.map((item) => item.label.name) as unknown as ArticleLabelRelationEntity[];
-    // 文章图片获取
-    articleEntity.cover = articleEntity.cover && (await this.deepMinioService.getFileUrl(articleEntity.cover, bucketName));
+    // 文章封面获取
+    articleEntity.cover = articleEntity?.cover && (await this.deepMinioService.getFileUrl(articleEntity.cover, bucketName));
     // 增加浏览量
     await this.database.articleRepo
       .createQueryBuilder()
