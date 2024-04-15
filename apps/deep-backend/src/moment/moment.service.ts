@@ -134,7 +134,7 @@ export class MomentService {
     return this.database.momentRepo.delete(id);
   }
 
-  async lockMoment(id: string) {
+  async changeMomentStatus(id: string) {
     const moment = await this.database.momentRepo.findOne({
       where: { id: +id },
     });

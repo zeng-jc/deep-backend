@@ -62,9 +62,9 @@ export class ArticleController {
     return this.articleService.removeArticle(+id);
   }
 
-  @Post('lock-article')
-  lockArticle(@Body(new GetBodyIdPipe()) id: string) {
-    return this.articleService.lockArticle(id);
+  @Post('/change-status')
+  changeAriticleStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.articleService.changeAriticleStatus(id);
   }
 
   // 切换点赞

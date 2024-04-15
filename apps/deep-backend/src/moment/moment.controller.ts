@@ -64,14 +64,14 @@ export class MomentController {
     return this.momentService.findOneMoment(+id);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   remove(@Param('id') id: string) {
     return this.momentService.remove(+id);
   }
 
-  @Post('lock-moment')
-  lockMoment(@Body(new GetBodyIdPipe()) id: string) {
-    return this.momentService.lockMoment(id);
+  @Post('/change-status')
+  changeMomentStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.momentService.changeMomentStatus(id);
   }
 
   // 切换点赞
