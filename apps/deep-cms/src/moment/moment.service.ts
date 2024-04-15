@@ -97,6 +97,9 @@ export class MomentService {
       list.map(async (item) => {
         item.images = item.images ? await this.deepMinioService.getFileUrls(item.images, bucketName) : [];
         item.video = item.video ? await this.deepMinioService.getFileUrls(item.video, bucketName) : [];
+        item.user.avatar = item.user.avatar
+          ? await this.deepMinioService.getFileUrl(item.user.avatar, bucketNameEnum.deepAvatar)
+          : '';
       }),
     );
 
