@@ -139,9 +139,9 @@ export class MomentService {
   async remove(id: number) {
     const data = await this.database.momentRepo.findOne({ where: { id }, select: ['images'] });
     // 删除图片
-    data.images && (await this.deepMinioService.deleteFile(data.images, bucketName));
+    data?.images && (await this.deepMinioService.deleteFile(data.images, bucketName));
     // 删除视频
-    data.images && (await this.deepMinioService.deleteFile(data.video, bucketName));
+    data?.video && (await this.deepMinioService.deleteFile(data.video, bucketName));
     return this.database.momentRepo.delete(id);
   }
 
