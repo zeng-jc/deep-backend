@@ -60,18 +60,18 @@ export class ArticleController {
     return this.articleService.findOneArticle(+id);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   removeArticle(@Param('id') id: string) {
     return this.articleService.removeArticle(+id);
   }
 
-  @Post('change-status')
+  @Post('/change-status')
   changeArticleStatus(@Body(new GetBodyIdPipe()) id: string) {
     return this.articleService.changeArticleStatus(id);
   }
 
   // 切换点赞
-  @Post('toggle-likes/:id')
+  @Post('/toggle-likes/:id')
   toggleLikes(@Headers() headers, @Param('id') id: string) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.articleService.toggleLikes(userId, +id);

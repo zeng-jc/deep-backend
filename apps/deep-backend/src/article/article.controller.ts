@@ -24,7 +24,7 @@ import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post()
+  @Post('create')
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -57,7 +57,7 @@ export class ArticleController {
     return this.articleService.findOneArticle(+id);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   removeArticle(@Param('id') id: string) {
     return this.articleService.removeArticle(+id);
   }
@@ -68,7 +68,7 @@ export class ArticleController {
   }
 
   // 切换点赞
-  @Post('toggle-likes/:id')
+  @Post('/toggle-likes/:id')
   toggleLikes(@Headers() headers, @Param('id') id: string) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.articleService.toggleLikes(userId, +id);
