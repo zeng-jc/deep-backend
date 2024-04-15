@@ -95,7 +95,8 @@ export class MomentService {
     });
     await Promise.all(
       list.map(async (item) => {
-        item.images = await this.deepMinioService.getFileUrls(item.images, bucketName);
+        item.images = item.images ? await this.deepMinioService.getFileUrls(item.images, bucketName) : [];
+        item.video = item.video ? await this.deepMinioService.getFileUrls(item.video, bucketName) : [];
       }),
     );
 
@@ -118,7 +119,10 @@ export class MomentService {
     if (!momentEntity) return null;
     // 动态标签处理
     momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
+    // 动态图片获取
     momentEntity.images = momentEntity.images && (await this.deepMinioService.getFileUrls(momentEntity.images, bucketName));
+    // 增加浏览量
+    momentEntity.video = momentEntity.video && (await this.deepMinioService.getFileUrls(momentEntity.video, bucketName));
     // 增加浏览量
     await this.database.momentRepo
       .createQueryBuilder()
@@ -135,7 +139,9 @@ export class MomentService {
   async remove(id: number) {
     const data = await this.database.momentRepo.findOne({ where: { id }, select: ['images'] });
     // 删除图片
-    await this.deepMinioService.deleteFile(data.images, bucketName);
+    data.images && (await this.deepMinioService.deleteFile(data.images, bucketName));
+    // 删除视频
+    data.images && (await this.deepMinioService.deleteFile(data.video, bucketName));
     return this.database.momentRepo.delete(id);
   }
 
