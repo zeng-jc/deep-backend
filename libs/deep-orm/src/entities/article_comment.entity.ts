@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ArticleEntity } from './article.entity';
 import { tableNameEnum } from '../tableNameEnum';
 import { UserEntity } from './user.entity';
@@ -11,7 +11,7 @@ export class ArticleCommentEntity {
   articleId!: number;
   @Column()
   userId!: number;
-  @Column()
+  @Column({ nullable: true })
   replyId: number;
   @Column({ nullable: true })
   path: string;
@@ -21,10 +21,8 @@ export class ArticleCommentEntity {
   status!: number;
   @Column({ type: 'simple-array', nullable: true })
   likes: string[];
-  @Column()
+  @CreateDateColumn()
   createTime: Date;
-  @Column()
-  updateTime: Date;
   @ManyToOne(() => ArticleEntity, (articleEntity) => articleEntity.comments, {
     onDelete: 'CASCADE',
   })

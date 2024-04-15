@@ -38,7 +38,7 @@ export class ArticleCommentService {
   }
 
   // 查询指定文章的所有评论
-  async findOneArticleComment(articleId: number) {
+  async findArticleComment(articleId: number) {
     const [data, total] = await this.database.articleCommentRepo.findAndCount({
       where: {
         articleId,

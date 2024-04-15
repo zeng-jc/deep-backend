@@ -11,24 +11,24 @@ import { tableNameEnum } from '@app/deep-orm';
 export class ArticleCommentController {
   constructor(private readonly articleCommentService: ArticleCommentService) {}
 
-  @Post()
+  @Post('create')
   create(@Headers() headers, @Body() createArticleCommentDto: CreateArticleCommentDto) {
     const { id: userId }: { id: string } = JSON.parse(headers.authorization);
     return this.articleCommentService.create(createArticleCommentDto, userId);
   }
 
-  @Get(':id')
-  findOneArticleComment(@Param('id') id: string) {
-    return this.articleCommentService.findOneArticleComment(+id);
+  @Get(':articleId')
+  findArticleComment(@Param('articleId') articleId: string) {
+    return this.articleCommentService.findArticleComment(+articleId);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   remove(@Param('id') id: string) {
     return this.articleCommentService.remove(+id);
   }
 
   // 切换点赞
-  @Post('toggle-likes/:id')
+  @Post('/toggle-likes/:id')
   toggleLikes(@Headers() headers, @Param('id') id: string) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.articleCommentService.toggleLikes(userId + '', id);
