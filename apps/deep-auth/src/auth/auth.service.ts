@@ -86,16 +86,6 @@ export class AuthService {
 
   // 账号密码登录
   async signinAccount(signinAuthData: SigninAuthDto) {
-    // const cacheUser = await this.cacheService.get(`user.findOneUser.${id}`);
-    // if (cacheUser) return cacheUser;
-    // const user: { [prop: string]: any } = await this.database.userRepo.findOne({
-    //   where: { id },
-    // });
-    // if (!user) {
-    //   throw new DeepHttpException(ErrorMsg.USER_ID_INVALID, ErrorCode.USER_ID_INVALID);
-    // }
-
-    // return user;
     const { username, password } = signinAuthData;
     const user: { [prop: string]: any } = await this.database.userRepo.findOne({
       where: {
@@ -112,7 +102,7 @@ export class AuthService {
       username: user.username,
     });
     const data = {
-      user,
+      userInfo: user,
       token: TOKEN,
     };
     this.database.userFollowRepo.createQueryBuilder('userFollow').select().where({ followingId: id }).orWhere({ followId: id });
@@ -168,22 +158,67 @@ export class AuthService {
       throw new DeepHttpException(ErrorMsg.VERIFICATION_CODE_ERROR, ErrorCode.VERIFICATION_CODE_ERROR);
     // 清空缓存验证码
     this.cacheService.del(`${email}.${uuid}`);
-    const userInfo = await this.database.userRepo.findOne({
+    const user: { [prop: string]: any } = await this.database.userRepo.findOne({
       where: {
         email,
       },
     });
-    if (!userInfo) {
+    if (!user) {
       throw new DeepHttpException(ErrorMsg.INVALID_IDENTITY_INFORMATION, ErrorCode.INVALID_IDENTITY_INFORMATION);
     }
+    const { id } = user;
+
     const TOKEN = this.createToken<TokenPayload>({
-      id: userInfo.id,
-      username: userInfo.username,
+      id: user.id,
+      username: user.username,
     });
     const data = {
-      userInfo,
+      userInfo: user,
       token: TOKEN,
     };
+    this.database.userFollowRepo.createQueryBuilder('userFollow').select().where({ followingId: id }).orWhere({ followId: id });
+    // 粉丝数量
+    const followingCount = await this.database.userFollowRepo.count({ where: { followingId: id } });
+    user.userFollowings = followingCount;
+    // 关注人数
+    const followCount = await this.database.userFollowRepo.count({ where: { followId: id } });
+    user.userFollows = followCount;
+    // 动态总浏览量
+    const momentTotalViews = await this.database.momentRepo
+      .createQueryBuilder('user')
+      .select('SUM(user.viewCount) as totalViews')
+      .where('user.userId = :userId', { userId: id })
+      .getRawOne();
+    user.momentTotalViews = momentTotalViews.totalViews;
+    // 动态总点赞量
+    const momentTotalLikes = await this.database.momentRepo
+      .createQueryBuilder('m')
+      .innerJoin(MomentLikesEntity, 'ml', 'm.id = ml.momentId') // 联表条件
+      .select('COUNT(ml.userId)', 'totalLikes') // 计算总的点赞数
+      .where('m.userId = :userId', { userId: id })
+      .getRawOne();
+    user.momentTotalLikes = momentTotalLikes.totalLikes;
+
+    // 查询文章浏览量
+    const articleTotalViews = await this.database.articleRepo
+      .createQueryBuilder('user')
+      .select('SUM(user.viewCount) as totalViews')
+      .where('user.userId = :userId', { userId: id })
+      .getRawOne();
+    user.articleTotalViews = articleTotalViews.totalViews;
+
+    // 文章总点赞量
+    const articleTotalLikes = await this.database.articleRepo
+      .createQueryBuilder('m')
+      .innerJoin(ArticleLikesEntity, 'ml', 'm.id = ml.articleId') // 联表条件
+      .select('COUNT(ml.userId)', 'totalLikes') // 计算总的点赞数
+      .where('m.userId = :userId', { userId: id })
+      .getRawOne();
+    user.articleTotalLikes = articleTotalLikes.totalLikes;
+
+    // 查询用户头像地址
+    user.avatar = user.avatar && (await this.deepMinioService.getFileUrl(user.avatar, bucketName));
+
     return data;
   }
 

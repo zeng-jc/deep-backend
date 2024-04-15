@@ -71,7 +71,7 @@ export class MomentService {
 
   // TODO: 需要优化sql
   async findMomentList(paginationParams: PaginationQueryDto) {
-    const { keywords, labelId } = paginationParams;
+    const { content, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo
@@ -82,8 +82,8 @@ export class MomentService {
       .orderBy('moment.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
-    if (keywords) {
-      query = query.where('moment.content LIKE :keywords', { keywords: `%${keywords}%` });
+    if (content) {
+      query = query.where('moment.content LIKE :content', { content: `%${content}%` });
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });

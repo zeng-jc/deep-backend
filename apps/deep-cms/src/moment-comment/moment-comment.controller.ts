@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Headers, Query } from '@nestjs/common';
 import { MomentCommentService } from './moment-comment.service';
 import { CreateMomentCommentDto } from './dto/create-moment-comment.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
@@ -19,7 +19,7 @@ export class MomentCommentController {
   }
 
   @Get('/list')
-  findMomentCommentList(@Param(new PaginationPipe()) query: PaginationQueryDto) {
+  findMomentCommentList(@Query(new PaginationPipe()) query: PaginationQueryDto) {
     return this.momentCommentService.findMomentCommentList(query);
   }
 
@@ -28,7 +28,7 @@ export class MomentCommentController {
     return this.momentCommentService.findOneMomentComment(+id);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   remove(@Param('id') id: string) {
     return this.momentCommentService.remove(+id);
   }
