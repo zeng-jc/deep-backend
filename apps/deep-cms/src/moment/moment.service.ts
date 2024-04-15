@@ -28,7 +28,10 @@ export class MomentService {
     const moment = new MomentEntity();
 
     if (files.length) {
-      const filenames = [...files.map((item) => (item.originalname = new Date().getTime() + extname(item.originalname)))];
+      // 还是有概率会重复
+      const filenames = [
+        ...files.map((item, index) => (item.originalname = new Date().getTime() + index + extname(item.originalname))),
+      ];
       // 存储到minio
       await this.deepMinioService.uploadFiles(files, bucketName);
       if (type === 'images') moment.images = filenames;
@@ -136,7 +139,7 @@ export class MomentService {
     return this.database.momentRepo.delete(id);
   }
 
-  async lockMoment(id: string) {
+  async changeMomentStatus(id: string) {
     const moment = await this.database.momentRepo.findOne({
       where: { id: +id },
     });

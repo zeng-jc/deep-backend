@@ -68,9 +68,9 @@ export class MomentController {
     return this.momentService.remove(+id);
   }
 
-  @Post('lockMoment')
-  lockMoment(@Body(new GetBodyIdPipe()) id: string) {
-    return this.momentService.lockMoment(id);
+  @Post('/change-status')
+  changeMomentStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.momentService.changeMomentStatus(id);
   }
 
   // 切换点赞
