@@ -41,19 +41,21 @@ export class MomentService {
     moment.user = user;
     // 1. 获取lable的id
     const momentLableIds = await Promise.all(
-      labels?.map(async (tag) => {
-        const momentLabelExisting = await this.database.entityManager.findOne(MomentLabelEntity, {
-          where: {
-            name: tag,
-          },
-        });
-        if (momentLabelExisting) return momentLabelExisting.id;
-        const momentLable = new MomentLabelEntity();
-        momentLable.name = tag;
-        momentLable.userId = userId;
-        const momentLabel = await this.database.entityManager.save(MomentLabelEntity, momentLable);
-        return momentLabel.id;
-      }),
+      Array.isArray(labels)
+        ? labels
+        : [labels].map(async (tag) => {
+            const momentLabelExisting = await this.database.entityManager.findOne(MomentLabelEntity, {
+              where: {
+                name: tag,
+              },
+            });
+            if (momentLabelExisting) return momentLabelExisting.id;
+            const momentLable = new MomentLabelEntity();
+            momentLable.name = tag;
+            momentLable.userId = userId;
+            const momentLabel = await this.database.entityManager.save(MomentLabelEntity, momentLable);
+            return momentLabel.id;
+          }),
     );
     // 2.存储moment
     const momentInfo = await this.database.momentRepo.save(moment);
