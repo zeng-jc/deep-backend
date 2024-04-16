@@ -5,7 +5,7 @@ import { AssignPermissionDto } from './dto/assign-permission.dto';
 import { PermissionEntity } from '@app/deep-orm';
 import { DeepHttpException, ErrorMsg, ErrorCode } from '@app/common/exceptionFilter';
 import { DatabaseService } from '../database/database.service';
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
 @Injectable()
@@ -62,14 +62,29 @@ export class PermissionService {
     return this.database.permissionRepo.save(permission);
   }
 
-  findAllPermission(query: PaginationQueryDto) {
-    const { keywords } = query;
-    return this.database.permissionRepo
-      .createQueryBuilder('p')
-      .leftJoinAndSelect('p.menu', 'menu')
-      .select(['p.id', 'p.name', 'p.desc', 'menu.id', 'menu.name'])
-      .where('p.name LIKE :keywords', { keywords: `%${keywords}%` })
-      .getMany();
+  async findAllPermission(query: PaginationQueryDto) {
+    const { name, pagenum, pagesize } = query;
+    // return this.database.permissionRepo
+    //   .createQueryBuilder('p')
+    //   .leftJoinAndSelect('p.menu', 'menu')
+    //   .select(['p.id', 'p.name', 'p.desc', 'menu.id', 'menu.name'])
+    //   .where('p.name LIKE :name', { name: `%${name}%` })
+    //   .getMany();
+    const [list, total] = await this.database.permissionRepo.findAndCount({
+      relations: ['menu'],
+      where: [
+        {
+          name: Like(`%${name ?? ''}%`),
+        },
+      ],
+      order: { id: 'DESC' },
+      skip: pagesize * (pagenum - 1),
+      take: pagesize,
+    });
+    return {
+      list,
+      total,
+    };
   }
 
   findOnePermission(id: number) {

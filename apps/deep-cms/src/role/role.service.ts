@@ -37,12 +37,12 @@ export class RoleService {
   }
 
   async findRoleList(query: PaginationQueryDto) {
-    const { keywords, pagenum, pagesize } = query;
+    const { name, pagenum, pagesize } = query;
     const [list, total] = await this.database.roleRepo.findAndCount({
       relations: ['permissions'],
       where: [
         {
-          name: Like(`%${keywords ?? ''}%`),
+          name: Like(`%${name ?? ''}%`),
         },
       ],
       order: { id: 'DESC' },

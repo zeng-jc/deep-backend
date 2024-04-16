@@ -27,7 +27,7 @@ export class PermissionController {
   }
 
   @Permissions('find-permission-list')
-  @Get()
+  @Get('/list')
   findAllPermission(
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
