@@ -5,7 +5,7 @@ import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 import { DatabaseService } from '../database/database.service';
 import { CacheService } from '@app/deep-cache';
 import { DeepMinioService } from '@app/deep-minio';
-import { ArticleEntity, ArticleLabelEntity, ArticleLabelRelationEntity } from '@app/deep-orm';
+import { ArticleEntity, ArticleLabelEntity, ArticleLabelRelationEntity, ArticleLikesEntity } from '@app/deep-orm';
 import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 
@@ -135,11 +135,20 @@ export class ArticleService {
     const articleEntity = await this.database.articleRepo
       .createQueryBuilder('article')
       .where('article.id = :id', { id })
-      .leftJoinAndSelect('article.user', 'user')
+      .leftJoin('article.user', 'user')
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
       .leftJoinAndSelect('article.labels', 'labels')
-      .leftJoinAndSelect('labels.label', 'label')
+      .leftJoin('labels.label', 'label')
+      .addSelect(['label.name'])
       .getOne();
     if (!articleEntity) return null;
+    articleEntity.articleLikes = (await this.database.momentLikesRepo.count({
+      where: { momentId: articleEntity.id },
+    })) as unknown as ArticleLikesEntity;
+    // 用户头像
+    articleEntity.user.avatar =
+      articleEntity.user.avatar && (await this.deepMinioService.getFileUrl(articleEntity.user.avatar, bucketNameEnum.deepAvatar));
+
     // 文章标签处理
     articleEntity.labels = articleEntity.labels.map((item) => item.label.name) as unknown as ArticleLabelRelationEntity[];
     // 文章封面获取

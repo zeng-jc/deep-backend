@@ -3,7 +3,7 @@ import { CreateMomentDto } from './dto/create-moment.dto';
 import { DatabaseService } from '../database/database.service';
 import { CacheService } from '@app/deep-cache';
 import { DeepMinioService } from '@app/deep-minio';
-import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity } from '@app/deep-orm';
+import { MomentEntity, MomentLabelEntity, MomentLabelRelationEntity, MomentLikesEntity } from '@app/deep-orm';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { extname } from 'path';
@@ -115,10 +115,19 @@ export class MomentService {
     const momentEntity = await this.database.momentRepo
       .createQueryBuilder('moment')
       .where('moment.id = :id', { id })
+      .leftJoin('moment.user', 'user')
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
       .leftJoinAndSelect('moment.labels', 'labels')
-      .leftJoinAndSelect('labels.label', 'label')
+      .leftJoin('labels.label', 'label')
+      .addSelect(['label.name'])
       .getOne();
     if (!momentEntity) return null;
+    momentEntity.momentLikes = (await this.database.momentLikesRepo.count({
+      where: { momentId: momentEntity.id },
+    })) as unknown as MomentLikesEntity;
+    // 用户头像
+    momentEntity.user.avatar =
+      momentEntity.user.avatar && (await this.deepMinioService.getFileUrl(momentEntity.user.avatar, bucketNameEnum.deepAvatar));
     // 动态标签处理
     momentEntity.labels = momentEntity.labels.map((item) => item.label.name) as unknown as MomentLabelRelationEntity[];
     // 动态图片获取
