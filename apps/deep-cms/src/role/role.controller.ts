@@ -7,6 +7,7 @@ import { Roles, Permissions } from '../common/decorator/auth.decorator';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
+import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
 
 @Roles('superAdmin')
 @Controller('role')
@@ -51,5 +52,11 @@ export class RoleController {
   @Delete(':id')
   removeRole(@Param('id') id: string) {
     return this.roleService.removeRole(+id);
+  }
+
+  @Permissions('update-role')
+  @Post('/change-status')
+  changeRoleStatus(@Body(new GetBodyIdPipe()) id: string) {
+    return this.roleService.changeRoleStatus(id);
   }
 }

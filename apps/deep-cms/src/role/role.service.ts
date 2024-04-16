@@ -81,4 +81,16 @@ export class RoleService {
     }
     return this.database.roleRepo.delete(id);
   }
+
+  async changeRoleStatus(id) {
+    const name = (await this.database.roleRepo.findOne({ where: { id } })).name;
+    if (name === 'superAdmin') {
+      throw new DeepHttpException(ErrorMsg.SUPER_ADMIN_READ_ONLY, ErrorCode.SUPER_ADMIN_READ_ONLY);
+    }
+    const article = await this.database.roleRepo.findOne({
+      where: { id: +id },
+    });
+    article.status = article.status === 0 ? 1 : 0;
+    return this.database.roleRepo.save(article);
+  }
 }
