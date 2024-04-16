@@ -70,6 +70,8 @@ export class AuthService {
     // 后续可以考虑抽离到中间件中
     if (!(await this.checkEmailVerificationCode({ uuid, email, verificationCode })))
       throw new DeepHttpException(ErrorMsg.VERIFICATION_CODE_ERROR, ErrorCode.VERIFICATION_CODE_ERROR);
+    if (!/^[a-zA-Z0-9_]{3,12}$/.test(username))
+      throw new DeepHttpException(ErrorMsg.USERNAME_FORMAT_ERROR, ErrorCode.USERNAME_FORMAT_ERROR);
     if (await this.userExist(username)) throw new DeepHttpException(ErrorMsg.USER_EXIST, ErrorCode.USER_EXIST);
     if (await this.emailExist(email)) throw new DeepHttpException(ErrorMsg.EMAIL_EXIST, ErrorCode.EMAIL_EXIST);
     const user = new UserEntity();

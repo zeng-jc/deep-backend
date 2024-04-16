@@ -67,14 +67,15 @@ export class MomentService {
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
   async findMomentList(paginationParams: PaginationQueryDto) {
-    const { content, labelId } = paginationParams;
+    const { content, username, labelId } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.momentRepo
       .createQueryBuilder('moment')
-      .leftJoinAndSelect('moment.user', 'user')
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
+      .leftJoin('moment.user', 'user')
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
       .orderBy('moment.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
@@ -83,6 +84,9 @@ export class MomentService {
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
+    }
+    if (username) {
+      query = query.andWhere('user.username = :username', { username });
     }
     const [list, total] = await query.getManyAndCount();
     // 动态标签处理

@@ -25,6 +25,7 @@ export class QuestionAnswerService {
     let query = this.database.questionRepo
       .createQueryBuilder('question')
       .leftJoinAndSelect('question.user', 'user')
+      .leftJoinAndSelect('question.answer', 'answer')
       .orderBy('question.id', 'DESC')
       .skip(+pagesize * (+pagenum - 1))
       .take(+pagesize);

@@ -83,13 +83,15 @@ export class ArticleService {
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
   async findArticleList(paginationParams: PaginationQueryDto) {
-    const { keywords, labelId } = paginationParams;
+    const { keywords, labelId, username } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.articleRepo
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
+      .leftJoin('article.user', 'user')
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
       .orderBy('article.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
@@ -99,7 +101,17 @@ export class ArticleService {
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });
     }
+    if (username) {
+      query = query.andWhere('user.username = :username', { username });
+    }
     const [list, total] = await query.getManyAndCount();
+    await Promise.all(
+      list.map(async (item) => {
+        item.user.avatar = item.user?.avatar
+          ? await this.deepMinioService.getFileUrl(item.user.avatar, bucketNameEnum.deepAvatar)
+          : '';
+      }),
+    );
     // 文章标签处理
     list.forEach((articleEntity) => {
       articleEntity.labels = articleEntity.labels.map((item) => item.label.name) as unknown as ArticleLabelRelationEntity[];

@@ -11,14 +11,14 @@ export class QuestionAnswerController {
   constructor(private readonly questionAnswerService: QuestionAnswerService) {}
 
   // 创建问题
-  @Post()
+  @Post('/create-question')
   createQuestion(@Headers() headers, @Body() createQuestionAnswerDto: CreateQuestionAnswerDto) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.questionAnswerService.createQuestion(userId, createQuestionAnswerDto);
   }
 
   // 创建答案
-  @Post(':id')
+  @Post('/create-answer/:id')
   createAnswer(@Headers() headers, @Param('id') id: string, @Body() createQuestionAnswerDto: CreateQuestionAnswerDto) {
     const { id: userId }: { id: number } = JSON.parse(headers.authorization);
     return this.questionAnswerService.createAnswer(userId, +id, createQuestionAnswerDto);
