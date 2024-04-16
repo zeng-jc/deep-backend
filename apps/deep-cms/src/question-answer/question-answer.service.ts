@@ -21,18 +21,18 @@ export class QuestionAnswerService {
   }
 
   async findQuestionList(paginationParams: PaginationQueryDto) {
-    const { pagenum, pagesize, keywords } = paginationParams;
+    const { pagenum, pagesize, content } = paginationParams;
     let query = this.database.questionRepo
       .createQueryBuilder('question')
       .leftJoinAndSelect('question.user', 'user')
       .orderBy('question.id', 'DESC')
       .skip(+pagesize * (+pagenum - 1))
       .take(+pagesize);
-    if (keywords) {
-      query = query.where('question.content LIKE :keywords', { keywords: `%${keywords}%` });
+    if (content) {
+      query = query.where('question.content LIKE :content', { content: `%${content}%` });
     }
-    const [questions, total] = await query.getManyAndCount();
-    return { questions, total };
+    const [list, total] = await query.getManyAndCount();
+    return { list, total };
   }
 
   findOneQuestion(id: number) {
