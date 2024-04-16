@@ -41,7 +41,7 @@ export class ArticleService {
 
     // 1. 获取lable的id
     const articleLableIds = await Promise.all(
-      labels?.map(async (tag) => {
+      (Array.isArray(labels) ? labels : [labels]).map(async (tag) => {
         const articleLabelExisting = await this.database.entityManager.findOne(ArticleLabelEntity, {
           where: {
             name: tag,
