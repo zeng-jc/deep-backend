@@ -27,7 +27,9 @@ export class MomentService {
     const moment = new MomentEntity();
 
     if (files.length) {
-      const filenames = [...files.map((item) => (item.originalname = new Date().getTime() + extname(item.originalname)))];
+      const filenames = [
+        ...files.map((item, index) => (item.originalname = new Date().getTime() + index + extname(item.originalname))),
+      ];
       // 存储到minio
       await this.deepMinioService.uploadFiles(files, bucketName);
       if (type === 'images') moment.images = filenames;
