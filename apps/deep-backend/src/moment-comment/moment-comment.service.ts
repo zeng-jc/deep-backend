@@ -6,7 +6,7 @@ import { MomentCommentEntity } from '@app/deep-orm';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 
-const bucketName = bucketNameEnum.deepMoment;
+// const bucketName = bucketNameEnum.deepMoment;
 
 @Injectable()
 export class MomentCommentService {
@@ -50,7 +50,7 @@ export class MomentCommentService {
       data.map(
         async (comment) =>
           (comment.user.avatar =
-            comment.user.avatar && (await this.deepMinioService.getFileUrl(comment.user.avatar, bucketName))),
+            comment.user.avatar && (await this.deepMinioService.getFileUrl(comment.user.avatar, bucketNameEnum.deepAvatar))),
       ),
     );
     return {
