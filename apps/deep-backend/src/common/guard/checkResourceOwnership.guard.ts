@@ -37,15 +37,31 @@ export class CheckResourceOwnershipGuard implements CanActivate {
     if (cacheUserId && reqUserId === cacheUserId) {
       return true;
     }
-    const { userId: dbUserId } = await this.dataSource.getRepository(tableName).findOne({
-      where: {
-        id: resourceId,
-      },
-    });
+    const dbUserId = await this.getUserId(tableName, resourceId);
     if (reqUserId !== dbUserId) {
       throw new DeepHttpException(ErrorMsg.YOU_DO_NOT_OWN_THIS_RESOURCE, ErrorCode.YOU_DO_NOT_OWN_THIS_RESOURCE);
     }
     this.cacheService.set<number>(cacheKey, dbUserId, 60);
     return true;
+  }
+
+  async getUserId(tableName: string, resourceId: string): Promise<number> {
+    if (tableName === 'user') {
+      const { id } = await this.dataSource.getRepository(tableName).findOne({
+        where: {
+          id: resourceId,
+        },
+        select: ['id'],
+      });
+      return id;
+    } else {
+      const { userId } = await this.dataSource.getRepository(tableName).findOne({
+        where: {
+          id: resourceId,
+        },
+        select: ['userId'],
+      });
+      return userId;
+    }
   }
 }
