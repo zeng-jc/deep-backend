@@ -39,12 +39,13 @@ export class MomentCommentService {
   }
 
   // 查询指定动态的所有评论
-  async findOneMomentComment(momentId: number) {
+  async findMomentComment(momentId: number) {
     const [data, total] = await this.database.momentCommentRepo.findAndCount({
       where: {
         momentId,
       },
       relations: ['user'],
+      order: { id: 'DESC' },
     });
     await Promise.all(
       data.map(

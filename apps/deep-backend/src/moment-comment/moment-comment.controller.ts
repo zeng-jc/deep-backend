@@ -18,8 +18,8 @@ export class MomentCommentController {
   }
 
   @Get(':id')
-  findOneMomentComment(@Param('id') id: string) {
-    return this.momentCommentService.findOneMomentComment(+id);
+  findMomentComment(@Param('id') id: string) {
+    return this.momentCommentService.findMomentComment(+id);
   }
 
   @Delete(':id')
