@@ -98,6 +98,9 @@ export class AuthService {
     if (!user) {
       throw new DeepHttpException(ErrorMsg.INVALID_IDENTITY_INFORMATION, ErrorCode.INVALID_IDENTITY_INFORMATION);
     }
+    if (user.status === 0) {
+      throw new DeepHttpException(ErrorMsg.USER_PROHIBITED, ErrorCode.USER_PROHIBITED);
+    }
     const { id } = user;
     const TOKEN = this.createToken<TokenPayload>({
       id: user.id,
@@ -167,6 +170,9 @@ export class AuthService {
     });
     if (!user) {
       throw new DeepHttpException(ErrorMsg.INVALID_IDENTITY_INFORMATION, ErrorCode.INVALID_IDENTITY_INFORMATION);
+    }
+    if (user.status === 0) {
+      throw new DeepHttpException(ErrorMsg.USER_PROHIBITED, ErrorCode.USER_PROHIBITED);
     }
     const { id } = user;
 

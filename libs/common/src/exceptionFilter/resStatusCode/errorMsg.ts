@@ -15,6 +15,7 @@ export enum ErrorMsg {
   EMAIL_EXIST = 'EMAIL EXIST',
   AVATAR_UNSUPPORTED_FILE_TYPE = 'AVATAR UNSUPPORTED FILE TYPE',
   USERNAME_FORMAT_ERROR = '用户名只能是大小写字母、数字、下划线组成',
+  USER_PROHIBITED = '用户被禁止访问，请联系管理员',
   /** 权限状态码 **/
   PERMISSION_EXIST = 'PERMISSION EXIST', //权限已存在
   PERMISSION_NOT_EXIST = 'PERMISSION_NOT EXIST', // 权限不存在
