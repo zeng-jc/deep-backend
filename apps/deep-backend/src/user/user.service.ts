@@ -144,7 +144,7 @@ export class UserService {
     user.status = status;
     user.bio = bio;
     user.level = level;
-    user.birthday = birthday;
+    birthday ?? (user.birthday = birthday);
     user.phone = phone;
     user.school = school;
     user.major = major;
