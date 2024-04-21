@@ -4,7 +4,10 @@ import { CreateQuestionAnswerDto } from './dto/create-question-answer.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { PaginationPipe } from '../common/pipe/pagination.pipe';
+import { tableName } from '../common/decorator/tableName.decorator';
+import { tableNameEnum } from '@app/deep-orm';
 
+@tableName(tableNameEnum.answer)
 @ApiTags('question-answer')
 @Controller('question-answer')
 export class QuestionAnswerController {

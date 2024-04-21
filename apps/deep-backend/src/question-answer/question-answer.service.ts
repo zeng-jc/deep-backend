@@ -72,6 +72,9 @@ export class QuestionAnswerService {
     if (keywords) {
       query = query.where('answer.content LIKE :keywords', { keywords: `%${keywords}%` });
     }
+    if (questionId) {
+      query = query.andWhere('answer.questionId = :questionId', { questionId: questionId });
+    }
     const [list, total] = await query.getManyAndCount();
     await Promise.all(
       list.map(async (item) => {
