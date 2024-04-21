@@ -77,7 +77,7 @@ export class MomentService {
       .leftJoinAndSelect('moment.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .leftJoin('moment.user', 'user')
-      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level', 'user.id'])
       .orderBy('moment.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);

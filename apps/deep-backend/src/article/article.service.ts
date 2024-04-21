@@ -83,7 +83,7 @@ export class ArticleService {
 
   // TODO: 需要优化sql（还需要查询出点赞数量）
   async findArticleList(paginationParams: PaginationQueryDto) {
-    const { keywords, labelId, username } = paginationParams;
+    const { title, labelId, username } = paginationParams;
     const pagenum = +paginationParams.pagenum;
     const pagesize = +paginationParams.pagesize;
     let query = this.database.articleRepo
@@ -91,12 +91,12 @@ export class ArticleService {
       .leftJoinAndSelect('article.labels', 'labels')
       .leftJoinAndSelect('labels.label', 'label')
       .leftJoin('article.user', 'user')
-      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level', 'user.id'])
       .orderBy('article.id', 'DESC')
       .skip(pagesize * (pagenum - 1))
       .take(pagesize);
-    if (keywords) {
-      query = query.where('article.content LIKE :keywords', { keywords: `%${keywords}%` });
+    if (title) {
+      query = query.where('article.content LIKE :title', { title: `%${title}%` });
     }
     if (labelId) {
       query = query.andWhere('labels.labelId = :labelId', { labelId });

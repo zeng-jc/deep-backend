@@ -13,6 +13,7 @@ export enum sortEnum {
 export class PaginationQueryDto {
   pagenum!: number;
   pagesize!: number;
+  title?: string;
   username?: string;
   content?: string;
   keywords?: string;
