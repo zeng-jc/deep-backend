@@ -49,8 +49,15 @@ export class QuestionAnswerService {
     return { list, total };
   }
 
-  findOneQuestion(id: number) {
-    return this.database.questionRepo.findOne({ where: { id } });
+  async findOneQuestion(id: number) {
+    const res = await this.database.questionRepo
+      .createQueryBuilder('question')
+      .leftJoin('question.user', 'user')
+      .addSelect(['user.avatar', 'user.username', 'user.nickname', 'user.level'])
+      .where('question.id = :id', { id })
+      .getOne();
+    res.user.avatar = res.user?.avatar ? await this.deepMinioService.getFileUrl(res.user.avatar, bucketNameEnum.deepAvatar) : '';
+    return res;
   }
 
   async findQuestionAnswer(questionId: number, paginationParams: PaginationQueryDto) {
