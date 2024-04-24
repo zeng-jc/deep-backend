@@ -21,7 +21,8 @@ INSERT INTO deep.menu (id,name,title,`path`,icon,createTime,updateTime,component
 	 (19,'menu','菜单管理','/system/menu','Menu','2024-02-28 02:39:36.777877','2024-02-28 06:48:56.871024','/system/menu/index',NULL,NULL,16),
 	 (20,'link','外部链接','/link','Paperclip','2024-02-22 09:37:55.088743','2024-02-28 06:55:32.057971',NULL,NULL,NULL,NULL),
 	 (21,'github','github','/link/github','Menu','2024-02-22 09:38:49.018395','2024-02-28 06:48:56.938679',NULL,'https://github.com/zeng-jc',NULL,20),
-	 (22,'juejin','掘金','/link/juejin','Menu','2024-02-22 09:39:40.602020','2024-02-28 06:48:57.001155',NULL,'https://juejin.cn/user/1548551276737191',NULL,20);
+	 (22,'juejin','掘金','/link/juejin','Menu','2024-02-22 09:39:40.602020','2024-02-28 06:48:57.001155',NULL,'https://juejin.cn/user/1548551276737191',NULL,20),
+   (23,'announcement','公告管理','/system/announcement','Menu','2024-02-28 02:39:36.652607','2024-02-28 06:48:56.707003','/system/announcement/index',NULL,NULL,16);
 
 -- 创建用户
 INSERT INTO deep.user (username,password,nickname,email,bio,`level`,birthday,school,major,`position`,github,createTime,updateTime,gender,status,phone) VALUES
@@ -68,8 +69,8 @@ INSERT INTO deep.user_role_relation (userId,roleId) VALUES
 
 -- 给角色分配权限
 INSERT INTO deep.role_permission_relation (roleId,permissionId) VALUES
-	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24);
+	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23);
 	
 -- 给角色分配菜单
 INSERT INTO deep.role_menu_relation (roleId,menuId) VALUES
-	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22);
+	 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24);
