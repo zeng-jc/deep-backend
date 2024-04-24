@@ -13,7 +13,7 @@ export class AnnouncementService {
       skip: (pagenum - 1) * pagesize,
       order: { id: 'DESC' },
       where: {
-        content: Like(`%${content}%`),
+        content: Like(`%${content ?? ''}%`),
       },
     });
     return {
