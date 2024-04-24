@@ -17,3 +17,4 @@ export * from './article_likes.entity';
 export * from './question.entity';
 export * from './answer.entity';
 export * from './daily_visits.entity';
+export * from './announcement.entity';

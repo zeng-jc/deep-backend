@@ -22,4 +22,5 @@ export enum tableNameEnum {
   answer = 'answer',
   question_answer_relation = 'question_answer_relation',
   daily_visits = 'daily_visits',
+  announcement = 'announcement',
 }

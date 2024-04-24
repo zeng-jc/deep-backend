@@ -17,6 +17,7 @@ import {
   QuestionEntity,
   AnswerEntity,
   DailyVisitsEntity,
+  AnnouncementEntity,
 } from '@app/deep-orm';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
@@ -60,6 +61,9 @@ export class DatabaseService {
 
     @InjectRepository(MenuEntity)
     public readonly menuRepo: Repository<MenuEntity>,
+
+    @InjectRepository(AnnouncementEntity)
+    public readonly announcementRepo: Repository<AnnouncementEntity>,
 
     @InjectRepository(DailyVisitsEntity)
     public readonly dailyVisitsRepo: Repository<DailyVisitsEntity>,

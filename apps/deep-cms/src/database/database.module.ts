@@ -20,6 +20,7 @@ import {
   QuestionEntity,
   AnswerEntity,
   DailyVisitsEntity,
+  AnnouncementEntity,
 } from '@app/deep-orm';
 
 @Global()
@@ -44,6 +45,7 @@ import {
       QuestionEntity,
       AnswerEntity,
       DailyVisitsEntity,
+      AnnouncementEntity,
     ]),
   ],
   providers: [DatabaseService],

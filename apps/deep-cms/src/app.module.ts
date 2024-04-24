@@ -19,6 +19,7 @@ import { MenuModule } from './menu/menu.module';
 import { DeepMinioModule } from '@app/deep-minio';
 import { StatsModule } from './stats/stats.module';
 import { QuestionAnswerModule } from './question-answer/question-answer.module';
+import { AnnouncementModule } from './announcement/announcement.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { QuestionAnswerModule } from './question-answer/question-answer.module';
     MomentModule,
     MomentCommentModule,
     ArticleCommentModule,
+    AnnouncementModule,
     MenuModule,
     StatsModule,
     QuestionAnswerModule,

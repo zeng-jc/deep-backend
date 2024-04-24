@@ -19,6 +19,7 @@ import { QuestionAnswerModule } from './question-answer/question-answer.module';
 import { dailyVisitsMiddleware } from './common/middleware/dailyVisits.middleware';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './common/schedule/task.service';
+import { AnnouncementModule } from './announcement/announcement.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TasksService } from './common/schedule/task.service';
     MomentModule,
     MomentCommentModule,
     ArticleCommentModule,
+    AnnouncementModule,
     // 定义多个节流阀
     ThrottlerModule.forRoot([
       {
