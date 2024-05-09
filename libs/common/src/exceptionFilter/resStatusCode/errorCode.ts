@@ -39,4 +39,5 @@ export enum ErrorCode {
   ARTICLE_LABEL_EXIST = '500004',
   /** 数据库错误 */
   DATABASE_HANDLE_ERROR = '600001',
+  RESOURCE_NOT_EXIST = '600002',
 }

@@ -147,7 +147,7 @@ export class ArticleService {
 
   // TODO: 如果该标签下没有任何一篇文章，标签也应该删除
   async removeArticle(id: number) {
-    const data = await this.database.articleRepo.findOne({ where: { id }, select: ['cover'] });
+    const data = await this.database.articleRepo.findOne({ where: { id }, select: ['cover', 'images'] });
     // 删除图片
     await this.deepMinioService.deleteFile(data?.cover, bucketName);
     await this.deepMinioService.deleteFile(data?.images, bucketName);

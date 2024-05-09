@@ -39,4 +39,5 @@ export enum ErrorMsg {
   ARTICLE_LABEL_EXIST = '文章标签已存在',
   /** 数据库错误 */
   DATABASE_HANDLE_ERROR = 'DATABASE_HANDLE_ERROR',
+  RESOURCE_NOT_EXIST = '操作资源不存在',
 }

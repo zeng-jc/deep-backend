@@ -18,9 +18,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { GetBodyIdPipe } from '../common/pipe/getBodyId.pipe';
+import { tableName } from '../common/decorator/tableName.decorator';
+import { tableNameEnum } from '@app/deep-orm';
 
 @ApiTags('article')
 @Controller('article')
+@tableName(tableNameEnum.article)
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 

@@ -46,22 +46,26 @@ export class CheckResourceOwnershipGuard implements CanActivate {
   }
 
   async getUserId(tableName: string, resourceId: string): Promise<number> {
-    if (tableName === 'user') {
-      const { id } = await this.dataSource.getRepository(tableName).findOne({
-        where: {
-          id: resourceId,
-        },
-        select: ['id'],
-      });
-      return id;
-    } else {
-      const { userId } = await this.dataSource.getRepository(tableName).findOne({
-        where: {
-          id: resourceId,
-        },
-        select: ['userId'],
-      });
-      return userId;
+    try {
+      if (tableName === 'user') {
+        const { id } = await this.dataSource.getRepository(tableName).findOne({
+          where: {
+            id: resourceId,
+          },
+          select: ['id'],
+        });
+        return id;
+      } else {
+        const { userId } = await this.dataSource.getRepository(tableName).findOne({
+          where: {
+            id: resourceId,
+          },
+          select: ['userId'],
+        });
+        return userId;
+      }
+    } catch (error) {
+      throw new DeepHttpException(ErrorMsg.RESOURCE_NOT_EXIST, ErrorCode.RESOURCE_NOT_EXIST);
     }
   }
 }

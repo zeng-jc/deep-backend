@@ -25,6 +25,8 @@ export class ArticleEntity {
   createTime: Date;
   @UpdateDateColumn()
   updateTime: Date;
+  @Column()
+  userId: number;
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
   })
