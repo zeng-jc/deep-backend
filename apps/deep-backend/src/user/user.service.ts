@@ -9,6 +9,7 @@ import { extname } from 'path';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { bucketNameEnum } from '@app/deep-minio/deep-minio.bucket-name';
 import { Like } from 'typeorm';
+import { UpdatePasswordDto } from './dto/update-password';
 
 const bucketName = bucketNameEnum.deepAvatar;
 
@@ -255,5 +256,13 @@ export class UserService {
       }),
     );
     return result;
+  }
+
+  async updatePassword(id: number, { password, newPassword }: UpdatePasswordDto) {
+    const user = await this.database.userRepo.findOne({ where: { password, id }, select: ['id'] });
+    console.log(user, password);
+    if (!user) throw new DeepHttpException(ErrorMsg.PASSWORD_ERROR, ErrorCode.PASSWORD_ERROR);
+    await this.database.userRepo.update(id, { password: newPassword });
+    return true;
   }
 }

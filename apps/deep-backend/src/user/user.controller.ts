@@ -20,6 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DeepHttpException, ErrorCode, ErrorMsg } from '@app/common/exceptionFilter';
 import { PaginationQueryDto } from '../common/dto/paginationQuery.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdatePasswordDto } from './dto/update-password';
 @tableName(tableNameEnum.user)
 @ApiTags('user')
 @Controller('user')
@@ -79,7 +80,6 @@ export class UserController {
   // 关注列表
   @Get('/following/:id')
   async getFollowing(
-    @Headers() headers,
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
     @Param('id') id: string,
@@ -90,11 +90,17 @@ export class UserController {
   // 点赞列表
   @Get('/likes-list/:id')
   async getLikesList(
-    @Headers() headers,
     @Query(new PaginationPipe())
     query: PaginationQueryDto,
     @Param('id') id: string,
   ) {
     return this.userService.getLikesList(+id, query);
+  }
+
+  // 修改密码
+  @Post('/update-password')
+  async updatePassword(@Headers() headers, @Body() body: UpdatePasswordDto) {
+    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
+    return this.userService.updatePassword(+userId, body);
   }
 }
