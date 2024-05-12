@@ -197,7 +197,7 @@ export class UserService {
     const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
-    SELECT u.nickname,u.username,u.bio,u.level,u.school,u.avatar,u.gender 
+    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender 
     FROM user_follow uf
     INNER JOIN user u ON uf.followId = u.id 
     WHERE uf.followId=${userId}
@@ -216,7 +216,7 @@ export class UserService {
     const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
-    SELECT u.nickname,u.username,u.level,u.school,u.avatar,u.gender 
+    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender 
     FROM user_follow uf
     INNER JOIN user u ON uf.followingId = u.id 
     WHERE uf.followId=${userId}
@@ -260,7 +260,6 @@ export class UserService {
 
   async updatePassword(id: number, { password, newPassword }: UpdatePasswordDto) {
     const user = await this.database.userRepo.findOne({ where: { password, id }, select: ['id'] });
-    console.log(user, password);
     if (!user) throw new DeepHttpException(ErrorMsg.PASSWORD_ERROR, ErrorCode.PASSWORD_ERROR);
     await this.database.userRepo.update(id, { password: newPassword });
     return true;
