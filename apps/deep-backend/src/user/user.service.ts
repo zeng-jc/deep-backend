@@ -207,7 +207,7 @@ export class UserService {
     // minio中取出文件
     await Promise.all(
       list.map(async (item) => {
-        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
+        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar, bucketName));
       }),
     );
     return {
@@ -230,7 +230,7 @@ export class UserService {
     // minio中取出文件
     await Promise.all(
       list.map(async (item) => {
-        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
+        item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar, bucketName));
       }),
     );
     return {
