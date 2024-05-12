@@ -197,7 +197,7 @@ export class UserService {
     const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
-    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender 
+    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender,u.bio
     FROM user_follow uf
     INNER JOIN user u ON uf.followId = u.id 
     WHERE uf.followingId=${userId}
@@ -220,7 +220,7 @@ export class UserService {
     const pagenum = +query.pagenum;
     const pagesize = +query.pagesize;
     const sql = `
-    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender 
+    SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender,u.bio
     FROM user_follow uf
     INNER JOIN user u ON uf.followingId = u.id 
     WHERE uf.followId=${userId}
