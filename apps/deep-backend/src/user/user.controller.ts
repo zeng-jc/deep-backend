@@ -72,8 +72,6 @@ export class UserController {
     query: PaginationQueryDto,
     @Param('id') id: string,
   ) {
-    const { id: userId }: { id: number } = JSON.parse(headers.authorization);
-    if (!userId) return null;
     return this.userService.getFollowers(+id, query);
   }
 

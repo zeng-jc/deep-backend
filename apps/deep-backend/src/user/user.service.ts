@@ -200,16 +200,20 @@ export class UserService {
     SELECT u.id,u.nickname,u.username,u.level,u.avatar,u.gender 
     FROM user_follow uf
     INNER JOIN user u ON uf.followId = u.id 
-    WHERE uf.followId=${userId}
+    WHERE uf.followingId=${userId}
     LIMIT ${pagesize} OFFSET ${pagesize * (pagenum - 1)};`;
-    const result = await this.database.entityManager.query(sql);
+    const list = await this.database.entityManager.query(sql);
+    const total = await this.database.userFollowRepo.count({ where: { followingId: +userId } });
     // minio中取出文件
     await Promise.all(
-      result.map(async (item) => {
+      list.map(async (item) => {
         item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
       }),
     );
-    return result;
+    return {
+      list,
+      total,
+    };
   }
 
   async getFollowing(userId: number, query: PaginationQueryDto) {
@@ -221,14 +225,18 @@ export class UserService {
     INNER JOIN user u ON uf.followingId = u.id 
     WHERE uf.followId=${userId}
     LIMIT ${pagesize} OFFSET ${pagesize * (pagenum - 1)};`;
-    const result = await this.database.entityManager.query(sql);
+    const list = await this.database.entityManager.query(sql);
+    const total = await this.database.userFollowRepo.count({ where: { followId: +userId } });
     // minio中取出文件
     await Promise.all(
-      result.map(async (item) => {
+      list.map(async (item) => {
         item.avatar && (item.avatar = await this.deepMinioService.getFileUrl(item.avatar));
       }),
     );
-    return result;
+    return {
+      list,
+      total,
+    };
   }
 
   async getLikesList(userId: number, query: PaginationQueryDto) {
